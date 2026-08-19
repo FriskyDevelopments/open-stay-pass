@@ -1,0 +1,19 @@
+.credential-actions { display: flex; gap: 7px; }
+.credential-actions button:first-child { display: flex; align-items: center; gap: 5px; border-color: rgba(118, 228, 237, .35); color: #76e4ed; }
+.persisted-share { margin-top: 12px; }
+.notification-section { margin-top: 13px; }
+.notification-control { display: grid; grid-template-columns: 220px 1fr; gap: 15px; align-items: end; margin-bottom: 17px; }
+.notification-control label { display: grid; gap: 7px; font-size: 11px; font-weight: 700; color: #b8cbc0; }
+.notification-control select { padding: 10px; background: #0b130e; border: 1px solid rgba(164, 213, 184, .2); border-radius: 9px; color: #effaf3; font-size: 12px; }
+.notification-control p { margin: 0; color: #849b8d; font-size: 12px; line-height: 1.5; }
+.notification-list { display: grid; gap: 7px; }
+.notification-list article { display: grid; grid-template-columns: 10px 1fr auto; gap: 9px; align-items: start; padding: 12px; border-radius: 10px; background: #0b130e; }
+.notification-list strong { font-size: 12px; }
+.notification-list p { margin: 4px 0 0; color: #9ab2a3; font-size: 12px; line-height: 1.4; }
+.notification-list small { color: #718979; font-size: 10px; }
+
+@media (max-width: 760px) {
+  .notification-control { grid-template-columns: 1fr; }
+  .credential-list article { align-items: flex-start; flex-wrap: wrap; }
+  .credential-actions { width: 100%; }
+}

@@ -1,0 +1,22 @@
+# Project TODO
+
+- [x] Adapt HostCasa.app and Folios.works visual languages into a unified bilingual product design system.
+- [x] Create bilingual public landing page with clear HostCasa and Folios QR-first value propositions.
+- [x] Add persistent stay, credential, guest-guide, Folios handoff, scan-event, and notification data models.
+- [x] Implement HMAC-signed, short-lived, tenant-scoped, revocable credential and handoff tokens.
+- [x] Build operator onboarding to create a stay, guest credential, QR code, arrival link, and NFC URI.
+- [x] Build public HostCasa mobile arrival page with property details, Wi-Fi, rules, recommendations, and explicit credential state.
+- [x] Build public Folios five-step small-operator handoff with a signed share link.
+- [x] Add bilingual grounded concierge with local fallback and an environment-configured live LLM provider upgrade path.
+- [x] Add Apple Wallet and Google Wallet adapter-status endpoints with explicit configuration-required responses.
+- [x] Build authenticated operator dashboard for stays, active/revoked credential status, QR/link copying, and revocation.
+- [x] Trigger operator notifications on HostCasa arrival scans and Folios handoff completion.
+- [x] Publish progressive Nango integration plan for Calendar, Email, Stripe, and custom hospitality adapters.
+- [x] Add unit tests for token signing, revocation, bilingual content, handoff flow, and notifications.
+- [x] Verify responsive public and operator surfaces, server health, database behavior, and deployment readiness.
+- [x] Persist operator-notification audit records for arrival scans and completed Folios handoffs.
+- [x] Add operator-specific notification delivery configuration and a visible notification history surface.
+- [x] Persist retrievable, operator-authorized share artifacts so existing QR, arrival, NFC, and handoff links can be copied from the dashboard.
+- [x] Add explicit environment-driven ConciergeAI provider selection with built-in live and local fallback modes.
+- [x] Add flow-level tests for handoff completion and notification audit creation.
+- [x] Run production build/start and explicit health validation before the first website checkpoint.
