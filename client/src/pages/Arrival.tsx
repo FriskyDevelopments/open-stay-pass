@@ -11,25 +11,27 @@ export default function Arrival() {
   const token = params?.token ?? "";
   const [locale, setLocale] = useState<Locale>("es");
   const [question, setQuestion] = useState("");
-  const arrival = trpc.openStay.public.arrival.useQuery({ token, locale }, { enabled: Boolean(token), retry: false });
+  const preview = trpc.openStay.public.previewToken.useQuery(undefined, { enabled: token === "preview", retry: false });
+  const activeToken = token === "preview" ? (preview.data?.token ?? "") : token;
+  const arrival = trpc.openStay.public.arrival.useQuery({ token: activeToken, locale }, { enabled: Boolean(activeToken), retry: false });
   const concierge = trpc.openStay.public.concierge.useMutation();
+  const stayForPrompts = arrival.data?.stay;
+  const amenityPrompts = useMemo(() => [
+    stayForPrompts?.wifiName ? copy(locale, "¿Cómo funciona el Wi‑Fi?", "How does the Wi‑Fi work?") : null,
+    stayForPrompts?.houseRules ? copy(locale, "¿Cuáles son las reglas de la casa?", "What are the house rules?") : null,
+    stayForPrompts?.localRecommendations ? copy(locale, "¿Qué recomiendas cerca?", "What do you recommend nearby?") : null,
+  ].filter((prompt): prompt is string => Boolean(prompt)), [locale, stayForPrompts?.houseRules, stayForPrompts?.localRecommendations, stayForPrompts?.wifiName]);
 
-  if (arrival.isLoading) return <div className="status-screen hostcasa-surface"><Loader2 className="spin" /> <span>{copy(locale, "Abriendo tu llegada…", "Opening your arrival…")}</span></div>;
+  if (preview.isLoading || arrival.isLoading) return <div className="status-screen hostcasa-surface"><Loader2 className="spin" /> <span>{copy(locale, "Abriendo tu llegada…", "Opening your arrival…")}</span></div>;
   if (arrival.error || !arrival.data) return <div className="status-screen hostcasa-surface"><ShieldCheck size={28} /><h1>{copy(locale, "Este enlace ya no está disponible", "This link is no longer available")}</h1><p>{copy(locale, "Pide un enlace nuevo al anfitrión.", "Ask your host for a new link.")}</p></div>;
 
   const { stay, credential } = arrival.data;
   const ask = (nextQuestion = question) => {
     if (nextQuestion.trim()) {
       setQuestion(nextQuestion);
-      concierge.mutate({ token, locale, question: nextQuestion });
+      concierge.mutate({ token: activeToken, locale, question: nextQuestion });
     }
   };
-  const amenityPrompts = useMemo(() => [
-    stay.wifiName ? copy(locale, "¿Cómo funciona el Wi‑Fi?", "How does the Wi‑Fi work?") : null,
-    stay.houseRules ? copy(locale, "¿Cuáles son las reglas de la casa?", "What are the house rules?") : null,
-    stay.localRecommendations ? copy(locale, "¿Qué recomiendas cerca?", "What do you recommend nearby?") : null,
-  ].filter((prompt): prompt is string => Boolean(prompt)), [locale, stay.houseRules, stay.localRecommendations, stay.wifiName]);
-
   return (
     <main className="arrival-page hostcasa-surface">
       <header className="guest-header"><div className="hostcasa-lockup"><span className="hostcasa-mark">◒</span><span>HOSTCASA</span><small>{copy(locale, "Hospitalidad, elevada.", "Hospitality, elevated.")}</small></div><LanguageToggle locale={locale} onChange={setLocale} /></header>

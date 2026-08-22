@@ -23,6 +23,7 @@ import type { IntegrationPlan, Locale, WalletAdapterStatus } from "../shared/ope
 import { randomUUID } from "node:crypto";
 import { resolveConciergeRuntime } from "./conciergeConfig";
 import { instantAmenityAnswer } from "./amenityAnswers";
+import { createPreviewStay, getPreviewStay } from "./previewStay";
 
 const localeSchema = z.enum(["es", "en"]);
 const urlSchema = z.string().url().refine(value => value.startsWith("http://") || value.startsWith("https://"), "A valid public base URL is required.");
@@ -36,6 +37,8 @@ function path(baseUrl: string, route: "arrival" | "handoff", token: string) {
 }
 
 async function resolvePublicCredential(token: string, scope: "arrival" | "handoff") {
+  const previewStay = getPreviewStay(token);
+  if (previewStay && scope === "arrival") return previewStay.credential;
   const preview = token.split(".")[0];
   if (!preview) throw new TRPCError({ code: "UNAUTHORIZED", message: "This credential link is invalid or expired." });
   let credentialId: string;
@@ -97,11 +100,13 @@ export const openStayRouter = router({
   public: router({
     walletStatus: publicProcedure.input(z.object({ platform: z.enum(["apple", "google"]), locale: localeSchema })).query(({ input }) => walletStatus(input.platform, input.locale)),
     integrations: publicProcedure.input(z.object({ locale: localeSchema })).query(({ input }) => integrations(input.locale)),
+    previewToken: publicProcedure.query(() => ({ token: createPreviewStay() })),
     arrival: publicProcedure.input(z.object({ token: z.string(), locale: localeSchema })).query(async ({ input }) => {
       const credential = await resolvePublicCredential(input.token, "arrival");
       if (!credential.stayId) throw new TRPCError({ code: "NOT_FOUND", message: "The related stay no longer exists." });
-      const stay = await getStayById(credential.stayId);
+      const stay = getPreviewStay(input.token)?.stay ?? await getStayById(credential.stayId);
       if (!stay) throw new TRPCError({ code: "NOT_FOUND", message: "The related stay no longer exists." });
+      if (getPreviewStay(input.token)) return { credential: { id: credential.id, status: credential.status, expiresAt: credential.expiresAt }, stay };
       const activity = await recordCredentialActivity({ operatorId: credential.operatorId, credentialId: credential.id, type: "arrival_scan", locale: input.locale });
       await notifyForEvent({
         operatorId: credential.operatorId,
@@ -143,7 +148,7 @@ export const openStayRouter = router({
     concierge: publicProcedure.input(z.object({ token: z.string(), locale: localeSchema, question: z.string().trim().min(2).max(500) })).mutation(async ({ input }) => {
       const credential = await resolvePublicCredential(input.token, "arrival");
       if (!credential.stayId) throw new TRPCError({ code: "NOT_FOUND", message: "The related stay no longer exists." });
-      const stay = await getStayById(credential.stayId);
+      const stay = getPreviewStay(input.token)?.stay ?? await getStayById(credential.stayId);
       if (!stay) throw new TRPCError({ code: "NOT_FOUND", message: "The related stay no longer exists." });
       const groundedContext = [
         `Property: ${stay.propertyName}`,
