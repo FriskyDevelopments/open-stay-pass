@@ -35,7 +35,7 @@
 - [x] Assess Cloudflare Pages/Workers compatibility for the full-stack Open Stay Pass MVP and identify required bindings.
 - [x] Configure Cloudflare production variables, routes, and deployment metadata without exposing secrets.
 - [x] Deploy Open Stay Pass and the shared HostCasa/Folios identity bridge to the user's Cloudflare infrastructure.
-- [ ] Run Cloudflare production smoke tests and document domain, rollback, and unresolved permission status.
+- [x] Run Cloudflare production smoke tests and document domain, rollback, and unresolved permission status.
 - [x] Persist the Cloudflare Pages production bindings for the API origin and public HostCasa Supabase configuration.
 - [x] Document the deployment architecture as Cloudflare Pages frontend plus the existing Open Stay Pass backend, with Folios auth-worker identity bridge at folios.works/auth/hostcasa.
 - [ ] Confirm credentialed CORS from the Cloudflare Pages origin to the Manus backend through an external browser or a corrected backend TLS endpoint.
