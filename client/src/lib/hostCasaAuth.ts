@@ -1,4 +1,5 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { apiUrl } from "./apiOrigin";
 
 const supabaseUrl = import.meta.env.VITE_HOSTCASA_SUPABASE_URL?.trim();
 const supabaseAnonKey = import.meta.env.VITE_HOSTCASA_SUPABASE_ANON_KEY?.trim();
@@ -44,7 +45,7 @@ export async function syncHostCasaSession() {
   const accessToken = data.session?.access_token;
   if (!accessToken) return false;
 
-  const response = await fetch("/api/auth/hostcasa/session", {
+  const response = await fetch(apiUrl("/api/auth/hostcasa/session"), {
     method: "POST",
     credentials: "include",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
