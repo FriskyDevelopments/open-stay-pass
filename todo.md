@@ -20,3 +20,15 @@
 - [x] Add explicit environment-driven ConciergeAI provider selection with built-in live and local fallback modes.
 - [x] Add flow-level tests for handoff completion and notification audit creation.
 - [x] Run production build/start and explicit health validation before the first website checkpoint.
+- [x] Add a dedicated first-property arrival-guide workspace with live bilingual guest preview on the operator dashboard.
+- [x] Add animated QR credential loading and tap-to-enlarge mobile interaction with accessible dialog controls.
+- [x] Add localized amenity question suggestions and faster grounded ConciergeAI answers from approved property context.
+- [x] Refine and validate the reusable Open Stay Pass skill with the new dashboard, QR, and ConciergeAI workflow.
+- [x] Verify the enhanced operator and guest experiences on desktop and mobile before the next checkpoint.
+- [x] Prepare Open Stay Pass to use the same HostCasa operator identity and document the shared-login/SSO handoff requirements.
+- [x] Replace the current operator-auth entry point with a safe HostCasa Supabase SSO handoff once the shared authentication configuration is available.
+- [ ] Extend the shared identity contract so the same operator can use HostCasa, Folios.works, and Open Stay Pass with product-scoped access.
+- [ ] Deliver the shared-login hospitality MVP with a verified HostCasa identity entry and clear HostCasa, Folios.works, and Open Stay Pass product handoffs.
+- [ ] Verify the authenticated operator dashboard and valid-token guest arrival page on desktop and mobile.
+- [x] Support the intended HostCasa login options instead of a Google-only shared-login handoff, and clear the Supabase session on logout.
+- [x] Add a regression test covering HostCasa SSO logout behavior.

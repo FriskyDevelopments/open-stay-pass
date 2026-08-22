@@ -1,4 +1,5 @@
 import { startLogin } from "@/const";
+import { isHostCasaLoginConfigured, signOutHostCasaSession, startHostCasaLogin, syncHostCasaSession } from "@/lib/hostCasaAuth";
 import { trpc } from "@/lib/trpc";
 import { TRPCClientError } from "@trpc/client";
 import { useCallback, useEffect, useMemo } from "react";
@@ -30,6 +31,7 @@ export function useAuth(options?: UseAuthOptions) {
   const logout = useCallback(async () => {
     try {
       await logoutMutation.mutateAsync();
+      await signOutHostCasaSession();
     } catch (error: unknown) {
       if (
         error instanceof TRPCClientError &&
@@ -76,18 +78,37 @@ export function useAuth(options?: UseAuthOptions) {
     if (typeof window === "undefined") return;
     if (redirectPath && window.location.pathname === redirectPath) return;
 
-    // Navigate at this moment only. startLogin() mints the nonce + cookie itself.
-    if (redirectPath) {
-      window.location.href = redirectPath;
-    } else {
-      startLogin();
-    }
+    // Bootstrap the shared HostCasa session first. The browser-side Supabase
+    // session is exchanged for the existing httpOnly Open Stay Pass cookie.
+    let cancelled = false;
+    const bootstrap = async () => {
+      if (isHostCasaLoginConfigured()) {
+        const synced = await syncHostCasaSession();
+        if (cancelled) return;
+        if (synced) {
+          await meQuery.refetch();
+          return;
+        }
+        await startHostCasaLogin();
+        return;
+      }
+
+      // Navigate at this moment only. startLogin() mints the nonce + cookie itself.
+      if (redirectPath) {
+        window.location.href = redirectPath;
+      } else {
+        startLogin();
+      }
+    };
+    void bootstrap();
+    return () => { cancelled = true; };
   }, [
     redirectOnUnauthenticated,
     redirectPath,
     logoutMutation.isPending,
     meQuery.isLoading,
     state.user,
+    meQuery.refetch,
   ]);
 
   return {

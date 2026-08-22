@@ -22,6 +22,7 @@ import { credentialAccessState, decryptCredentialToken, encryptCredentialToken, 
 import type { IntegrationPlan, Locale, WalletAdapterStatus } from "../shared/openStay";
 import { randomUUID } from "node:crypto";
 import { resolveConciergeRuntime } from "./conciergeConfig";
+import { instantAmenityAnswer } from "./amenityAnswers";
 
 const localeSchema = z.enum(["es", "en"]);
 const urlSchema = z.string().url().refine(value => value.startsWith("http://") || value.startsWith("https://"), "A valid public base URL is required.");
@@ -153,6 +154,8 @@ export const openStayRouter = router({
         `Local recommendations: ${stay.localRecommendations || "Not provided"}`,
       ].join("\n");
       const language = input.locale === "es" ? "Spanish" : "English";
+      const instant = instantAmenityAnswer(input.question, input.locale, stay);
+      if (instant) return { answer: instant, mode: "instant_guide" as const };
       const runtime = resolveConciergeRuntime();
       if (!runtime.usesLiveProvider) {
         return { answer: text(input.locale, "Puedo confirmar únicamente la información visible en esta guía. Para otra pregunta, contacta al operador.", "I can confirm only the information visible in this guide. For anything else, please contact the operator."), mode: "local_fallback" as const };

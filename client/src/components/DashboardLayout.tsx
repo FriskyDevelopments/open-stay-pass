@@ -20,6 +20,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { startLogin } from "@/const";
+import { isHostCasaLoginConfigured, startHostCasaLogin } from "@/lib/hostCasaAuth";
 import { useIsMobile } from "@/hooks/useMobile";
 import { KeyRound, LayoutDashboard, LogOut, PanelLeft, Workflow } from "lucide-react";
 import { CSSProperties, useEffect, useRef, useState } from "react";
@@ -63,19 +64,31 @@ export default function DashboardLayout({
         <div className="flex flex-col items-center gap-8 p-8 max-w-md w-full">
           <div className="flex flex-col items-center gap-6">
             <h1 className="text-2xl font-semibold tracking-tight text-center">
-              Sign in to continue
+              {isHostCasaLoginConfigured() ? "Entra con HostCasa" : "Sign in to continue"}
             </h1>
             <p className="text-sm text-muted-foreground text-center max-w-sm">
-              Access to this dashboard requires authentication. Continue to launch the login flow.
+              {isHostCasaLoginConfigured()
+                ? "Un mismo acceso para HostCasa, Folios.works y Open Stay Pass."
+                : "Access to this dashboard requires authentication. Continue to launch the login flow."}
             </p>
           </div>
-          <Button
-            onClick={() => startLogin()}
-            size="lg"
-            className="w-full shadow-lg hover:shadow-xl transition-all"
-          >
-            Sign in
-          </Button>
+          {isHostCasaLoginConfigured() ? (
+            <div className="grid gap-3 w-full">
+              <Button onClick={() => void startHostCasaLogin("google")} size="lg" className="w-full shadow-lg hover:shadow-xl transition-all">
+                Continuar con Google
+              </Button>
+              <Button onClick={() => void startHostCasaLogin("apple")} size="lg" variant="outline" className="w-full">
+                Continuar con Apple
+              </Button>
+              <Button onClick={() => void startHostCasaLogin("azure")} size="lg" variant="outline" className="w-full">
+                Continuar con Microsoft
+              </Button>
+            </div>
+          ) : (
+            <Button onClick={() => startLogin()} size="lg" className="w-full shadow-lg hover:shadow-xl transition-all">
+              Sign in
+            </Button>
+          )}
         </div>
       </div>
     );
