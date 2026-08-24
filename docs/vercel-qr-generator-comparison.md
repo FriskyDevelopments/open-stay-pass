@@ -30,3 +30,9 @@ The useful generator ideas were already represented or were incorporated into th
 ## Validation evidence
 
 The final local validation pass completed with **12 test files and 23 tests passing**, a clean TypeScript check, and a successful production build. The build continues to report only the existing Vite bundle-size advisory; it does not fail the build.
+
+## Implemented CFDI token map
+
+The ticket preview now exports and uses these fiscal tokens: `Ink #111A1C`, `Ink Deep #05090B`, `Paper #F5F2EC`, `Record Green #3EA384`, `Green Ink #0C7C5B`, `Amber Dark #B07D22`, `Deep Red #B3524A`, `Line #E4DFD3`, and `Soft #5B676A`.
+
+The state contract is explicit. `Factura emitida · Vigente` uses Record Green with Ink text and represents a document registered by the authority. `Factura cancelada` and `Sello expirado` use Ink with Paper text and remain consultable but non-valid. `Timbrado rechazado` uses Paper with Deep Red as the accent; it represents PAC or fiscal validation failure, so no Wallet pass is created or presented. `Factura en revisión` uses Paper with Amber Dark as the attention accent and remains an operational pre-issuance state. `Comprobante` remains an operational proof slip and is not a fiscal Wallet pass.

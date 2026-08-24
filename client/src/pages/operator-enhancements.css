@@ -40,13 +40,17 @@
 .ticket-status-preview { margin-top: 1.5rem; padding: 1.35rem; border: 1px solid rgba(110, 214, 202, .18); background: rgba(8, 25, 31, .72); }
 .ticket-preview-tabs { display: flex; flex-wrap: wrap; gap: .55rem; margin: 1rem 0 1.15rem; }
 .ticket-preview-tabs button { border: 1px solid rgba(180, 214, 208, .22); color: #a7bbb8; background: transparent; padding: .6rem .75rem; font: inherit; font-size: .78rem; cursor: pointer; }
-.ticket-preview-paper { max-width: 620px; border: 1px solid; padding: 1.2rem; transition: border-color 180ms ease, background 180ms ease; }
+.ticket-preview-paper { --ticket-surface: #061017; --ticket-text: #ecf7f2; --ticket-accent: #3EA384; max-width: 620px; border: 1px solid; padding: 1.2rem; background-color: var(--ticket-surface) !important; color: var(--ticket-text); transition: border-color 180ms ease, background-color 180ms ease, color 180ms ease; }
+.ticket-preview-fiscal { background-color: var(--ticket-surface) !important; }
+.ticket-state-issued { --ticket-surface: #3EA384; --ticket-text: #111A1C; }
+.ticket-state-cancelled, .ticket-state-expired { --ticket-surface: #111A1C; --ticket-text: #F5F2EC; }
+.ticket-state-rejected { --ticket-surface: #F5F2EC; --ticket-text: #111A1C; }
 .ticket-preview-head, .ticket-preview-footer { display: flex; justify-content: space-between; gap: 1rem; align-items: center; }
-.ticket-preview-head small, .ticket-preview-footer span { color: #89a4a1; font-family: "DM Mono", monospace; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; }
+.ticket-preview-head small, .ticket-preview-footer span { color: color-mix(in srgb, var(--ticket-text) 62%, transparent); font-family: "DM Mono", monospace; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; }
 .ticket-preview-head span { display: inline-flex; gap: .45rem; align-items: center; font: 700 .73rem "DM Mono", monospace; letter-spacing: .08em; text-transform: uppercase; }
-.ticket-preview-paper h3 { margin: 1.5rem 0 .35rem; font: 2rem "Playfair Display", serif; color: #ecf7f2; }
-.ticket-preview-paper p { max-width: 34rem; color: #aec2bd; }
-.ticket-preview-qr { width: 118px; margin: 1rem 0; padding: .7rem; border: 1px solid rgba(236, 247, 242, .24); color: #ecf7f2; font: 1.25rem/1.1 "DM Mono", monospace; letter-spacing: .22rem; text-align: center; }
+.ticket-preview-paper h3 { margin: 1.5rem 0 .35rem; font: 2rem "Playfair Display", serif; color: var(--ticket-text); }
+.ticket-preview-paper p { max-width: 34rem; color: color-mix(in srgb, var(--ticket-text) 72%, transparent); }
+.ticket-preview-qr { width: 118px; margin: 1rem 0; padding: .7rem; border: 1px solid color-mix(in srgb, var(--ticket-text) 32%, transparent); color: var(--ticket-text); font: 1.25rem/1.1 "DM Mono", monospace; letter-spacing: .22rem; text-align: center; }
 .ticket-preview-footer strong { font-size: .78rem; }
 @media (max-width: 640px) { .ticket-preview-head, .ticket-preview-footer { align-items: flex-start; flex-direction: column; } .ticket-preview-tabs button { flex: 1 1 45%; } }
 
@@ -61,11 +65,11 @@
 /* Adapted from pasted ticket reference: grid texture, perforation, and stub geometry only; brand colors remain state-driven Folios colors. */
 .ticket-preview-paper { padding: 0; overflow: hidden; background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px); background-size: 1.2rem 1.2rem; }
 .ticket-preview-main { padding: 1.2rem; }
-.ticket-preview-perforation { display: flex; align-items: center; gap: .6rem; padding: .15rem 1.2rem; color: rgba(236,247,242,.35); letter-spacing: .16em; overflow: hidden; }
-.ticket-preview-perforation i { flex: 1; border-top: 1px dashed rgba(236,247,242,.35); }
-.ticket-preview-perforation span { white-space: nowrap; font-size: .7rem; }
-.ticket-preview-stub { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; padding: .95rem 1.2rem; background: rgba(5, 16, 19, .42); }
-.ticket-preview-stub span, .ticket-preview-stub small { color: #89a4a1; font: .68rem "DM Mono", monospace; letter-spacing: .07em; }
+.ticket-preview-perforation { display: flex; align-items: center; gap: .6rem; padding: .15rem 1.2rem; color: color-mix(in srgb, var(--ticket-text) 35%, transparent); letter-spacing: .16em; overflow: hidden; }
+.ticket-preview-perforation i { flex: 1; border-top: 1px dashed color-mix(in srgb, var(--ticket-text) 35%, transparent); }
+.ticket-preview-perforation span { white-space: nowrap; font-size: .7rem; color: color-mix(in srgb, var(--ticket-text) 42%, transparent); }
+.ticket-preview-stub { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 1rem; padding: .95rem 1.2rem; background: color-mix(in srgb, var(--ticket-text) 8%, transparent); }
+.ticket-preview-stub span, .ticket-preview-stub small { color: color-mix(in srgb, var(--ticket-text) 62%, transparent); font: .68rem "DM Mono", monospace; letter-spacing: .07em; }
 .ticket-preview-stub small { grid-column: 1 / -1; }
 .qr-reader-verify { margin-top: .75rem; padding: .6rem .8rem; border: 1px solid rgba(66,233,157,.35); background: rgba(66,233,157,.08); color: #7de0eb; font: 700 .72rem "DM Mono", monospace; text-transform: uppercase; }
 @media (max-width: 640px) { .ticket-preview-stub { grid-template-columns: 1fr; gap: .35rem; } .ticket-preview-stub small { grid-column: auto; } }

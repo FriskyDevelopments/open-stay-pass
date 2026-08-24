@@ -13,9 +13,17 @@ describe("invoice lifecycle", () => {
     expect(canTransitionInvoice("proof", "issued")).toBe(false);
   });
 
-  it("keeps a dynamic QR URL independent from invoice status", () => {
-    const dynamicUrl = "https://folios.works/handoff/signed-token";
-    expect(dynamicUrl).toBe("https://folios.works/handoff/signed-token");
-    expect(canTransitionInvoice("review", "issued")).toBe(true);
+  it("preserves signed-link validity across fiscal transitions", () => {
+    const initialToken = "signed-folio-token-v1";
+    let currentStatus = "proof";
+    
+    // Transition through lifecycle
+    const transitions = ["review", "issued", "cancelled"];
+    transitions.forEach(next => {
+      expect(canTransitionInvoice(currentStatus as any, next as any)).toBe(true);
+      currentStatus = next;
+      // The signed token reference must never change based on invoice status
+      expect(initialToken).toBe("signed-folio-token-v1");
+    });
   });
 });

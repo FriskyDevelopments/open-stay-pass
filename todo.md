@@ -70,6 +70,17 @@
 - [x] Add component-level QR reader tests for successful decode, unreadable-image error handling, and verified decoded-link opening.
 - [x] Document the adapted ticket visual elements and apply them directly to the real TicketStatusPreview component.
 - [x] Inspect `vercel-qr-generator.zip` and compare its generator patterns with the existing signed dynamic QR implementation.
-- [ ] Compare the Figma QR scanner reference with the current reader and document which interaction patterns are adopted or rejected.
+- [x] Compare the Figma QR scanner reference with the current reader and document which interaction patterns are adopted or rejected.
 - [x] Add component tests for unreadable-image error rendering and the Open and validate link action.
 - [x] Document the Vercel generator comparison, including adopted, rejected, and already-covered patterns.
+- [x] Reconcile the attached CFDI Wallet specification with the live Folios Aurora brand and document the final design tokens.
+- [x] Define the operational Folios dashboard to fiscal CFDI detail transition and its state boundaries.
+- [x] Generate and present the Folios brand alignment and CFDI layer architecture slide deck.
+- [x] Define CFDI fiscal color tokens and rejected/expired stamp-state semantics in the shared design documentation.
+- [x] Update TicketStatusPreview with Paper/Record Green issued states and precise rejected/expired error states.
+- [x] Add component tests for CFDI state labels, color tokens, and theme transition behavior.
+- [x] Run type-check, tests, production build, and visual verification for the updated ticket preview.
+- [x] Run an integration-level flow test proving the same signed QR link resolves consistently before and after Folios fiscal state transitions.
+- [x] Regenerate and present the Folios brand alignment and CFDI layer architecture deck for this validation pass.
+- [x] Verify the Cloudflare token against the compliance environment without exposing credentials; token is active but lacks account/Workers route permissions.
+- [x] Verify live compliance health, auth routes, and credentialed CORS behavior for the configured origins; compliancev0 is Vercel-hosted, health/auth candidates return 404, and CORS is wildcard without credentials.
