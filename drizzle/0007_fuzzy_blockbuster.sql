@@ -1,0 +1,1 @@
+ALTER TABLE `activityEvents` MODIFY COLUMN `type` enum('arrival_scan','handoff_completed','credential_revoked','invoice_issued','invoice_status_changed') NOT NULL;

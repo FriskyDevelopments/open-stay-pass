@@ -1,6 +1,7 @@
 import { and, desc, eq } from "drizzle-orm";
 import { getDb } from "./db";
 import { activityEvents, credentials, handoffs, operatorNotificationSettings, operatorNotifications, stays } from "../drizzle/schema";
+import { notifyOwner } from "./_core/notification";
 
 export async function createStayWithCredential(input: {
   stay: typeof stays.$inferInsert;
@@ -36,6 +37,12 @@ export async function getStayById(id: string) {
   if (!db) return undefined;
   const result = await db.select().from(stays).where(eq(stays.id, id)).limit(1);
   return result[0];
+}
+
+export async function getHandoffInvoiceHistory(handoffId: string) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select({ type: activityEvents.type, metadata: activityEvents.metadata, locale: activityEvents.locale, createdAt: activityEvents.createdAt }).from(activityEvents).where(eq(activityEvents.handoffId, handoffId)).orderBy(desc(activityEvents.createdAt));
 }
 
 export async function getHandoffById(id: string) {
@@ -91,7 +98,7 @@ export async function createOperatorNotification(input: {
   operatorId: number;
   credentialId?: string | null;
   handoffId?: string | null;
-  type: "arrival_scan" | "handoff_completed";
+  type: "arrival_scan" | "handoff_completed" | "invoice_issued";
   titleEs: string;
   titleEn: string;
   detailEs: string;
@@ -101,8 +108,11 @@ export async function createOperatorNotification(input: {
   const db = await getDb();
   if (!db) return { channel: "in_app_only" as const, enabled: true };
   const settings = await getOperatorNotificationSettings(input.operatorId);
+  const canPush = settings.enabled && settings.channel === "project_owner_push";
+  const delivered = canPush ? await notifyOwner({ title: input.titleEs, content: input.detailEs }) : false;
   await db.insert(operatorNotifications).values({
     ...input,
+    deliveryStatus: canPush ? (delivered ? "delivered" : "unavailable") : "queued",
     credentialId: input.credentialId ?? null,
     handoffId: input.handoffId ?? null,
     deliveryChannel: settings.channel,
@@ -163,4 +173,61 @@ export async function listOperatorRecords(operatorId: number) {
     notifications,
     notificationSettings,
   };
+}
+
+export type InvoiceStatus = "proof" | "review" | "issued" | "cancelled";
+
+const allowedInvoiceTransitions: Record<InvoiceStatus, InvoiceStatus[]> = {
+  proof: ["review", "cancelled"],
+  review: ["issued", "cancelled", "proof"],
+  issued: ["cancelled"],
+  cancelled: [],
+};
+
+export function canTransitionInvoice(from: InvoiceStatus, to: InvoiceStatus) {
+  return from === to || allowedInvoiceTransitions[from].includes(to);
+}
+
+export async function updateHandoffInvoice(input: {
+  handoffId: string;
+  operatorId: number;
+  invoiceStatus: InvoiceStatus;
+  invoiceNumber?: string | null;
+  invoiceUrl?: string | null;
+  locale: "es" | "en";
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("The database is unavailable.");
+  const current = await getHandoffById(input.handoffId);
+  if (!current || current.operatorId !== input.operatorId) return { ok: false as const, reason: "not_found" as const };
+  if (current.invoiceStatus === input.invoiceStatus) return { ok: true as const, handoff: current, changed: false };
+  if (!allowedInvoiceTransitions[current.invoiceStatus as InvoiceStatus]?.includes(input.invoiceStatus)) return { ok: false as const, reason: "invalid_transition" as const };
+  const now = new Date();
+  await db.update(handoffs).set({
+    invoiceStatus: input.invoiceStatus,
+    invoiceNumber: input.invoiceNumber ?? current.invoiceNumber ?? null,
+    invoiceUrl: input.invoiceUrl ?? current.invoiceUrl ?? null,
+    invoiceIssuedAt: input.invoiceStatus === "issued" ? now : current.invoiceIssuedAt,
+    invoiceUpdatedAt: now,
+  }).where(and(eq(handoffs.id, input.handoffId), eq(handoffs.operatorId, input.operatorId)));
+  await db.insert(activityEvents).values({
+    operatorId: input.operatorId,
+    handoffId: input.handoffId,
+    type: input.invoiceStatus === "issued" ? "invoice_issued" : "invoice_status_changed",
+    locale: input.locale,
+    metadata: JSON.stringify({ from: current.invoiceStatus, to: input.invoiceStatus, invoiceNumber: input.invoiceNumber ?? null }),
+  });
+  if (input.invoiceStatus === "issued") {
+    await createOperatorNotification({
+      operatorId: input.operatorId,
+      handoffId: input.handoffId,
+      type: "invoice_issued",
+      titleEs: "Factura emitida",
+      titleEn: "Invoice issued",
+      detailEs: `El comprobante “${current.title}” ahora tiene factura emitida${input.invoiceNumber ? ` · ${input.invoiceNumber}` : ""}.`,
+      detailEn: `The proof slip “${current.title}” now has an issued invoice${input.invoiceNumber ? ` · ${input.invoiceNumber}` : ""}.`,
+      deliveryStatus: "queued",
+    });
+  }
+  return { ok: true as const, changed: true, handoff: await getHandoffById(input.handoffId) };
 }

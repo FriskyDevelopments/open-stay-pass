@@ -11,12 +11,14 @@ import {
   createStayWithCredential,
   getCredentialById,
   getHandoffById,
+  getHandoffInvoiceHistory,
   getOperatorNotificationSettings,
   getStayById,
   listOperatorRecords,
   recordCredentialActivity,
   revokeCredentialForOperator,
   updateOperatorNotificationSettings,
+  updateHandoffInvoice,
 } from "./openStayDb";
 import { credentialAccessState, decryptCredentialToken, encryptCredentialToken, hashCredentialToken, issueCredentialToken } from "./credentialService";
 import type { IntegrationPlan, Locale, WalletAdapterStatus } from "../shared/openStay";
@@ -125,7 +127,8 @@ export const openStayRouter = router({
       if (!credential.handoffId) throw new TRPCError({ code: "NOT_FOUND", message: "The related handoff no longer exists." });
       const handoff = await getHandoffById(credential.handoffId);
       if (!handoff) throw new TRPCError({ code: "NOT_FOUND", message: "The related handoff no longer exists." });
-      return { credential: { id: credential.id, status: credential.status, expiresAt: credential.expiresAt }, handoff };
+      const history = (await getHandoffInvoiceHistory(handoff.id)).filter(event => event.type === "invoice_issued" || event.type === "invoice_status_changed");
+      return { credential: { id: credential.id, status: credential.status, expiresAt: credential.expiresAt }, handoff, invoiceHistory: history };
     }),
     completeHandoff: publicProcedure.input(z.object({ token: z.string(), locale: localeSchema })).mutation(async ({ input }) => {
       const credential = await resolvePublicCredential(input.token, "handoff");
@@ -229,6 +232,18 @@ export const openStayRouter = router({
         credential: { id: credentialId, operatorId: ctx.user.id, stayId: null, handoffId, type: "handoff", status: "active", tokenHash: hashCredentialToken(token), ...encryptCredentialToken(token), expiresAt },
       });
       return { handoffId, credentialId, token, handoffUrl, qrDataUrl: await QRCode.toDataURL(handoffUrl, { margin: 1, width: 720, color: { dark: "#10251d", light: "#00000000" } }), expiresAt };
+    }),
+    updateInvoiceStatus: protectedProcedure.input(z.object({
+      handoffId: z.string().uuid(),
+      invoiceStatus: z.enum(["proof", "review", "issued", "cancelled"]),
+      invoiceNumber: z.string().trim().max(120).optional(),
+      invoiceUrl: z.string().url().max(2000).optional(),
+      locale: localeSchema,
+    })).mutation(async ({ ctx, input }) => {
+      const result = await updateHandoffInvoice({ ...input, operatorId: ctx.user.id });
+      if (!result.ok && result.reason === "not_found") throw new TRPCError({ code: "NOT_FOUND", message: "Handoff not found." });
+      if (!result.ok) throw new TRPCError({ code: "BAD_REQUEST", message: "This invoice status transition is not allowed." });
+      return result;
     }),
     revokeCredential: protectedProcedure.input(z.object({ credentialId: z.string().uuid() })).mutation(async ({ ctx, input }) => {
       const revoked = await revokeCredentialForOperator(input.credentialId, ctx.user.id);

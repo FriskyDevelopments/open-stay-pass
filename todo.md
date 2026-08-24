@@ -40,3 +40,36 @@
 - [x] Document the deployment architecture as Cloudflare Pages frontend plus the existing Open Stay Pass backend, with Folios auth-worker identity bridge at folios.works/auth/hostcasa.
 - [ ] Confirm credentialed CORS from the Cloudflare Pages origin to the Manus backend through an external browser or a corrected backend TLS endpoint.
 - [ ] Resolve the Cloudflare API token permission for Workers route listing/update, then rerun the Folios worker deploy and record a clean Wrangler success.
+- [x] Add a persistent Folios ticket/folio lifecycle where one dynamic QR link can remain stable while its proof and invoice status update.
+- [x] Add bilingual operator and guest invoice-status views with linked invoice metadata and audit history.
+- [x] Add tests proving invoice updates preserve the original dynamic link and reject unauthorized or invalid transitions.
+- [x] Implement ticket lifecycle states for comprobante, factura en revisión, factura emitida, and factura cancelada with semantic color changes while preserving the dynamic QR link.
+- [x] Trigger an automatic bilingual operator notification and audit event when a ticket changes to factura emitida.
+- [x] Build a bilingual ticket preview that renders each lifecycle state and its corresponding color treatment.
+- [x] Add regression tests for authorized transitions, notification creation, and dynamic-link continuity.
+- [x] Wire invoice status controls and state display into real operator and guest ticket surfaces.
+- [x] Route invoice-issued notifications through the existing settings-aware delivery path and use a dedicated audit event for non-issued transitions.
+- [x] Add flow-level tests for authorization, invalid transitions, notification persistence, audit events, and unchanged shared QR links.
+- [x] Render persisted invoice state and linked invoice metadata on the public Folios handoff page using the same signed dynamic QR link.
+- [x] Display invoice transition history to the operator and guest while preserving privacy and operator authorization.
+- [x] Route invoice-issued notifications through notifyOwner when configured and add a dedicated invoice status audit event.
+- [x] Add integration coverage for the authorized mutation, notification persistence, and unchanged handoff link after invoice updates.
+- [ ] Guide and verify the updated Cloudflare token in the owner console with least-privilege deployment permissions.
+- [x] Document the Supabase ticket-state schema, transition rules, color mapping, and notification flow.
+- [ ] Execute and record a real Cloudflare Pages and Folios Worker deployment smoke test with the updated token.
+- [x] Add a client-side QR-to-text reader based on the uploaded jsQR package for operator verification of dynamic links.
+- [x] Preserve signed-link validation by treating decoded QR text as input to existing arrival/handoff routes, never as trusted identity data.
+- [x] Add QR decoding tests and validate the integration with the existing test, type-check, and build suite.
+- [x] Add a client-side QR-to-text reader based on the uploaded jsQR package for operator verification of dynamic links.
+- [x] Preserve signed-link validation by treating decoded QR text as input to existing arrival/handoff routes, never as trusted identity data.
+- [x] Add QR decoding tests and validate the integration with the existing test, type-check, and build suite.
+- [x] Adapt the pasted ticket visual treatment selectively without overriding the HostCasa/Folios design system.
+- [x] Wire decoded QR text into a real operator verification flow that opens the existing signed arrival or handoff resolver.
+- [x] Add QR reader regression tests for successful decode, unreadable images, and safe dynamic-link handling.
+- [x] Apply and document a deliberate subset of the pasted ticket visual treatment in the real ticket preview surface.
+- [x] Add component-level QR reader tests for successful decode, unreadable-image error handling, and verified decoded-link opening.
+- [x] Document the adapted ticket visual elements and apply them directly to the real TicketStatusPreview component.
+- [x] Inspect `vercel-qr-generator.zip` and compare its generator patterns with the existing signed dynamic QR implementation.
+- [ ] Compare the Figma QR scanner reference with the current reader and document which interaction patterns are adopted or rejected.
+- [x] Add component tests for unreadable-image error rendering and the Open and validate link action.
+- [x] Document the Vercel generator comparison, including adopted, rejected, and already-covered patterns.

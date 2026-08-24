@@ -1,0 +1,2 @@
+ALTER TABLE `activityEvents` MODIFY COLUMN `type` enum('arrival_scan','handoff_completed','credential_revoked','invoice_issued') NOT NULL;--> statement-breakpoint
+ALTER TABLE `operatorNotifications` MODIFY COLUMN `type` enum('arrival_scan','handoff_completed','invoice_issued') NOT NULL;
