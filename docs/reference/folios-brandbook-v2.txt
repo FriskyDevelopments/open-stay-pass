@@ -1,0 +1,309 @@
+FOLIOS / DESIGN SYSTEM V2 / 01
+MANIFESTO
+                                    CANONICAL · 2026
+
+
+FOLIOS.
+
+
+
+
+La identidad
+entra.
+La evidencia
+permanece.
+
+DESIGN SYSTEM & BRANDBOOK V2
+IDENTIDAD PRINCIPAL · AGOSTO 2026
+                                      F
+FOLIOS / DESIGN SYSTEM V2 / 02
+PRINCIPLES
+                                                                                                     CANONICAL · 2026
+
+
+/ 01 / PRINCIPIOS
+
+
+
+
+Confianza visible,
+no decorativa.
+Folios convierte procesos regulados en evidencia comprensible. Cada
+decisión visual debe aumentar claridad, trazabilidad o velocidad
+operativa.
+
+
+
+
+01       Evidencia antes que ornamento
+                                   Cada superficie muestra fuente, estado o siguiente acción.
+
+
+
+
+02       Calma operativa                             La densidad se organiza; nunca se disfraza.
+
+
+
+
+03       Movimiento con función                      El motion explica progreso, transferencia y confirmación.
+
+
+
+
+04       Marca soberana                              La F canónica permanece reconocible en todo contexto.
+FOLIOS / DESIGN SYSTEM V2 / 03
+CANONICAL MARK
+                                                                     CANONICAL · 2026
+
+
+/ 02 / MARCA
+
+
+
+
+La F es el expediente.
+
+Una sola marca canónica. No se redibuja, no se inclina y no se
+encierra en formas arbitrarias.
+
+
+
+
+                                                                 F
+               F                                                 F
+ ÁREA SEGURA = 1/4 F              MÍNIMO DIGITAL = 24 PX
+FOLIOS / DESIGN SYSTEM V2 / 04
+COLOR
+                                                                    CANONICAL · 2026
+
+
+/ 03 / COLOR
+
+
+
+
+Una paleta, cinco
+funciones.
+Los colores expresan papel, tinta, sistema, señal y prueba. No se
+añaden colores sin una función semántica nueva.
+
+
+
+
+   PAPEL                                                             #F2F0E9
+
+
+
+
+   TINTA                                                              #102526
+
+
+
+
+   SISTEMA                                                           #7891DF
+
+
+
+
+   PRUEBA                                                            #37CDE0
+
+
+
+
+   SEÑAL                                                             #C6F43D
+FOLIOS / DESIGN SYSTEM V2 / 05
+TYPOGRAPHY & GRID
+                                                                      CANONICAL · 2026
+
+
+/ 04 / TIPOGRAFÍA
+
+
+
+
+Editorial para decidir.
+Técnica para probar.
+Máximo dos familias: una voz editorial de alto contraste y una sans
+precisa para interfaz, datos y navegación.
+
+
+
+
+La decisión
+DISPLAY / TITULARES / MANIFIESTO
+
+
+
+
+EXPEDIENTE 09-472
+SANS / INTERFAZ / DATOS / ETIQUETAS
+
+
+
+
+RETÍCULA BASE / 5 COLUMNAS / GUTTER 24
+FOLIOS / DESIGN SYSTEM V2 / 06
+COMPONENTS
+                                                                                                CANONICAL · 2026
+
+
+/ 05 / COMPONENTES
+
+
+
+
+Prueba, estado, decisión.
+
+La biblioteca V2 se construye alrededor del trabajo real: capturar,
+validar, preservar y resolver.
+
+
+
+
+      EVIDENCE CARD                                         STATUS CHIP
+
+      Fuente · hash · tiempo                                Validando / aprobado / alerta
+
+
+
+      01 / V2                                               02 / V2
+
+
+
+
+      DECISION PANEL                                        VAULT RECORD
+
+      Resultado + razón + siguiente acción                  Documento preservado e integridad
+
+
+
+      03 / V2                                               04 / V2
+FOLIOS / DESIGN SYSTEM V2 / 07
+KYC & KYB UI LIBRARY
+                                                                                          CANONICAL · 2026
+
+
+/ 06 / BIBLIOTECA
+
+
+
+
+La decisión,
+componente a componente.
+Patrones canónicos de la propuesta KYC/KYB, organizados para
+captura, evidencia, riesgo, operación e integración.
+
+
+
+
+01        INPUTS                               Expediente vivo · biometría · activación
+
+
+
+
+02        EVIDENCE                             Documento vivo · extracción · hash
+
+
+
+
+03        RISK & DECISION                      Alertas · score · dictamen · bloqueo
+
+
+
+
+04        OPERATIONS                           Checklist · controles · timeline
+
+
+
+
+05        INTEGRATIONS & DATA                  Bóveda · API · payload estructurado
+
+
+
+
+     SOURCE · /design-system#biblioteca-kyc
+FOLIOS / DESIGN SYSTEM V2 / 08
+MOTION & ACCESSIBILITY
+                                                                                                             CANONICAL · 2026
+
+
+/ 06 / MOTION
+
+
+
+
+El movimiento declara
+estado.
+Duraciones cortas, recorridos legibles y una alternativa estática
+completa bajo reduced motion.
+
+
+
+
+             CAPTURA                                                                               180 ms
+
+
+
+
+             EXTRACCIÓN                                                                            320 ms
+
+
+
+
+             VALIDACIÓN                                                                            480 ms
+
+
+
+
+             DECISIÓN                                                                              650 ms
+
+
+
+
+ACCESIBILIDAD NO NEGOCIABLE
+
+WCAG AA · foco visible · navegación por teclado · HTML semántico · contraste probado · sin información dependiente sólo
+del color.
+FOLIOS / DESIGN SYSTEM V2 / 09
+GOVERNANCE
+                                                                                CANONICAL · 2026
+
+
+/ 08 / GOBERNANZA
+
+
+
+
+Una fuente canónica.
+
+Web, tokens y PDF comparten el mismo vocabulario. La página /
+design-system es la referencia viva; este documento es su edición
+portable.
+
+
+
+
+01          WEB                                     /design-system
+
+
+
+
+02          TOKENS                                  /folios-v2.tokens.css
+
+
+
+
+03          MARCA                                   /folios-mark.svg
+
+
+
+
+04          PDF                                     /catalog/brandbook-v2.pdf
+
+
+
+
+FOLIOS.
+IDENTIDAD PRINCIPAL · VERSION 2.0 · 2026
+

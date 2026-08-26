@@ -2,15 +2,17 @@ import { useState, type CSSProperties } from "react";
 import { CheckCircle2, FileCheck2, FileClock, FileX2, QrCode } from "lucide-react";
 
 export const CFDI_COLORS = {
-  ink: "#111A1C",
-  inkDeep: "#05090B",
-  paper: "#F5F2EC",
-  recordGreen: "#3EA384",
-  greenInk: "#0C7C5B",
-  amberDark: "#B07D22",
+  ink: "#102526",
+  inkDeep: "#102526",
+  paper: "#F2F0E9",
+  system: "#5772C7",
+  systemInk: "#4055A8",
+  proof: "#37CDE0",
+  signal: "#C6F43D",
   deepRed: "#B3524A",
-  line: "#E4DFD3",
-  soft: "#5B676A",
+  errorInk: "#963F39",
+  line: "#BAC0B7",
+  soft: "#6E7D7B",
 } as const;
 
 type TicketState = "proof" | "review" | "issued" | "cancelled" | "rejected" | "expired";
@@ -29,12 +31,12 @@ type StateMeta = {
 };
 
 export const CFDI_STATE_META: StateMeta[] = [
-  { id: "proof", es: "Comprobante", en: "Proof slip", color: CFDI_COLORS.amberDark, surface: CFDI_COLORS.inkDeep, text: CFDI_COLORS.paper, soft: "rgba(176,125,34,.16)", icon: FileClock, fiscal: false, detail: "Aún no es un CFDI timbrado; no se emite pase fiscal." },
-  { id: "review", es: "Factura en revisión", en: "Invoice in review", color: CFDI_COLORS.amberDark, surface: CFDI_COLORS.paper, text: CFDI_COLORS.ink, soft: "rgba(176,125,34,.12)", icon: FileCheck2, fiscal: false, detail: "La factura espera validación antes de crear un pase fiscal." },
-  { id: "issued", es: "Factura emitida · Vigente", en: "Invoice issued · Valid", color: CFDI_COLORS.recordGreen, surface: CFDI_COLORS.recordGreen, text: CFDI_COLORS.ink, soft: "rgba(62,163,132,.16)", icon: CheckCircle2, fiscal: true, detail: "Registrada por la autoridad; el detalle fiscal y la verificación SAT están disponibles." },
-  { id: "cancelled", es: "Factura cancelada", en: "Invoice cancelled", color: CFDI_COLORS.ink, surface: CFDI_COLORS.ink, text: CFDI_COLORS.paper, soft: "rgba(17,26,28,.18)", icon: FileX2, fiscal: true, detail: "Consultable, pero ya no válida. La fecha y el motivo de cancelación aparecen antes de verificar." },
-  { id: "rejected", es: "Timbrado rechazado", en: "Stamp rejected", color: CFDI_COLORS.deepRed, surface: CFDI_COLORS.paper, text: CFDI_COLORS.ink, soft: "rgba(179,82,74,.13)", icon: FileX2, fiscal: false, detail: "El PAC o la validación fiscal rechazó el timbrado; no se crea ni se presenta un pase Wallet." },
-  { id: "expired", es: "Sello expirado", en: "Stamp expired", color: CFDI_COLORS.ink, surface: CFDI_COLORS.ink, text: CFDI_COLORS.paper, soft: "rgba(17,26,28,.18)", icon: FileX2, fiscal: true, detail: "El pase se conserva para consulta, pero se muestra como no válido y no como vigente." },
+  { id: "proof", es: "Comprobante", en: "Proof slip", color: CFDI_COLORS.proof, surface: CFDI_COLORS.inkDeep, text: CFDI_COLORS.paper, soft: "rgba(55,205,224,.14)", icon: FileClock, fiscal: false, detail: "La evidencia está preservada, pero aún no es un CFDI timbrado; no se emite pase fiscal." },
+  { id: "review", es: "Factura en revisión", en: "Invoice in review", color: CFDI_COLORS.systemInk, surface: CFDI_COLORS.paper, text: CFDI_COLORS.ink, soft: "rgba(87,114,199,.12)", icon: FileCheck2, fiscal: false, detail: "La factura está en proceso de validación antes de crear un pase fiscal." },
+  { id: "issued", es: "Factura emitida · Vigente", en: "Invoice issued · Valid", color: CFDI_COLORS.signal, surface: CFDI_COLORS.signal, text: CFDI_COLORS.ink, soft: "rgba(198,244,61,.20)", icon: CheckCircle2, fiscal: true, detail: "Verificada y vigente; el detalle fiscal y la verificación SAT están disponibles." },
+  { id: "cancelled", es: "Factura cancelada", en: "Invoice cancelled", color: CFDI_COLORS.ink, surface: CFDI_COLORS.ink, text: CFDI_COLORS.paper, soft: "rgba(16,37,38,.18)", icon: FileX2, fiscal: true, detail: "Consultable, pero ya no válida. La fecha y el motivo de cancelación aparecen antes de verificar." },
+  { id: "rejected", es: "Timbrado rechazado", en: "Stamp rejected", color: CFDI_COLORS.errorInk, surface: CFDI_COLORS.paper, text: CFDI_COLORS.ink, soft: "rgba(179,82,74,.13)", icon: FileX2, fiscal: false, detail: "El PAC o la validación fiscal rechazó el timbrado; no se crea ni se presenta un pase Wallet." },
+  { id: "expired", es: "Sello expirado", en: "Stamp expired", color: CFDI_COLORS.ink, surface: CFDI_COLORS.ink, text: CFDI_COLORS.paper, soft: "rgba(16,37,38,.18)", icon: FileX2, fiscal: true, detail: "El pase se conserva para consulta, pero se muestra como no válido y no como vigente." },
 ];
 
 export function TicketStatusPreview() {

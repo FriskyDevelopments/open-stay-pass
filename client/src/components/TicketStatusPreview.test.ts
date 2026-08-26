@@ -10,18 +10,21 @@ describe("TicketStatusPreview CFDI design contract", () => {
   afterEach(() => cleanup());
   it("exports the precise fiscal color tokens", () => {
     expect(CFDI_COLORS).toMatchObject({
-      ink: "#111A1C",
-      paper: "#F5F2EC",
-      recordGreen: "#3EA384",
-      amberDark: "#B07D22",
+      ink: "#102526",
+      paper: "#F2F0E9",
+      system: "#5772C7",
+      systemInk: "#4055A8",
+      proof: "#37CDE0",
+      signal: "#C6F43D",
       deepRed: "#B3524A",
-      line: "#E4DFD3",
+      errorInk: "#963F39",
+      line: "#BAC0B7",
     });
   });
 
   it("keeps rejected stamps out of the Wallet-issued path", () => {
     const rejected = CFDI_STATE_META.find(state => state.id === "rejected");
-    expect(rejected).toMatchObject({ fiscal: false, color: "#B3524A" });
+    expect(rejected).toMatchObject({ fiscal: false, color: "#963F39" });
     expect(rejected?.detail).toContain("no se crea ni se presenta un pase Wallet");
   });
 
@@ -32,7 +35,7 @@ describe("TicketStatusPreview CFDI design contract", () => {
     fireEvent.click(screen.getByRole("tab", { name: "Factura emitida · Vigente" }));
     expect(preview?.getAttribute("data-fiscal-theme")).toBe("true");
     expect(preview?.className).toContain("ticket-state-issued");
-    expect(screen.getByText("Registrada por la autoridad; el detalle fiscal y la verificación SAT están disponibles.")).toBeTruthy();
+    expect(screen.getByText("Verificada y vigente; el detalle fiscal y la verificación SAT están disponibles.")).toBeTruthy();
   });
 
   it("renders cancelled and expired as non-valid fiscal states", () => {

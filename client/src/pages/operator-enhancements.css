@@ -73,3 +73,11 @@
 .ticket-preview-stub small { grid-column: 1 / -1; }
 .qr-reader-verify { margin-top: .75rem; padding: .6rem .8rem; border: 1px solid rgba(66,233,157,.35); background: rgba(66,233,157,.08); color: #7de0eb; font: 700 .72rem "DM Mono", monospace; text-transform: uppercase; }
 @media (max-width: 640px) { .ticket-preview-stub { grid-template-columns: 1fr; gap: .35rem; } .ticket-preview-stub small { grid-column: auto; } }
+
+/* Folios Compliance Design System V2 component alignment. */
+.ticket-status-preview,.qr-text-reader { border-radius: 8px; border-color: color-mix(in srgb, #BAC0B7 28%, transparent); background: rgba(16,37,38,.76); }
+.ticket-status-preview .section-title h2 { font-family: "Cormorant Garamond", Georgia, serif; font-size: 2rem; font-weight: 600; }.ticket-status-preview .section-title svg { color: #37CDE0; }
+.ticket-preview-tabs button { min-height: 44px; border-radius: 4px; border-color: color-mix(in srgb, #BAC0B7 36%, transparent); color: #BAC0B7; }.ticket-preview-tabs button.active { background: rgba(198,244,61,.08); }
+.ticket-preview-paper { border-radius: 0; background-image: linear-gradient(rgba(186,192,183,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(186,192,183,.08) 1px, transparent 1px); }.ticket-preview-main { padding: 24px; }.ticket-preview-paper h3 { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; }.ticket-preview-qr { border-radius: 0; border-color: color-mix(in srgb, var(--ticket-accent) 52%, transparent); }.ticket-preview-stub { border-top: 1px solid color-mix(in srgb, var(--ticket-text) 22%, transparent); }
+.ticket-state-issued { --ticket-surface: #C6F43D; --ticket-text: #102526; }.ticket-state-cancelled,.ticket-state-expired { --ticket-surface: #102526; --ticket-text: #F2F0E9; }.ticket-state-rejected { --ticket-surface: #F2F0E9; --ticket-text: #102526; }
+.qr-text-reader > p:not(.eyebrow),.qr-credential-preview p:not(.eyebrow) { color: #BAC0B7; }.qr-upload,.qr-reader-verify { min-height: 44px; border-radius: 4px; border-color: color-mix(in srgb, #37CDE0 48%, transparent); color: #37CDE0; }.qr-reader-value { border-left-color: #37CDE0; color: #F2F0E9; }.qr-reader-error { color: #B3524A !important; }

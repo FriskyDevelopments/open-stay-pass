@@ -9,12 +9,18 @@ const caller = appRouter.createCaller({
 });
 
 describe("Open Stay Pass public adapters", () => {
-  it("returns explicit Apple Wallet configuration-required messaging in Spanish and English", async () => {
+  it("returns truthful bilingual Apple Wallet readiness messaging", async () => {
     const spanish = await caller.openStay.public.walletStatus({ platform: "apple", locale: "es" });
     const english = await caller.openStay.public.walletStatus({ platform: "apple", locale: "en" });
-    expect(spanish.state).toBe("configuration_required");
-    expect(spanish.message).toContain("requiere");
-    expect(english.message).toContain("requires");
+    if (spanish.state === "ready") {
+      expect(spanish.message).toContain("configurada");
+      expect(english.state).toBe("ready");
+      expect(english.message).toContain("configured");
+    } else {
+      expect(spanish.message).toContain("requiere");
+      expect(english.state).toBe("configuration_required");
+      expect(english.message).toContain("requires");
+    }
   });
 
   it("returns a bilingual progressive integration plan", async () => {

@@ -84,3 +84,15 @@
 - [x] Regenerate and present the Folios brand alignment and CFDI layer architecture deck for this validation pass.
 - [x] Verify the Cloudflare token against the compliance environment without exposing credentials; token is active but lacks account/Workers route permissions.
 - [x] Verify live compliance health, auth routes, and credentialed CORS behavior for the configured origins; compliancev0 is Vercel-hosted, health/auth candidates return 404, and CORS is wildcard without credentials.
+- [ ] Initialize or normalize Git tracking for the current Open Stay Pass project and create an initial commit without including secrets or generated artifacts.
+- [ ] Verify the Git working tree is clean and document how to connect the repository to a remote origin.
+- [x] Inspect the current Apple Wallet and Google Wallet adapter endpoints, capability flags, and UI states.
+- [x] Define the credential-gated requirements for a real `.pkpass` and Google Wallet issuance demo.
+- [x] Implement a truthful Wallet demo path with stable QR continuity and explicit configuration-required states.
+- [x] Validate Wallet demo behavior with tests and document live versus credential-gated capabilities; Apple signing passes, while Google service-account signing remains externally blocked.
+- [x] Extract the authoritative Folios Compliance Brandbook v2 and design-system rules for application use.
+- [x] Map the Brandbook v2 tokens to the real Folios handoff, Wallet, CFDI, QR, and operator surfaces.
+- [x] Implement the Brandbook v2 visual alignment without altering secure QR resolution or fiscal lifecycle rules.
+- [x] Validate brand alignment, accessibility contrast, responsive behavior, and Wallet/QR continuity.
+- [x] Calculate and record WCAG contrast ratios for the Brandbook v2 Folios token pairings used by the live surfaces.
+- [x] Confirm the persisted Wallet validation audit documents the Apple-pass result, Google blocker, and live-test command.

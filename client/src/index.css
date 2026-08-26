@@ -208,3 +208,26 @@ button, input, textarea, select { font: inherit; } a { text-decoration: none; }
 .invoice-history > p { margin-bottom: 12px; }
 .invoice-history > div { display: flex; justify-content: space-between; gap: 1rem; padding: 8px 0; color: #c8d6ce; font-size: 13px; }
 .invoice-history time { color: #8ca79a; font: 11px "DM Mono", monospace; }
+
+.wallet-actions { max-width: 772px; margin: 14px auto 0; padding: 24px; border-top: 1px solid #E4DFD3; background: #F5F2EC; color: #111A1C; }
+.wallet-actions h2 { margin: 7px 0 8px; font-size: 1.4rem; letter-spacing: -0.02em; }
+.wallet-actions > p:not(.eyebrow) { color: #5B676A; max-width: 52ch; }
+.wallet-actions > div { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+.wallet-button { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 0 14px; border: 1px solid #111A1C; border-radius: 4px; font-weight: 700; font-size: .88rem; cursor: pointer; text-decoration: none; }
+.wallet-button.apple { background: #111A1C; color: #F5F2EC; }
+.wallet-button.google { background: #F5F2EC; color: #111A1C; }
+.wallet-actions small { display: block; margin-top: 12px; color: #B3524A; }
+
+/* Folios Compliance Design System V2: Paper / Ink / System / Proof / Signal. */
+:root { --folios-paper: #F2F0E9; --folios-ink: #102526; --folios-system: #5772C7; --folios-proof: #37CDE0; --folios-signal: #C6F43D; --folios-structure: #BAC0B7; --folios-error: #B3524A; }
+body { background: var(--folios-ink); font-family: "Hanken Grotesk", Arial, sans-serif; }
+.folios-surface { background: radial-gradient(circle at 72% 6%, rgba(55,205,224,.10), transparent 24%), var(--folios-ink); color: var(--folios-paper); }
+.folios-lockup { color: var(--folios-paper); font-family: "Hanken Grotesk", sans-serif; letter-spacing: .12em; }.folios-lockup span { color: var(--folios-signal); }.folios-lockup small { color: var(--folios-structure); }
+.folio-hero { padding-top: 56px; }.folio-hero h1, .operator-header h1 { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; letter-spacing: -.045em; }.folio-hero > p { color: #C8D4D0; }
+.folio-status { color: var(--folios-signal); }.invoice-state-badge { border-radius: 4px; border-color: var(--folios-structure); background: rgba(16,37,38,.3); }.invoice-state-badge strong { color: var(--folios-paper); }
+.handoff-steps { gap: 12px; }.handoff-step { padding: 24px; border-radius: 8px; border-color: color-mix(in srgb, var(--folios-structure) 30%, transparent); background: rgba(16,37,38,.56); }.step-index { color: var(--folios-proof); }.handoff-final { border-color: var(--folios-signal); }
+.invoice-history { border-color: color-mix(in srgb, var(--folios-structure) 40%, transparent); background: rgba(16,37,38,.42); }.invoice-history time { color: var(--folios-structure); }
+.complete-handoff { min-height: 44px; border-radius: 4px; background: var(--folios-signal); color: var(--folios-ink); box-shadow: none; }.completed-note { color: var(--folios-signal); background: color-mix(in srgb, var(--folios-signal) 10%, transparent); }
+.wallet-actions { background: var(--folios-paper); color: var(--folios-ink); border-color: var(--folios-structure); }.wallet-actions h2 { font-family: "Cormorant Garamond", Georgia, serif; font-size: 2rem; font-weight: 600; }.wallet-actions > p:not(.eyebrow) { color: #49605F; }.wallet-button { min-height: 44px; border-radius: 4px; }.wallet-button.apple { background: var(--folios-ink); color: var(--folios-paper); }.wallet-button.google { border-color: var(--folios-system); color: var(--folios-ink); }.wallet-button.google:hover { background: var(--folios-system); color: var(--folios-paper); }
+.operator-console { background: var(--folios-ink); color: var(--folios-paper); }.operator-stats>div,.wallet-row>div,.operator-section { border-radius: 8px; border-color: color-mix(in srgb, var(--folios-structure) 28%, transparent); background: rgba(16,37,38,.72); }.operator-stats span { color: var(--folios-signal); }.wallet-row svg { color: var(--folios-proof); }.folios-form { background: linear-gradient(145deg, #183436, #102526); }.folios-submit { background: var(--folios-signal); color: var(--folios-ink); }
+.folios-status-screen { position: relative; min-height: 100vh; align-content: center; justify-items: start; max-width: 560px; margin: 0 auto; padding: 48px; background: linear-gradient(135deg, rgba(16,37,38,.96), rgba(16,37,38,.88)), repeating-linear-gradient(90deg, rgba(186,192,183,.05) 0 1px, transparent 1px 24px); border-left: 1px solid color-mix(in srgb, var(--folios-structure) 42%, transparent); }.folios-status-mark { display: grid; place-items: center; width: 44px; height: 44px; margin-bottom: 22px; background: var(--folios-signal); color: var(--folios-ink); font: 700 24px/1 "Cormorant Garamond", Georgia, serif; }.folios-status-screen h1 { max-width: 12ch; margin: 12px 0; font: 600 clamp(42px,7vw,68px)/.94 "Cormorant Garamond", Georgia, serif; letter-spacing: -.04em; }.folios-status-screen p:not(.eyebrow) { max-width: 44ch; color: #C8D4D0; line-height: 1.65; }.folios-status-icon { color: var(--folios-proof); margin-top: 20px; }.folios-status-screen small { margin-top: 20px; color: var(--folios-structure); font: 600 10px/1.2 "Hanken Grotesk", sans-serif; letter-spacing: .14em; }

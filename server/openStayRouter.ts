@@ -20,12 +20,14 @@ import {
   updateOperatorNotificationSettings,
   updateHandoffInvoice,
 } from "./openStayDb";
-import { credentialAccessState, decryptCredentialToken, encryptCredentialToken, hashCredentialToken, issueCredentialToken } from "./credentialService";
+import { decryptCredentialToken, encryptCredentialToken, hashCredentialToken, issueCredentialToken } from "./credentialService";
 import type { IntegrationPlan, Locale, WalletAdapterStatus } from "../shared/openStay";
 import { randomUUID } from "node:crypto";
 import { resolveConciergeRuntime } from "./conciergeConfig";
 import { instantAmenityAnswer } from "./amenityAnswers";
 import { createPreviewStay, getPreviewStay } from "./previewStay";
+import { resolvePublicCredential } from "./publicCredential";
+import { createGoogleFoliosSaveUrl, walletReadiness } from "./wallet/walletIssuer";
 
 const localeSchema = z.enum(["es", "en"]);
 const urlSchema = z.string().url().refine(value => value.startsWith("http://") || value.startsWith("https://"), "A valid public base URL is required.");
@@ -36,22 +38,6 @@ function text(locale: Locale, spanish: string, english: string) {
 
 function path(baseUrl: string, route: "arrival" | "handoff", token: string) {
   return `${baseUrl.replace(/\/$/, "")}/${route}/${encodeURIComponent(token)}`;
-}
-
-async function resolvePublicCredential(token: string, scope: "arrival" | "handoff") {
-  const previewStay = getPreviewStay(token);
-  if (previewStay && scope === "arrival") return previewStay.credential;
-  const preview = token.split(".")[0];
-  if (!preview) throw new TRPCError({ code: "UNAUTHORIZED", message: "This credential link is invalid or expired." });
-  let credentialId: string;
-  try { credentialId = JSON.parse(Buffer.from(preview, "base64url").toString("utf8")).credentialId; } catch { throw new TRPCError({ code: "UNAUTHORIZED", message: "This credential link is invalid or expired." }); }
-  const credential = await getCredentialById(credentialId);
-  if (!credential) throw new TRPCError({ code: "UNAUTHORIZED", message: "This credential is no longer valid." });
-  const state = credentialAccessState({ token, expectedScope: scope, storedTokenHash: credential.tokenHash, status: credential.status, expiresAt: credential.expiresAt });
-  if (state === "revoked") throw new TRPCError({ code: "FORBIDDEN", message: "This credential has been revoked by the operator." });
-  if (state === "expired") throw new TRPCError({ code: "UNAUTHORIZED", message: "This credential has expired." });
-  if (state !== "active") throw new TRPCError({ code: "UNAUTHORIZED", message: "This credential link is invalid or expired." });
-  return credential;
 }
 
 async function notifyForEvent(input: {
@@ -75,11 +61,9 @@ async function notifyForEvent(input: {
 }
 
 const walletStatus = (platform: "apple" | "google", locale: Locale): WalletAdapterStatus => {
-  const ready = platform === "apple"
-    ? Boolean(process.env.APPLE_PASS_TYPE_ID && process.env.APPLE_TEAM_ID)
-    : Boolean(process.env.GOOGLE_WALLET_ISSUER_ID);
+  const ready = walletReadiness(platform);
   return ready
-    ? { platform, state: "ready", message: text(locale, "La configuración de Wallet está disponible para un adaptador de aprovisionamiento en servidor.", "Wallet configuration is available for a server-side provisioning adapter."), required: [] }
+    ? { platform, state: "ready", message: platform === "apple" ? text(locale, "La firma de Apple Wallet está configurada. Las facturas CFDI emitidas pueden descargarse como un pase real.", "Apple Wallet signing is configured. Issued CFDI invoices can be downloaded as a real pass.") : text(locale, "Google Wallet está configurado. Las facturas CFDI emitidas pueden abrir el flujo oficial Add to Google Wallet.", "Google Wallet is configured. Issued CFDI invoices can open the official Add to Google Wallet flow."), required: [] }
     : {
         platform,
         state: "configuration_required",
@@ -101,6 +85,28 @@ const integrations = (locale: Locale): IntegrationPlan[] => [
 export const openStayRouter = router({
   public: router({
     walletStatus: publicProcedure.input(z.object({ platform: z.enum(["apple", "google"]), locale: localeSchema })).query(({ input }) => walletStatus(input.platform, input.locale)),
+    googleWalletSave: publicProcedure.input(z.object({ token: z.string(), locale: localeSchema, baseUrl: urlSchema })).mutation(async ({ input }) => {
+      if (!walletReadiness("google")) throw new TRPCError({ code: "PRECONDITION_FAILED", message: "Google Wallet configuration is incomplete." });
+      const credential = await resolvePublicCredential(input.token, "handoff");
+      if (!credential.handoffId) throw new TRPCError({ code: "NOT_FOUND", message: "The related Folios handoff is unavailable." });
+      const handoff = await getHandoffById(credential.handoffId);
+      if (!handoff) throw new TRPCError({ code: "NOT_FOUND", message: "The related Folios handoff is unavailable." });
+      if (handoff.invoiceStatus !== "issued" || !handoff.invoiceNumber) {
+        throw new TRPCError({ code: "PRECONDITION_FAILED", message: "Only an issued CFDI can be added to Wallet." });
+      }
+      const handoffUrl = path(input.baseUrl, "handoff", input.token);
+      return {
+        saveUrl: createGoogleFoliosSaveUrl({
+          title: handoff.title,
+          invoiceNumber: handoff.invoiceNumber,
+          invoiceStatus: "issued",
+          ownerName: handoff.ownerName,
+          handoffUrl,
+          serial: `folios-${handoff.id}`,
+          updatedAt: handoff.invoiceUpdatedAt ?? handoff.invoiceIssuedAt,
+        }, input.locale),
+      };
+    }),
     integrations: publicProcedure.input(z.object({ locale: localeSchema })).query(({ input }) => integrations(input.locale)),
     previewToken: publicProcedure.query(() => ({ token: createPreviewStay() })),
     arrival: publicProcedure.input(z.object({ token: z.string(), locale: localeSchema })).query(async ({ input }) => {
