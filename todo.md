@@ -96,3 +96,24 @@
 - [x] Validate brand alignment, accessibility contrast, responsive behavior, and Wallet/QR continuity.
 - [x] Calculate and record WCAG contrast ratios for the Brandbook v2 Folios token pairings used by the live surfaces.
 - [x] Confirm the persisted Wallet validation audit documents the Apple-pass result, Google blocker, and live-test command.
+- [x] Restart and verify the development server after the reported preview outage.
+- [x] Create an award-caliber open-source repository foundation with clear architecture, security boundaries, contribution guidance, and launch storytelling.
+- [x] Add optional Ko-fi, NOWPayments, and Wise Business support configuration and a brand-aligned public support surface without mixing donations with credential or access flows.
+- [ ] Validate the public repository and support surface, then document a GitHub launch plan focused on legitimate community adoption.
+- [x] Add NFC credential technology that encodes only the existing signed arrival or handoff URL and preserves QR-equivalent revocation and expiration controls.
+- [x] Document NFC tag selection, NDEF writing, mobile fallback, and anti-cloning/security boundaries for open-source operators.
+- [x] Implement a provider-agnostic smart-lock boundary in Open Stay Pass with explicit Custom / Design Required state, QR/NFC/Wallet separation, and safe adapter documentation.
+- [ ] Inspect the actual HostCasa smart-lock source or product notes and reconcile its concrete adapter responsibilities with the Open Stay Pass boundary.
+- [x] Add a configurable GitHub repository star call-to-action that is visible only when a verified repository URL is configured.
+- [x] Inspect Apify connector availability and prepare a compliant, non-spam open-source launch research plan without publishing or spending.
+- [x] Draft approved-ready campaign assets and a measurement plan; require explicit confirmation before any external posting or paid promotion.
+- [x] Draft value-first Reddit posts and contextual comments for review, with an invitation to star the repository only where it is relevant and permitted.
+- [ ] Create a high-impact award-caliber campaign package that demonstrates the real scan/tap/Wallet/fiscal lifecycle rather than promising unsupported results.
+- [x] Create a principled open-source monetization plan that preserves the free QR-first core and defines optional managed, connector, support, Wallet, and AI offerings.
+- [ ] Complete the world-class MVP quality pass across product polish, secure physical-digital continuity, open-source onboarding, and launch readiness.
+- [x] Create a legitimate high-conversion growth and monetization architecture focused on real adoption, GitHub stars, and optional services rather than artificial engagement.
+- [x] Add a non-blocking GitHub-star reminder that appears only after a successful local validation or demo completion when a verified repository URL is configured.
+- [ ] Produce a confirmed 30-second 16:9 hero video showing QR scan, NFC tap, HostCasa arrival, Folios handoff, and an honest GitHub Star invitation.
+- [ ] Produce two 12–15 second 9:16 promotional cuts for Reels, TikTok, and Shorts with Spanish narration and English subtitles.
+- [ ] Generate the Brandbook v2 reference assets, campaign visuals, narration, music plan, captions, and publishing copy for review.
+- [ ] Validate that every promo claim matches the real MVP capability state and request approval before any external publication or spend.

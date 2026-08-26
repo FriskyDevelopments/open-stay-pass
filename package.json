@@ -10,6 +10,9 @@
     "check": "tsc --noEmit",
     "format": "prettier --write .",
     "test": "vitest run",
+    "posttest": "node scripts/open-source-success.mjs test",
+    "postbuild": "node scripts/open-source-success.mjs build",
+    "validate": "pnpm test && pnpm check && pnpm build",
     "db:push": "drizzle-kit generate && drizzle-kit migrate"
   },
   "dependencies": {

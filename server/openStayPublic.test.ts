@@ -30,4 +30,11 @@ describe("Open Stay Pass public adapters", () => {
     expect(spanish[0]?.description).toContain("Sincronización");
     expect(english[0]?.description).toContain("synchronization");
   });
+
+  it("keeps smart locks as an explicit custom adapter rather than a credential payload", async () => {
+    const spanish = await caller.openStay.public.integrations({ locale: "es" });
+    const lock = spanish.find(item => item.name === "Cerraduras inteligentes");
+    expect(lock).toMatchObject({ category: "Custom", state: "design_required" });
+    expect(lock?.description).toContain("separada de los payloads de QR y Wallet");
+  });
 });
