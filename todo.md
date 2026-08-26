@@ -84,8 +84,8 @@
 - [x] Regenerate and present the Folios brand alignment and CFDI layer architecture deck for this validation pass.
 - [x] Verify the Cloudflare token against the compliance environment without exposing credentials; token is active but lacks account/Workers route permissions.
 - [x] Verify live compliance health, auth routes, and credentialed CORS behavior for the configured origins; compliancev0 is Vercel-hosted, health/auth candidates return 404, and CORS is wildcard without credentials.
-- [ ] Initialize or normalize Git tracking for the current Open Stay Pass project and create an initial commit without including secrets or generated artifacts.
-- [ ] Verify the Git working tree is clean and document how to connect the repository to a remote origin.
+- [x] Confirm the project is already a managed Git repository with checkpointed commits; audit tracked paths for secrets and generated artifacts without finding any.
+- [x] Verify the Git working tree is clean and document how to connect the repository to a remote origin; the managed origin tracks `main` and can be exported to a user-owned GitHub repository from the project settings.
 - [x] Inspect the current Apple Wallet and Google Wallet adapter endpoints, capability flags, and UI states.
 - [x] Define the credential-gated requirements for a real `.pkpass` and Google Wallet issuance demo.
 - [x] Implement a truthful Wallet demo path with stable QR continuity and explicit configuration-required states.
