@@ -1,0 +1,41 @@
+name: Bug report
+description: Report a reproducible product or credential-boundary defect.
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping improve Open Stay Pass. Do not include signed URLs, guest data, door codes, raw credentials, or private keys. Use the security reporting link for sensitive issues.
+  - type: textarea
+    id: happened
+    attributes:
+      label: What happened?
+      description: State the observed behavior without including private credential content.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect instead?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+      placeholder: |
+        1. Start the application with…
+        2. Open…
+        3. Observe…
+    validations:
+      required: true
+  - type: checkboxes
+    id: boundary
+    attributes:
+      label: Credential boundary check
+      options:
+        - label: This report does not contain signed URLs, guest data, lock material, secrets, or private keys.
+          required: true
+        - label: I have indicated whether the issue affects QR, NFC, Wallet, arrival, or Folios handoff behavior.
+          required: true

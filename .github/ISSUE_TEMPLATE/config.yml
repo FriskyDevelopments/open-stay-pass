@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Responsible security report
+    url: https://github.com/FriskyDevelopments/open-stay-pass/security/advisories/new
+    about: Do not open public issues with signed URLs, guest data, lock material, or private keys.
+  - name: Contribution and adapter guidance
+    url: https://github.com/FriskyDevelopments/open-stay-pass/blob/main/CONTRIBUTING.md
+    about: Read the project’s QR, NFC, Wallet, and provider-boundary expectations before proposing work.

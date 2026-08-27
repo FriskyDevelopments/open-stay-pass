@@ -2,6 +2,8 @@
 
 > **A QR-first, bilingual hospitality credential system for small operators.**
 
+[Open the public repository](https://github.com/FriskyDevelopments/open-stay-pass) · [Open the live MVP](https://staypass-pmz7aqns.manus.space) · [Review the Spanish-first press kit](https://staypass-pmz7aqns.manus.space/press-kit)
+
 Open Stay Pass turns one signed, revocable URL into a useful guest arrival guide, Folios evidence handoff, QR code, NDEF NFC tag, and—when officially configured—Apple Wallet or Google Wallet pass. HostCasa owns guest continuity. Folios owns proof and fiscal handoff. The credential core stays portable.
 
 ## Why this exists
@@ -38,6 +40,8 @@ pnpm test
 pnpm check
 pnpm build
 ```
+
+The repository includes a locked GitHub Actions validation workflow for pushes and pull requests to `main`. Once the public release is synchronized, its status appears under the repository’s **Actions** tab; the badge is deliberately added only after its first public run exists.
 
 When a public `VITE_GITHUB_REPOSITORY_URL` is configured, successful test and build commands print a non-blocking invitation to star the repository. It never changes exit codes or blocks local development.
 

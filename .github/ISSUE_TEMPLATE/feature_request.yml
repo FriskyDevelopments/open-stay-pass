@@ -1,0 +1,44 @@
+name: Adapter or feature proposal
+description: Propose a small-operator capability or verified provider adapter.
+title: "feature: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Open Stay Pass is QR-first. A proposed integration must preserve a useful zero-setup arrival or handoff path and may not embed physical-access secrets in QR, NFC, Wallet, or browser state.
+  - type: textarea
+    id: operator_job
+    attributes:
+      label: Operator job to solve
+      description: Describe the smallest useful outcome for an independent operator.
+    validations:
+      required: true
+  - type: textarea
+    id: first_run
+    attributes:
+      label: Smallest useful first-run experience
+      description: Explain how the feature works before a PMS migration, hardware rollout, or enterprise contract.
+    validations:
+      required: true
+  - type: dropdown
+    id: integration_type
+    attributes:
+      label: Connection type
+      options:
+        - No external provider
+        - Calendar or email connector
+        - Payment or accounting connector
+        - PMS or channel manager
+        - Smart-lock provider
+        - Wallet platform
+        - Other provider API
+    validations:
+      required: true
+  - type: textarea
+    id: security
+    attributes:
+      label: Security and data boundary
+      description: Explain how the proposal avoids door secrets, permanent authorization, payment data, and raw credentials in QR, NFC, Wallet, or browser state.
+    validations:
+      required: true
