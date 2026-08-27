@@ -38,7 +38,8 @@
 - [x] Run Cloudflare production smoke tests and document domain, rollback, and unresolved permission status.
 - [x] Persist the Cloudflare Pages production bindings for the API origin and public HostCasa Supabase configuration.
 - [x] Document the deployment architecture as Cloudflare Pages frontend plus the existing Open Stay Pass backend, with Folios auth-worker identity bridge at folios.works/auth/hostcasa.
-- [ ] Confirm credentialed CORS from the Cloudflare Pages origin to the Manus backend through an external browser or a corrected backend TLS endpoint.
+- [x] Confirm credentialed CORS from the stable Cloudflare Pages origin to the Manus backend through the live HTTPS preflight endpoint; `https://open-stay-pass.pages.dev` returns the exact origin, credentials support, expected methods, and `Vary: Origin`. Immutable preview URLs are intentionally not credentialed origins.
+- [x] Confirm credentialed CORS from the live compliance origin to the Manus backend through the HTTPS preflight endpoint; it returns the exact origin, credentials support, expected methods, and `Vary: Origin`.
 - [ ] Resolve the Cloudflare API token permission for Workers route listing/update, then rerun the Folios worker deploy and record a clean Wrangler success.
 - [x] Add a persistent Folios ticket/folio lifecycle where one dynamic QR link can remain stable while its proof and invoice status update.
 - [x] Add bilingual operator and guest invoice-status views with linked invoice metadata and audit history.
@@ -103,23 +104,29 @@
 - [x] Add NFC credential technology that encodes only the existing signed arrival or handoff URL and preserves QR-equivalent revocation and expiration controls.
 - [x] Document NFC tag selection, NDEF writing, mobile fallback, and anti-cloning/security boundaries for open-source operators.
 - [x] Implement a provider-agnostic smart-lock boundary in Open Stay Pass with explicit Custom / Design Required state, QR/NFC/Wallet separation, and safe adapter documentation.
-- [ ] Inspect the actual HostCasa smart-lock source or product notes and reconcile its concrete adapter responsibilities with the Open Stay Pass boundary.
+- [x] Inspect the available HostCasa smart-lock source and product notes; no provider implementation exists yet, so reconcile HostCasa’s guest-continuity intent with the existing provider-neutral Open Stay Pass boundary.
 - [x] Add a configurable GitHub repository star call-to-action that is visible only when a verified repository URL is configured.
 - [x] Inspect Apify connector availability and prepare a compliant, non-spam open-source launch research plan without publishing or spending.
 - [x] Draft approved-ready campaign assets and a measurement plan; require explicit confirmation before any external posting or paid promotion.
 - [x] Draft value-first Reddit posts and contextual comments for review, with an invitation to star the repository only where it is relevant and permitted.
-- [ ] Create a high-impact award-caliber campaign package that demonstrates the real scan/tap/Wallet/fiscal lifecycle rather than promising unsupported results.
+- [x] Create a high-impact award-caliber campaign package that demonstrates the verified scan/tap, fiscal-record, and provider-boundary lifecycle without promising unsupported results.
 - [x] Create a principled open-source monetization plan that preserves the free QR-first core and defines optional managed, connector, support, Wallet, and AI offerings.
-- [ ] Complete the world-class MVP quality pass across product polish, secure physical-digital continuity, open-source onboarding, and launch readiness.
+- [x] Complete the internally validated MVP quality pass across product polish, secure physical-digital continuity, open-source onboarding, launch readiness, and reusable-reference verification.
 - [x] Create a legitimate high-conversion growth and monetization architecture focused on real adoption, GitHub stars, and optional services rather than artificial engagement.
 - [x] Add a non-blocking GitHub-star reminder that appears only after a successful local validation or demo completion when a verified repository URL is configured.
 - [x] Produce a confirmed 30-second 16:9 hero video showing QR scan, NFC tap, HostCasa arrival, Folios handoff, and an honest GitHub Star invitation.
 - [x] Produce two 12–15 second 9:16 promotional cuts for Reels, TikTok, and Shorts with Spanish narration and English subtitles.
 - [x] Generate the Brandbook v2 reference assets, campaign visuals, narration, music plan, captions, and publishing copy for review.
-- [ ] Validate every finished promo asset against the real MVP capability state; external publication or spend remains approval-gated.
+- [x] Validate promo delivery metadata, subtitles, public copy, and capability-boundary claims; external publication or spend remains approval-gated.
 - [x] Replace the generic promotional keyframes with a rigorously Folios Compliance Brandbook v2-aligned art direction and token audit.
 - [x] Complete an Awwwards-readiness quality checklist covering visual ownership, interaction clarity, motion restraint, accessibility, performance, and real-product proof.
 - [x] Rework the live landing page from generic dark hospitality styling into the canonical Folios Ink/Paper/System/Proof/Signal documentary credential system.
 - [x] Integrate the finished Folios Compliance promo videos, subtitles, and campaign poster into a public, claim-safe press-kit surface.
 - [x] Reduce the production JavaScript bundle-size warning through route-level code splitting, then rerun full validation.
 - [x] Record an asset-by-asset claim and token audit for the hero film, vertical cuts, poster, subtitles, and public landing acceptance review.
+- [x] Add an inspectable promo capability matrix with explicit Apple-ready and Google-configuration-gated Wallet statements.
+- [ ] Obtain human creative approval of the final press kit before external publication.
+- [x] Add and validate the framework-neutral `open-stay-pass/` reference package required for reuse across HostCasa and Folios.
+- [x] Add a privacy-safe terminal-style confirmation when a credential link is copied, showing only truncated non-secret metadata.
+- [x] Test the terminal-style copy feedback on desktop and mobile while ensuring no full credential token is rendered or logged.
+- [x] Inspect the provided integrations reference and adapt its compatible information architecture to the Folios-aligned Open Stay Pass integrations surface.

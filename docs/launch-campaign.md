@@ -8,10 +8,10 @@
 
 | Asset | Job | Proof shown | Call to action |
 |---|---|---|---|
-| 12-second scan/tap clip | Stop attention | QR scan → mobile guide → signed state | Run the demo |
+| 14-second scan/tap clip | Stop attention | QR scan → mobile guide → signed state | Run the demo |
 | 30-second operator walkthrough | Explain the wedge | One stay, revocation, NDEF URL, ticket transition | Star or fork the repository |
 | Static credential poster | Build visual recall | Pass card, QR grid, Paper/Ink fiscal rail | Open the README |
-| Smart-lock boundary diagram | Earn technical trust | Credential URL separate from access provisioning | Review the adapter contract |
+| 14-second provider-boundary clip | Earn technical trust | Credential URL separate from access provisioning | Review the adapter contract |
 | CFDI lifecycle carousel | Show differentiation | Proof → review → issued → cancelled/rejected, same link | Try the public demo |
 
 ## Public-message hierarchy
@@ -30,13 +30,13 @@ These are drafts, not instructions to mass-post. Before submission, check each c
 
 **Title:** I built a QR-first, self-hostable guest credential rail that keeps NFC and Wallet as optional adapters
 
-**Body:** Small hospitality operators often need an arrival link before they need a full PMS migration. I open-sourced a Spanish-first reference MVP where one short-lived, revocable URL can power a QR code, an NDEF NFC tag, a guest guide, and a Folios handoff. Wallet actions only appear when official credentials work; smart-lock provisioning is deliberately external so no door secret lands in QR, NFC, Wallet, or browser state. I’d value feedback on the credential boundary, Docker/self-hosting path, and provider-adapter contract. If you run it and it is useful, a GitHub Star helps other operators find it. [repository URL]
+**Body:** Small hospitality operators often need an arrival link before they need a full PMS migration. I open-sourced a Spanish-first reference MVP where one short-lived, revocable URL can power a QR code, an NDEF NFC tag, a guest guide, and a Folios handoff. Wallet actions only appear when official credentials work; smart-lock provisioning is deliberately external so no door secret lands in QR, NFC, Wallet, or browser state. I’d value feedback on the credential boundary, Docker/self-hosting path, and provider-adapter contract. If you run it and it is useful, a GitHub Star helps other operators find it. https://github.com/FriskyDevelopments/open-stay-pass
 
 ### Draft B: hospitality-operator audience
 
 **Title:** What if guest arrival started with one secure scan—not another mandatory app?
 
-**Body:** I’m testing an open-source, bilingual arrival flow for independent operators: a guest scans a QR or taps an NFC tag, gets a calm property guide, and can continue through a secure handoff when needed. The design goal is simple: no app download, no hidden physical-access key in the QR, and no integration required before the first guest can use it. I’m looking for feedback from hosts on the first five minutes of arrival: Wi-Fi, access instructions, rules, local recommendations, and what still causes support messages. Demo/repository: [repository URL]
+**Body:** I’m testing an open-source, bilingual arrival flow for independent operators: a guest scans a QR or taps an NFC tag, gets a calm property guide, and can continue through a secure handoff when needed. The design goal is simple: no app download, no hidden physical-access key in the QR, and no integration required before the first guest can use it. I’m looking for feedback from hosts on the first five minutes of arrival: Wi-Fi, access instructions, rules, local recommendations, and what still causes support messages. Demo/repository: https://github.com/FriskyDevelopments/open-stay-pass
 
 ### Draft C: contextual comment
 
@@ -58,3 +58,7 @@ The Apify official MCP was enabled for public research. It identified a Reddit r
 ## Approval gate
 
 No Reddit post, comment, direct message, paid promotion, Actor run that incurs cost, or public claim of adoption may happen until the user reviews the exact destination URL, community, copy, disclosure, and final action list.
+
+## Finished media package
+
+The finalized Folios Compliance package is available at the public application route `/press-kit`. It contains the **30-second 16:9 hero film**, the **14-second 9:16 signed-resolver cut**, the **14-second 9:16 provider-boundary cut**, English caption files, and the documentary credential poster. Each asset follows the campaign claim boundaries in `docs/promo-asset-audit.md`; the public repository destination is `https://github.com/FriskyDevelopments/open-stay-pass`.

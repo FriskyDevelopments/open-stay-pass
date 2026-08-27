@@ -49,6 +49,15 @@ const assets: PromoAsset[] = [
   },
 ];
 
+const capabilityRows = [
+  ["QR + NFC", "Verified carrier", "The same signed resolver; not a door key."],
+  ["HostCasa", "Verified arrival rail", "Bilingual guide and grounded context."],
+  ["Folios", "Verified record rail", "Evidence, lifecycle state, and next action."],
+  ["Apple Wallet", "Apple-ready", "Issued-pass signing only with configured material."],
+  ["Google Wallet", "Configuration-gated", "Not shown as a live issuance path."],
+  ["Smart locks", "Provider-owned", "Provision, revoke, and audit remain external."],
+];
+
 export default function PressKit() {
   return (
     <main className="press-kit">
@@ -93,6 +102,12 @@ export default function PressKit() {
             </div>
           </article>
         ))}
+      </section>
+      <section className="press-capabilities" aria-label="Verified capability boundaries">
+        <div><p className="eyebrow aqua">CLAIM BOUNDARY · REVIEW BEFORE EXTERNAL USE</p><h2>Every surface has a declared limit.</h2></div>
+        <div className="press-capability-table">
+          {capabilityRows.map(([surface, status, boundary]) => <article key={surface}><span>{surface}</span><b>{status}</b><p>{boundary}</p></article>)}
+        </div>
       </section>
       <section className="press-poster">
         <img src={poster} alt="Folios Compliance evidence credential campaign visual" />

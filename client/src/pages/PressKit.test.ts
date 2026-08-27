@@ -23,4 +23,12 @@ describe("PressKit public campaign surface", () => {
     expect(repositoryLink.getAttribute("href")).toBe("https://github.com/FriskyDevelopments/open-stay-pass");
     expect(screen.getByText(/Physical access remains provider-owned/i)).toBeTruthy();
   });
+
+  it("makes Wallet and physical-access capability states inspectable before promotion", () => {
+    render(React.createElement(PressKit));
+    expect(screen.getByText("Apple-ready")).toBeTruthy();
+    expect(screen.getByText("Configuration-gated")).toBeTruthy();
+    expect(screen.getByText("Provider-owned")).toBeTruthy();
+    expect(screen.getByText(/not a door key/i)).toBeTruthy();
+  });
 });

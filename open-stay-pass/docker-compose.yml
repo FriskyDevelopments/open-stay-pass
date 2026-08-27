@@ -1,0 +1,8 @@
+services:
+  open-stay-pass:
+    build: .
+    environment:
+      PORT: 8787
+      CREDENTIAL_HMAC_SECRET: ${CREDENTIAL_HMAC_SECRET:?Set a local development secret}
+    ports:
+      - "8787:8787"

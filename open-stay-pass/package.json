@@ -1,0 +1,17 @@
+{
+  "name": "@friskydevelopments/open-stay-pass",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "description": "Framework-neutral QR-first credential continuity reference for HostCasa and Folios.",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "check": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run --config vitest.config.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.0.0",
+    "vitest": "^3.0.0"
+  }
+}
