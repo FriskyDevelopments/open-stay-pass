@@ -126,6 +126,13 @@
 - [x] Record an asset-by-asset claim and token audit for the hero film, vertical cuts, poster, subtitles, and public landing acceptance review.
 - [x] Add an inspectable promo capability matrix with explicit Apple-ready and Google-configuration-gated Wallet statements.
 - [ ] Obtain human creative approval of the final press kit before external publication.
+- [x] Reconcile the conflicting external Cloudflare account/scope report against the current project environment without external mutations.
+- [x] Reconcile the conflicting Google Wallet credential-location report against managed project secret readiness without exposing secret values.
+- [x] Reconcile the conflicting press-kit location report against the public project route and durable campaign asset inventory.
+- [x] Complete the public repository, press-kit, and internal MVP acceptance pass while Cloudflare dashboard verification remains user-deferred.
+- [x] Correct the press-kit hero and media metadata to honor Spanish-first copy with controlled English subtitles and labels.
+- [x] Use the user-approved connected Manus browser, rather than a sandbox session, for requested read-only Cloudflare verification.
+- [ ] Complete visible Cloudflare Workers account, route, and deployment inspection once the connected browser’s extension artifact collector can expose the dashboard controls.
 - [x] Add and validate the framework-neutral `open-stay-pass/` reference package required for reuse across HostCasa and Folios.
 - [x] Add a privacy-safe terminal-style confirmation when a credential link is copied, showing only truncated non-secret metadata.
 - [x] Test the terminal-style copy feedback on desktop and mobile while ensuring no full credential token is rendered or logged.

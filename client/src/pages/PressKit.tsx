@@ -22,40 +22,40 @@ type PromoAsset = {
 
 const assets: PromoAsset[] = [
   {
-    title: "Proof → Resolver → Record → Decision",
+    title: "Comprobante → Resolver → Registro → Decisión",
     format: "HERO FILM · 16:9",
     duration: "00:30",
     src: hero,
     subtitles: heroSubs,
-    description: "Spanish narration with English subtitles. Shows the real credential lifecycle without implying physical access or unsupported Wallet issuance.",
+    description: "Narración en español con subtítulos en inglés. Muestra el ciclo real de la credencial sin implicar acceso físico ni emisión Wallet no disponible.",
   },
   {
-    title: "One signed link",
+    title: "Un enlace firmado",
     format: "VERTICAL CUT A · 9:16",
     duration: "00:14",
     src: verticalA,
     subtitles: verticalASubs,
-    description: "A concise scan-or-tap story for Reels, Shorts, and TikTok: proof carrier, resolver, and arrival record.",
+    description: "Una historia breve de escaneo o tap para Reels, Shorts y TikTok: comprobante, resolver y registro de llegada.",
     vertical: true,
   },
   {
-    title: "Provider boundary",
+    title: "Límite del proveedor",
     format: "VERTICAL CUT B · 9:16",
     duration: "00:14",
     src: verticalB,
     subtitles: verticalBSubs,
-    description: "A technical boundary story: public credential carriers remain separate from external physical-access provisioning.",
+    description: "Una historia de límite técnico: los portadores públicos de credenciales permanecen separados de la provisión externa de acceso físico.",
     vertical: true,
   },
 ];
 
 const capabilityRows = [
-  ["QR + NFC", "Verified carrier", "The same signed resolver; not a door key."],
-  ["HostCasa", "Verified arrival rail", "Bilingual guide and grounded context."],
-  ["Folios", "Verified record rail", "Evidence, lifecycle state, and next action."],
-  ["Apple Wallet", "Apple-ready", "Issued-pass signing only with configured material."],
-  ["Google Wallet", "Configuration-gated", "Not shown as a live issuance path."],
-  ["Smart locks", "Provider-owned", "Provision, revoke, and audit remain external."],
+  ["QR + NFC", "Portador verificado", "El mismo resolver firmado; no es una llave de puerta."],
+  ["HostCasa", "Riel de llegada verificado", "Guía bilingüe y contexto fundamentado."],
+  ["Folios", "Riel de registro verificado", "Evidencia, estado de ciclo y siguiente acción."],
+  ["Apple Wallet", "Listo para Apple", "Firma de pase emitido solo con material configurado."],
+  ["Google Wallet", "Requiere configuración", "No se muestra como una ruta de emisión activa."],
+  ["Cerraduras inteligentes", "Propiedad del proveedor", "Provisionamiento, revocación y auditoría permanecen externos."],
 ];
 
 export default function PressKit() {
@@ -63,59 +63,59 @@ export default function PressKit() {
     <main className="press-kit">
       <header className="press-nav">
         <Link href="/" className="press-back"><ArrowLeft size={15} /> Open Stay Pass</Link>
-        <a href={repository} target="_blank" rel="noreferrer" className="press-repo"><Github size={15} /> Star on GitHub <ExternalLink size={13} /></a>
+        <a href={repository} target="_blank" rel="noreferrer" className="press-repo"><Github size={15} /> Dale Star en GitHub <ExternalLink size={13} /></a>
       </header>
       <section className="press-hero">
-        <p className="eyebrow aqua">PUBLIC PRESS KIT · FOLIOS COMPLIANCE V2</p>
-        <h1>Proof carries the arrival.<br /><em>Record carries the decision.</em></h1>
-        <p>Launch assets for a QR-first hospitality credential system. Every asset preserves the same public boundary: carrier, signed resolver, preserved record, explicit decision.</p>
-        <div className="press-boundary"><ShieldCheck size={16} /><span>QR / NFC remain proof carriers. Physical access remains provider-owned.</span></div>
+        <p className="eyebrow aqua">KIT DE PRENSA PÚBLICO · FOLIOS COMPLIANCE V2</p>
+        <h1>El comprobante lleva la llegada.<br /><em>El registro lleva la decisión.</em></h1>
+        <p>Activos de lanzamiento para un sistema de credenciales de hospitalidad QR-first. Cada activo conserva el mismo límite público: portador, resolver firmado, registro preservado y decisión explícita.</p>
+        <div className="press-boundary"><ShieldCheck size={16} /><span>QR / NFC siguen siendo portadores de comprobante. El acceso físico pertenece al proveedor.</span></div>
       </section>
       <section className="press-feature">
         <div className="press-feature-media">
-          <video controls preload="metadata" poster={poster} aria-label="Open Stay Pass hero film">
+          <video controls preload="metadata" poster={poster} aria-label="Video principal de Open Stay Pass">
             <source src={hero} type="video/mp4" />
-            <track kind="subtitles" srcLang="en" label="English" src={heroSubs} default />
+            <track kind="subtitles" srcLang="en" label="English subtitles" src={heroSubs} default />
           </video>
         </div>
         <div className="press-feature-copy">
-          <span>00:30 · 16:9 HERO FILM</span>
-          <h2>One credential, continuously accountable.</h2>
-          <p>Designed around Folios semantic colors: Proof introduces the carrier, System describes review, Paper preserves evidence, and Signal appears only at a verified decision.</p>
-          <a href={hero} download><Download size={15} /> Download hero MP4</a>
+          <span>00:30 · VIDEO PRINCIPAL 16:9</span>
+          <h2>Una credencial. Un registro que responde.</h2>
+          <p>Diseñado con los colores semánticos de Folios: Proof presenta el portador, System describe la revisión, Paper preserva la evidencia y Signal aparece solo ante una decisión verificada.</p>
+          <a href={hero} download><Download size={15} /> Descargar MP4 principal</a>
         </div>
       </section>
-      <section className="press-assets" aria-label="Campaign assets">
+      <section className="press-assets" aria-label="Activos de campaña">
         {assets.slice(1).map((asset) => (
           <article className="press-asset" key={asset.title}>
             <div className={`press-asset-media ${asset.vertical ? "is-vertical" : ""}`}>
               <video controls preload="metadata" poster={poster} aria-label={asset.title}>
                 <source src={asset.src} type="video/mp4" />
-                <track kind="subtitles" srcLang="en" label="English" src={asset.subtitles} default />
+                <track kind="subtitles" srcLang="en" label="English subtitles" src={asset.subtitles} default />
               </video>
             </div>
             <div className="press-asset-copy">
               <span>{asset.format} · {asset.duration}</span>
               <h2>{asset.title}</h2>
               <p>{asset.description}</p>
-              <a href={asset.src} download><Play size={14} /> Download MP4</a>
+              <a href={asset.src} download><Play size={14} /> Descargar MP4</a>
             </div>
           </article>
         ))}
       </section>
-      <section className="press-capabilities" aria-label="Verified capability boundaries">
-        <div><p className="eyebrow aqua">CLAIM BOUNDARY · REVIEW BEFORE EXTERNAL USE</p><h2>Every surface has a declared limit.</h2></div>
+      <section className="press-capabilities" aria-label="Límites de capacidad verificados">
+        <div><p className="eyebrow aqua">LÍMITE DE CAPACIDAD · REVISA ANTES DE USO EXTERNO</p><h2>Cada superficie tiene un límite declarado.</h2></div>
         <div className="press-capability-table">
           {capabilityRows.map(([surface, status, boundary]) => <article key={surface}><span>{surface}</span><b>{status}</b><p>{boundary}</p></article>)}
         </div>
       </section>
       <section className="press-poster">
-        <img src={poster} alt="Folios Compliance evidence credential campaign visual" />
+        <img src={poster} alt="Visual de campaña de credencial con evidencia de Folios Compliance" />
         <div>
-          <p className="eyebrow">STATIC CAMPAIGN VISUAL · 4:5</p>
-          <h2>Evidence is not a feature.<br />It is the interface.</h2>
-          <p>For a launch post, repository social preview, or community thread. Do not attach fabricated adoption or issuance claims.</p>
-          <a href={poster} download><Download size={15} /> Download poster PNG</a>
+          <p className="eyebrow">VISUAL ESTÁTICO DE CAMPAÑA · 4:5</p>
+          <h2>La evidencia no es una función.<br />Es la interfaz.</h2>
+          <p>Para un post de lanzamiento, vista social del repositorio o hilo de comunidad. No adjuntes afirmaciones fabricadas de adopción o emisión.</p>
+          <a href={poster} download><Download size={15} /> Descargar poster PNG</a>
         </div>
       </section>
     </main>
