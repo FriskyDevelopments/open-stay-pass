@@ -99,7 +99,7 @@
 - [x] Restart and verify the development server after the reported preview outage.
 - [x] Create an award-caliber open-source repository foundation with clear architecture, security boundaries, contribution guidance, and launch storytelling.
 - [x] Add optional Ko-fi, NOWPayments, and Wise Business support configuration and a brand-aligned public support surface without mixing donations with credential or access flows.
-- [ ] Validate the public repository and support surface, then document a GitHub launch plan focused on legitimate community adoption.
+- [x] Validate the public repository and support surface, then document a GitHub launch plan focused on legitimate community adoption.
 - [x] Add NFC credential technology that encodes only the existing signed arrival or handoff URL and preserves QR-equivalent revocation and expiration controls.
 - [x] Document NFC tag selection, NDEF writing, mobile fallback, and anti-cloning/security boundaries for open-source operators.
 - [x] Implement a provider-agnostic smart-lock boundary in Open Stay Pass with explicit Custom / Design Required state, QR/NFC/Wallet separation, and safe adapter documentation.
@@ -113,7 +113,13 @@
 - [ ] Complete the world-class MVP quality pass across product polish, secure physical-digital continuity, open-source onboarding, and launch readiness.
 - [x] Create a legitimate high-conversion growth and monetization architecture focused on real adoption, GitHub stars, and optional services rather than artificial engagement.
 - [x] Add a non-blocking GitHub-star reminder that appears only after a successful local validation or demo completion when a verified repository URL is configured.
-- [ ] Produce a confirmed 30-second 16:9 hero video showing QR scan, NFC tap, HostCasa arrival, Folios handoff, and an honest GitHub Star invitation.
-- [ ] Produce two 12–15 second 9:16 promotional cuts for Reels, TikTok, and Shorts with Spanish narration and English subtitles.
-- [ ] Generate the Brandbook v2 reference assets, campaign visuals, narration, music plan, captions, and publishing copy for review.
-- [ ] Validate that every promo claim matches the real MVP capability state and request approval before any external publication or spend.
+- [x] Produce a confirmed 30-second 16:9 hero video showing QR scan, NFC tap, HostCasa arrival, Folios handoff, and an honest GitHub Star invitation.
+- [x] Produce two 12–15 second 9:16 promotional cuts for Reels, TikTok, and Shorts with Spanish narration and English subtitles.
+- [x] Generate the Brandbook v2 reference assets, campaign visuals, narration, music plan, captions, and publishing copy for review.
+- [ ] Validate every finished promo asset against the real MVP capability state; external publication or spend remains approval-gated.
+- [x] Replace the generic promotional keyframes with a rigorously Folios Compliance Brandbook v2-aligned art direction and token audit.
+- [x] Complete an Awwwards-readiness quality checklist covering visual ownership, interaction clarity, motion restraint, accessibility, performance, and real-product proof.
+- [x] Rework the live landing page from generic dark hospitality styling into the canonical Folios Ink/Paper/System/Proof/Signal documentary credential system.
+- [x] Integrate the finished Folios Compliance promo videos, subtitles, and campaign poster into a public, claim-safe press-kit surface.
+- [x] Reduce the production JavaScript bundle-size warning through route-level code splitting, then rerun full validation.
+- [x] Record an asset-by-asset claim and token audit for the hero film, vertical cuts, poster, subtitles, and public landing acceptance review.
