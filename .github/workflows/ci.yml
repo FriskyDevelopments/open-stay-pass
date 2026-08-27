@@ -1,5 +1,7 @@
 name: Validate Open Stay Pass
 
+# Local git hooks never apply to a contributor who cloned the repository, so
+# every check that matters is repeated here.
 on:
   push:
     branches: [main]
@@ -9,21 +11,77 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Never let a runner default this to production: the unit suite must run
+  # against React's development build, or every Testing Library render fails
+  # with "React.act is not a function".
+  NODE_ENV: test
+
 jobs:
+  commitlint:
+    name: Commit messages
+    runs-on: ubuntu-latest
+    # Commits are linted where review happens. Direct pushes to main are
+    # covered by the local commit-msg hook.
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+        with:
+          # commitlint needs the full range of commits under review.
+          fetch-depth: 0
+
+      # No `version:` input on purpose — the action reads the exact pnpm
+      # version from the packageManager field in package.json.
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install locked dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint pull request commits
+        run: >-
+          pnpm commitlint
+          --from ${{ github.event.pull_request.base.sha }}
+          --to ${{ github.event.pull_request.head.sha }}
+          --verbose
+
   validate:
     name: Test, type-check, and build
     runs-on: ubuntu-latest
     steps:
       - name: Check out source
         uses: actions/checkout@v4
+
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
+
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: pnpm
+
       - name: Install locked dependencies
         run: pnpm install --frozen-lockfile
-      - name: Validate the application
-        run: pnpm validate
+
+      # Run the steps separately rather than through `pnpm validate` so a
+      # failure names which stage broke without reading the whole log.
+      - name: Type-check
+        run: pnpm check
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build
