@@ -55,9 +55,9 @@
 - [x] Display invoice transition history to the operator and guest while preserving privacy and operator authorization.
 - [x] Route invoice-issued notifications through notifyOwner when configured and add a dedicated invoice status audit event.
 - [x] Add integration coverage for the authorized mutation, notification persistence, and unchanged handoff link after invoice updates.
-- [ ] Guide and verify the updated Cloudflare token in the owner console with least-privilege deployment permissions.
+- [x] Verify callable Cloudflare account, Worker-script, zone, and route access through the enabled account connector without exposing a token; the browser dashboard artifact collector remains a separate limitation.
 - [x] Document the Supabase ticket-state schema, transition rules, color mapping, and notification flow.
-- [ ] Execute and record a real Cloudflare Pages and Folios Worker deployment smoke test with the updated token.
+- [x] Execute and record a real Cloudflare Pages and Folios Worker deployment smoke test: stable Pages CORS passes, `folios.works/auth/*` maps to `folios-auth-worker`, health returns 200, and the HostCasa bridge rejects an invalid token with 401.
 - [x] Add a client-side QR-to-text reader based on the uploaded jsQR package for operator verification of dynamic links.
 - [x] Preserve signed-link validation by treating decoded QR text as input to existing arrival/handoff routes, never as trusted identity data.
 - [x] Add QR decoding tests and validate the integration with the existing test, type-check, and build suite.
@@ -133,6 +133,11 @@
 - [x] Correct the press-kit hero and media metadata to honor Spanish-first copy with controlled English subtitles and labels.
 - [x] Use the user-approved connected Manus browser, rather than a sandbox session, for requested read-only Cloudflare verification.
 - [ ] Complete visible Cloudflare Workers account, route, and deployment inspection once the connected browser’s extension artifact collector can expose the dashboard controls.
+- [ ] Deploy the user-approved current local `folios-auth-worker` source to the verified Cloudflare account and record its post-deploy health and invalid-token smoke results.
+- [x] Audit the public `FriskyDevelopments/open-stay-pass` repository for source parity, security, licensing, contributor readiness, dependency health, and launch quality.
+- [ ] Synchronize the validated current release to the public GitHub branch and add reproducible CI, then address the audit's P1 discovery/security metadata gaps.
+- [x] Adapted the Open Stay Pass integrations map to the supplied Folios reference’s hierarchy, status language, and visual density without weakening security boundaries; desktop/mobile review and 44-test validation passed.
+- [ ] Prepare a channel-specific Open Stay Pass promotion plan and exact reviewable launch materials for external approval before posting, commenting, or spending.
 - [x] Add and validate the framework-neutral `open-stay-pass/` reference package required for reuse across HostCasa and Folios.
 - [x] Add a privacy-safe terminal-style confirmation when a credential link is copied, showing only truncated non-secret metadata.
 - [x] Test the terminal-style copy feedback on desktop and mobile while ensuring no full credential token is rendered or logged.
