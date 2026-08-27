@@ -14,8 +14,8 @@ vi.mock("@/lib/trpc", () => ({
           useQuery: () => ({
             isLoading: false,
             data: [
-              { name: "Google Calendar", category: "Nango", state: "available", description: "Sincronización opcional." },
-              { name: "Cerraduras inteligentes", category: "Custom", state: "design_required", description: "Diseño por proveedor." },
+              { name: "Google Calendar", category: "Nango", state: "available", description: "Optional sync." },
+              { name: "Smart locks", category: "Custom", state: "design_required", description: "Provider-specific design." },
             ],
           }),
         },
@@ -34,23 +34,23 @@ describe("Integrations capability map", () => {
 
   it("keeps the independent signed-credential core visible before optional connectors", () => {
     render(React.createElement(Integrations));
-    expect(screen.getByText("Núcleo independiente")).toBeTruthy();
-    expect(screen.getByText("Resolver firmado")).toBeTruthy();
+    expect(screen.getByText("Independent core")).toBeTruthy();
+    expect(screen.getByText("Signed resolver")).toBeTruthy();
     expect(screen.getByText("NDEF URL")).toBeTruthy();
-    expect(screen.getByText("Conecta contexto, no credenciales.")).toBeTruthy();
+    expect(screen.getByText("Connect context, not credentials.")).toBeTruthy();
   });
 
   it("reports Apple availability and Google gating honestly", () => {
     render(React.createElement(Integrations));
-    expect(screen.getByText("Pase firmado · disponible")).toBeTruthy();
-    expect(screen.getByText("Requiere configuración")).toBeTruthy();
-    expect(screen.getByText(/cuenta de servicio pueda firmar/i)).toBeTruthy();
+    expect(screen.getByText("Signed pass · available")).toBeTruthy();
+    expect(screen.getByText("Configuration required")).toBeTruthy();
+    expect(screen.getByText(/service account can sign/i)).toBeTruthy();
   });
 
   it("makes NFC and smart-lock authority limits inspectable", () => {
     render(React.createElement(Integrations));
-    expect(screen.getByText(/Nunca un PIN, llave BLE ni autorización permanente/i)).toBeTruthy();
-    expect(screen.getByText("Límite de cerradura")).toBeTruthy();
-    expect(screen.getByText(/Acceso físico pertenece al proveedor/i)).toBeTruthy();
+    expect(screen.getByText(/Never a PIN, BLE key, or permanent authorization/i)).toBeTruthy();
+    expect(screen.getByText("Lock boundary")).toBeTruthy();
+    expect(screen.getByText(/Physical access belongs to the provider/i)).toBeTruthy();
   });
 });

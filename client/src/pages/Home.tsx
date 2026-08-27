@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Link } from "wouter";
 
 export default function Home() {
-  const [locale, setLocale] = useState<Locale>("es");
+  const [locale, setLocale] = useState<Locale>("en");
   const supportLinks = getSupportLinks();
   const repositoryUrl = getGitHubRepositoryUrl();
   return (

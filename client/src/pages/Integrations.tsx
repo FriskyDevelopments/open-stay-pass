@@ -12,7 +12,7 @@ type CarrierState = {
 };
 
 export default function Integrations() {
-  const [locale, setLocale] = useState<Locale>("es");
+  const [locale, setLocale] = useState<Locale>("en");
   const plan = trpc.openStay.public.integrations.useQuery({ locale });
   const appleWallet = trpc.openStay.public.walletStatus.useQuery({ platform: "apple", locale });
   const googleWallet = trpc.openStay.public.walletStatus.useQuery({ platform: "google", locale });

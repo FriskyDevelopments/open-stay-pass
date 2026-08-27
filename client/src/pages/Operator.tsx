@@ -14,7 +14,7 @@ const InvoiceLifecyclePanel = lazy(() => import("@/components/InvoiceLifecyclePa
 const QrCodeToText = lazy(() => import("@/components/QrCodeToText").then(module => ({ default: module.QrCodeToText })));
 
 export default function Operator() {
-  const [locale, setLocale] = useState<Locale>("es");
+  const [locale, setLocale] = useState<Locale>("en");
   const [stayResult, setStayResult] = useState<{ arrivalUrl: string; nfcUri: string; qrDataUrl: string } | null>(null);
   const [handoffResult, setHandoffResult] = useState<{ handoffUrl: string; qrDataUrl: string } | null>(null);
   const [sharedCredential, setSharedCredential] = useState<{ link: string; nfcUri: string | null; qrDataUrl: string } | null>(null);

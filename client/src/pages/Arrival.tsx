@@ -9,7 +9,7 @@ import "./operator-enhancements.css";
 export default function Arrival() {
   const [, params] = useRoute("/arrival/:token");
   const token = params?.token ?? "";
-  const [locale, setLocale] = useState<Locale>("es");
+  const [locale, setLocale] = useState<Locale>("en");
   const [question, setQuestion] = useState("");
   const preview = trpc.openStay.public.previewToken.useQuery(undefined, { enabled: token === "preview", retry: false });
   const activeToken = token === "preview" ? (preview.data?.token ?? "") : token;

@@ -9,7 +9,7 @@ import { useRoute } from "wouter";
 export default function Handoff() {
   const [, params] = useRoute("/handoff/:token");
   const token = params?.token ?? "";
-  const [locale, setLocale] = useState<Locale>("es");
+  const [locale, setLocale] = useState<Locale>("en");
   const handoff = trpc.openStay.public.handoff.useQuery({ token, locale }, { enabled: Boolean(token), retry: false });
   const complete = trpc.openStay.public.completeHandoff.useMutation({ onSuccess: () => handoff.refetch() });
   const appleWallet = trpc.openStay.public.walletStatus.useQuery({ platform: "apple", locale });

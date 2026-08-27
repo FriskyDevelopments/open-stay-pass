@@ -142,6 +142,6 @@
 - [x] Add a privacy-safe terminal-style confirmation when a credential link is copied, showing only truncated non-secret metadata.
 - [x] Test the terminal-style copy feedback on desktop and mobile while ensuring no full credential token is rendered or logged.
 - [x] Inspect the provided integrations reference and adapt its compatible information architecture to the Folios-aligned Open Stay Pass integrations surface.
-- [ ] Convert the public Open Stay Pass product and press kit from Spanish-first to English-first while preserving complete Spanish localization.
+- [x] Converted the public Open Stay Pass product and Press Kit from Spanish-first to English-first while preserving complete Spanish localization; English defaults and Spanish switching are regression-tested across locale-owning surfaces.
 - [x] Produced and integrated a separate English Folios Compliance video package while retaining the complete Spanish video package; the Press Kit defaults to the English dub and keeps Spanish as an explicit selectable edition.
 - [x] Created verified subtitle-free English-dubbed editions of the existing 30-second hero and both 14-second vertical campaign films; original Spanish and English-dubbed MP4 downloads are available separately.
