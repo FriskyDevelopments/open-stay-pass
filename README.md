@@ -1,8 +1,8 @@
 # Open Stay Pass
 
-> **A QR-first, bilingual hospitality credential system for small operators.**
+> **An English-first, multilingual QR hospitality credential system for small operators.**
 
-[Open the public repository](https://github.com/FriskyDevelopments/open-stay-pass) · [Open the live MVP](https://staypass-pmz7aqns.manus.space) · [Review the Spanish-first press kit](https://staypass-pmz7aqns.manus.space/press-kit)
+[Open the public repository](https://github.com/FriskyDevelopments/open-stay-pass) · [Open the live MVP](https://staypass-pmz7aqns.manus.space) · [Review the English-dub press kit](https://staypass-pmz7aqns.manus.space/press-kit)
 
 Open Stay Pass turns one signed, revocable URL into a useful guest arrival guide, Folios evidence handoff, QR code, NDEF NFC tag, and—when officially configured—Apple Wallet or Google Wallet pass. HostCasa owns guest continuity. Folios owns proof and fiscal handoff. The credential core stays portable.
 
@@ -25,21 +25,24 @@ Small operators should not need a PMS migration, lock-provider contract, native 
 - **Google Wallet adapter contract** that stays hidden until a valid issuer and service-account private key can sign.
 - **Smart-lock boundary** that keeps provisioning with HostCasa/a verified provider and never puts door secrets in QR, NFC, Wallet, or browser state.
 
-## Quick start
+## Verify a clone
 
 ```bash
-pnpm install
-cp .env.example .env
+pnpm install --frozen-lockfile
+pnpm validate
+```
+
+This command runs the full regression suite, type-check, and production build without committing or copying deployment credentials. The public [live MVP](https://staypass-pmz7aqns.manus.space) is the quickest way to explore the complete QR-first operator flow.
+
+## Run the full stack locally
+
+The full application intentionally requires an owner-provisioned local environment because it validates signing, identity, storage, and deployment settings at startup. Configure those values through your own private secret manager or deployment platform—never by committing a `.env` file or embedding values in docs—then run:
+
+```bash
 pnpm dev
 ```
 
-Open the local URL shown by the development server. Use the Operator console to create a credential, then scan its QR from a second device or copy the NDEF URL to an NFC tag writer.
-
-```bash
-pnpm test
-pnpm check
-pnpm build
-```
+Use the Operator console to create a credential, then scan its QR from a second device or copy the NDEF URL to an NFC tag writer.
 
 The repository includes a locked GitHub Actions validation workflow for pushes and pull requests to `main`. Once the public release is synchronized, its status appears under the repository’s **Actions** tab; the badge is deliberately added only after its first public run exists.
 

@@ -136,6 +136,8 @@
 - [ ] Deploy the user-approved current local `folios-auth-worker` source to the verified Cloudflare account and record its post-deploy health and invalid-token smoke results.
 - [x] Audit the public `FriskyDevelopments/open-stay-pass` repository for source parity, security, licensing, contributor readiness, dependency health, and launch quality.
 - [ ] Synchronize the validated current release to the public GitHub branch and add reproducible CI, then address the audit's P1 discovery/security metadata gaps.
+- [x] Removed the generated public debug collector from the tracked repository before public synchronization and added a regression test that prevents its return.
+- [x] Recorded `folios-auth-worker` as the only authorized Folios authentication bridge for any required login-dependent verification; no parallel login route will be created.
 - [x] Adapted the Open Stay Pass integrations map to the supplied Folios reference’s hierarchy, status language, and visual density without weakening security boundaries; desktop/mobile review and 44-test validation passed.
 - [ ] Prepare a channel-specific Open Stay Pass promotion plan and exact reviewable launch materials for external approval before posting, commenting, or spending.
 - [x] Add and validate the framework-neutral `open-stay-pass/` reference package required for reuse across HostCasa and Folios.

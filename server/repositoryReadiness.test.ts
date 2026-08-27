@@ -28,5 +28,12 @@ describe("public repository readiness", () => {
     expect(readme).toContain("https://github.com/FriskyDevelopments/open-stay-pass");
     expect(readme).toContain("https://staypass-pmz7aqns.manus.space");
     expect(readme).toContain("https://staypass-pmz7aqns.manus.space/press-kit");
+    expect(readme).toContain("English-first");
+    expect(readme).not.toContain("Spanish-first press kit");
+    expect(readme).not.toContain("cp .env.example .env");
+  });
+
+  it("does not ship generated debug collectors to public visitors", async () => {
+    await expect(readFile(projectFile("client/public/__manus__/debug-collector.js"), "utf8")).rejects.toThrow();
   });
 });
