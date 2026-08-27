@@ -50,7 +50,7 @@ When a public `VITE_GITHUB_REPOSITORY_URL` is configured, successful test and bu
 
 ## Security boundary
 
-The QR, NFC tag, and Wallet barcode contain only the same short-lived signed URL. They never contain a lock PIN, BLE key, raw access token, payment data, or permanent authorization. The server re-checks signature, expected scope, expiry, tenant/property relation, and revocation before resolving a credential.
+The QR, NFC tag, and Wallet barcode contain only the same short-lived signed URL. They never contain a lock PIN, BLE key, raw access token, payment data, or permanent authorization. The server re-checks the signature, the expected scope, the stored token hash, the revocation status, and the expiry before resolving a credential.
 
 Read [the smart-lock adapter contract](docs/smart-lock-adapter-contract.md), [Wallet validation status](docs/wallet-demo-validation-status.md), and [Folios Brandbook V2 mapping](docs/folios-brandbook-v2-implementation-map.md) before connecting hardware or publishing a branded fork.
 
