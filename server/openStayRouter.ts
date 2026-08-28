@@ -11,6 +11,7 @@ import {
   getCredentialById,
   getHandoffById,
   getHandoffInvoiceHistory,
+  getOperatorNotificationSettings,
   getStayById,
   listOperatorRecords,
   recordCredentialActivity,
