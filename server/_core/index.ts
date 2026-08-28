@@ -37,7 +37,7 @@ async function startServer() {
   app.set("trust proxy", 1);
   app.use(express.json({ limit: "1mb" }));
   app.use(express.urlencoded({ limit: "1mb", extended: true }));
-  const configuredOrigins = (process.env.CORS_ORIGINS ?? "https://open-stay-pass.pages.dev,https://staypass-pmz7aqns.manus.space").split(",").map(origin => origin.trim()).filter(Boolean);
+  const configuredOrigins = (process.env.CORS_ORIGINS ?? "https://stay-pass.vercel.app").split(",").map(origin => origin.trim()).filter(Boolean);
   app.use((req, res, next) => {
     res.setHeader("X-Content-Type-Options", "nosniff");
     res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
