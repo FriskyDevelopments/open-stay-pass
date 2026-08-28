@@ -62,11 +62,26 @@ export function encryptCredentialToken(token: string) {
 }
 
 export function decryptCredentialToken(input: { tokenCiphertext?: string | null; tokenIv?: string | null; tokenTag?: string | null }) {
-  if (!input.tokenCiphertext || !input.tokenIv || !input.tokenTag) return null;
+  return decryptSecret({ ciphertext: input.tokenCiphertext, iv: input.tokenIv, tag: input.tokenTag });
+}
+
+export function encryptSecret(value: string) {
+  const iv = randomBytes(12);
+  const cipher = createCipheriv("aes-256-gcm", credentialEncryptionKey(), iv);
+  const ciphertext = Buffer.concat([cipher.update(value, "utf8"), cipher.final()]);
+  return {
+    ciphertext: ciphertext.toString("base64url"),
+    iv: iv.toString("base64url"),
+    tag: cipher.getAuthTag().toString("base64url"),
+  };
+}
+
+export function decryptSecret(input: { ciphertext?: string | null; iv?: string | null; tag?: string | null }) {
+  if (!input.ciphertext || !input.iv || !input.tag) return null;
   try {
-    const decipher = createDecipheriv("aes-256-gcm", credentialEncryptionKey(), Buffer.from(input.tokenIv, "base64url"));
-    decipher.setAuthTag(Buffer.from(input.tokenTag, "base64url"));
-    return Buffer.concat([decipher.update(Buffer.from(input.tokenCiphertext, "base64url")), decipher.final()]).toString("utf8");
+    const decipher = createDecipheriv("aes-256-gcm", credentialEncryptionKey(), Buffer.from(input.iv, "base64url"));
+    decipher.setAuthTag(Buffer.from(input.tag, "base64url"));
+    return Buffer.concat([decipher.update(Buffer.from(input.ciphertext, "base64url")), decipher.final()]).toString("utf8");
   } catch {
     return null;
   }
