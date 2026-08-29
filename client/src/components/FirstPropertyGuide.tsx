@@ -12,12 +12,10 @@ type CreateStayInput = {
   localRecommendations?: string;
   arrivalAt: Date;
   departureAt: Date;
-  baseUrl: string;
 };
 
 type Props = {
   locale: Locale;
-  baseUrl: string;
   isCreating: boolean;
   onCreate: (input: CreateStayInput) => void;
 };
@@ -25,7 +23,7 @@ type Props = {
 const localToday = () => new Date().toISOString().slice(0, 10);
 const localTomorrow = () => new Date(Date.now() + 86_400_000).toISOString().slice(0, 10);
 
-export default function FirstPropertyGuide({ locale, baseUrl, isCreating, onCreate }: Props) {
+export default function FirstPropertyGuide({ locale, isCreating, onCreate }: Props) {
   const [draft, setDraft] = useState({
     propertyName: "",
     guestName: "",
@@ -51,7 +49,6 @@ export default function FirstPropertyGuide({ locale, baseUrl, isCreating, onCrea
       localRecommendations: draft.localRecommendations || undefined,
       arrivalAt: new Date(`${draft.arrival}T12:00:00`),
       departureAt: new Date(`${draft.departure}T12:00:00`),
-      baseUrl,
     });
   }}>
     <div className="form-heading"><div><p className="eyebrow aqua">HOSTCASA / {copy(locale, "PRIMERA PROPIEDAD", "FIRST PROPERTY")}</p><h2>{copy(locale, "Construye tu guía de llegada", "Build your arrival guide")}</h2></div><Home /></div>

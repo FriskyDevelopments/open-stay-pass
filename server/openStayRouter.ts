@@ -2,7 +2,6 @@ import { TRPCError } from "@trpc/server";
 import QRCode from "qrcode";
 import { z } from "zod";
 import { invokeLLM } from "./_core/llm";
-import { notifyOwner } from "./_core/notification";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import {
   completeHandoff,
@@ -20,7 +19,8 @@ import {
   updateOperatorNotificationSettings,
   updateHandoffInvoice,
 } from "./openStayDb";
-import { decryptCredentialToken, encryptCredentialToken, hashCredentialToken, issueCredentialToken } from "./credentialService";
+import { decryptCredentialToken, encryptCredentialToken, encryptSecret, hashCredentialToken, issueCredentialToken } from "./credentialService";
+import { getPublicAppOrigin } from "./_core/env";
 import type { IntegrationPlan, Locale, WalletAdapterStatus } from "../shared/openStay";
 import { randomUUID } from "node:crypto";
 import { resolveConciergeRuntime } from "./conciergeConfig";
@@ -30,7 +30,22 @@ import { resolvePublicCredential } from "./publicCredential";
 import { createGoogleFoliosSaveUrl, walletReadiness } from "./wallet/walletIssuer";
 
 const localeSchema = z.enum(["es", "en"]);
-const urlSchema = z.string().url().refine(value => value.startsWith("http://") || value.startsWith("https://"), "A valid public base URL is required.");
+const conciergeRequests = new Map<string, { count: number; resetAt: number }>();
+const CONCIERGE_WINDOW_MS = 60_000;
+const CONCIERGE_LIMIT = 10;
+
+function enforceConciergeRateLimit(key: string) {
+  const now = Date.now();
+  const current = conciergeRequests.get(key);
+  if (!current || current.resetAt <= now) {
+    conciergeRequests.set(key, { count: 1, resetAt: now + CONCIERGE_WINDOW_MS });
+    return;
+  }
+  if (current.count >= CONCIERGE_LIMIT) {
+    throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: "Too many concierge requests. Please try again shortly." });
+  }
+  current.count += 1;
+}
 
 function text(locale: Locale, spanish: string, english: string) {
   return locale === "es" ? spanish : english;
@@ -51,12 +66,10 @@ async function notifyForEvent(input: {
   detailEn: string;
   shouldNotify: boolean;
 }) {
-  const settings = await getOperatorNotificationSettings(input.operatorId);
-  const canPush = input.shouldNotify && settings.enabled && settings.channel === "project_owner_push";
-  const delivered = canPush ? await notifyOwner({ title: input.titleEs, content: input.detailEs }) : false;
+  if (!input.shouldNotify) return;
   await createOperatorNotification({
     ...input,
-    deliveryStatus: canPush ? (delivered ? "delivered" : "unavailable") : "queued",
+    deliveryStatus: "queued",
   });
 }
 
@@ -85,7 +98,7 @@ const integrations = (locale: Locale): IntegrationPlan[] => [
 export const openStayRouter = router({
   public: router({
     walletStatus: publicProcedure.input(z.object({ platform: z.enum(["apple", "google"]), locale: localeSchema })).query(({ input }) => walletStatus(input.platform, input.locale)),
-    googleWalletSave: publicProcedure.input(z.object({ token: z.string(), locale: localeSchema, baseUrl: urlSchema })).mutation(async ({ input }) => {
+    googleWalletSave: publicProcedure.input(z.object({ token: z.string(), locale: localeSchema })).mutation(async ({ input }) => {
       if (!walletReadiness("google")) throw new TRPCError({ code: "PRECONDITION_FAILED", message: "Google Wallet configuration is incomplete." });
       const credential = await resolvePublicCredential(input.token, "handoff");
       if (!credential.handoffId) throw new TRPCError({ code: "NOT_FOUND", message: "The related Folios handoff is unavailable." });
@@ -94,7 +107,7 @@ export const openStayRouter = router({
       if (handoff.invoiceStatus !== "issued" || !handoff.invoiceNumber) {
         throw new TRPCError({ code: "PRECONDITION_FAILED", message: "Only an issued CFDI can be added to Wallet." });
       }
-      const handoffUrl = path(input.baseUrl, "handoff", input.token);
+      const handoffUrl = path(getPublicAppOrigin(), "handoff", input.token);
       return {
         saveUrl: createGoogleFoliosSaveUrl({
           title: handoff.title,
@@ -154,7 +167,10 @@ export const openStayRouter = router({
       });
       return { completed: true };
     }),
-    concierge: publicProcedure.input(z.object({ token: z.string(), locale: localeSchema, question: z.string().trim().min(2).max(500) })).mutation(async ({ input }) => {
+    concierge: publicProcedure.input(z.object({ token: z.string(), locale: localeSchema, question: z.string().trim().min(2).max(500) })).mutation(async ({ ctx, input }) => {
+      const forwardedFor = ctx.req.headers["x-forwarded-for"];
+      const requestIp = (Array.isArray(forwardedFor) ? forwardedFor[0] : forwardedFor?.split(",")[0])?.trim() || ctx.req.ip || "unknown";
+      enforceConciergeRateLimit(`${input.token}:${requestIp}`);
       const credential = await resolvePublicCredential(input.token, "arrival");
       if (!credential.stayId) throw new TRPCError({ code: "NOT_FOUND", message: "The related stay no longer exists." });
       const stay = getPreviewStay(input.token)?.stay ?? await getStayById(credential.stayId);
@@ -204,16 +220,16 @@ export const openStayRouter = router({
       localRecommendations: z.string().trim().max(4000).optional(),
       arrivalAt: z.date(),
       departureAt: z.date(),
-      baseUrl: urlSchema,
     })).mutation(async ({ ctx, input }) => {
       if (input.departureAt <= input.arrivalAt) throw new TRPCError({ code: "BAD_REQUEST", message: "Departure must follow arrival." });
       const stayId = randomUUID();
       const credentialId = randomUUID();
       const expiresAt = new Date(input.departureAt.getTime() + 24 * 60 * 60 * 1000);
       const token = issueCredentialToken({ credentialId, scope: "arrival", expiresAt: expiresAt.getTime() });
-      const arrivalUrl = path(input.baseUrl, "arrival", token);
+      const arrivalUrl = path(getPublicAppOrigin(), "arrival", token);
+      const encryptedWifiPassword = input.wifiPassword ? encryptSecret(input.wifiPassword) : null;
       await createStayWithCredential({
-        stay: { id: stayId, operatorId: ctx.user.id, propertyName: input.propertyName, guestName: input.guestName, guestLocale: input.guestLocale, wifiName: input.wifiName || null, wifiPassword: input.wifiPassword || null, houseRules: input.houseRules || null, localRecommendations: input.localRecommendations || null, arrivalAt: input.arrivalAt, departureAt: input.departureAt },
+        stay: { id: stayId, operatorId: ctx.user.id, propertyName: input.propertyName, guestName: input.guestName, guestLocale: input.guestLocale, wifiName: input.wifiName || null, wifiPassword: null, wifiPasswordCiphertext: encryptedWifiPassword?.ciphertext ?? null, wifiPasswordIv: encryptedWifiPassword?.iv ?? null, wifiPasswordTag: encryptedWifiPassword?.tag ?? null, houseRules: input.houseRules || null, localRecommendations: input.localRecommendations || null, arrivalAt: input.arrivalAt, departureAt: input.departureAt },
         credential: { id: credentialId, operatorId: ctx.user.id, stayId, handoffId: null, type: "arrival", status: "active", tokenHash: hashCredentialToken(token), ...encryptCredentialToken(token), expiresAt },
       });
       return { stayId, credentialId, token, arrivalUrl, nfcUri: arrivalUrl, qrDataUrl: await QRCode.toDataURL(arrivalUrl, { margin: 1, width: 720, color: { dark: "#07121b", light: "#00000000" } }), expiresAt };
@@ -226,13 +242,12 @@ export const openStayRouter = router({
       checkState: z.enum(["ready", "needs_review"]),
       ownerName: z.string().trim().min(2).max(160),
       locale: localeSchema,
-      baseUrl: urlSchema,
     })).mutation(async ({ ctx, input }) => {
       const handoffId = randomUUID();
       const credentialId = randomUUID();
       const expiresAt = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
       const token = issueCredentialToken({ credentialId, scope: "handoff", expiresAt: expiresAt.getTime() });
-      const handoffUrl = path(input.baseUrl, "handoff", token);
+      const handoffUrl = path(getPublicAppOrigin(), "handoff", token);
       await createHandoffWithCredential({
         handoff: { id: handoffId, operatorId: ctx.user.id, title: input.title, sourceType: input.sourceType, sourceContent: input.sourceContent, context: input.context, checkState: input.checkState, ownerName: input.ownerName, status: "shared" },
         credential: { id: credentialId, operatorId: ctx.user.id, stayId: null, handoffId, type: "handoff", status: "active", tokenHash: hashCredentialToken(token), ...encryptCredentialToken(token), expiresAt },
@@ -256,14 +271,14 @@ export const openStayRouter = router({
       if (!revoked) throw new TRPCError({ code: "NOT_FOUND", message: "Credential not found." });
       return { revoked: true };
     }),
-    shareCredential: protectedProcedure.input(z.object({ credentialId: z.string().uuid(), baseUrl: urlSchema })).mutation(async ({ ctx, input }) => {
+    shareCredential: protectedProcedure.input(z.object({ credentialId: z.string().uuid() })).mutation(async ({ ctx, input }) => {
       const credential = await getCredentialById(input.credentialId);
       if (!credential || credential.operatorId !== ctx.user.id) throw new TRPCError({ code: "NOT_FOUND", message: "Credential not found." });
       if (credential.status !== "active" || credential.expiresAt.getTime() < Date.now()) throw new TRPCError({ code: "FORBIDDEN", message: "Only active credentials can be shared." });
       const token = decryptCredentialToken(credential);
       if (!token) throw new TRPCError({ code: "CONFLICT", message: "This legacy credential cannot be recovered. Create a replacement credential." });
       const route = credential.type === "arrival" ? "arrival" : "handoff";
-      const link = path(input.baseUrl, route, token);
+      const link = path(getPublicAppOrigin(), route, token);
       return { link, nfcUri: credential.type === "arrival" ? link : null, qrDataUrl: await QRCode.toDataURL(link, { margin: 1, width: 720, color: { dark: credential.type === "arrival" ? "#07121b" : "#10251d", light: "#00000000" } }) };
     }),
     notificationSettings: protectedProcedure.query(({ ctx }) => getOperatorNotificationSettings(ctx.user.id)),

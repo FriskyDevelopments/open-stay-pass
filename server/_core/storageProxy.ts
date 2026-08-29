@@ -3,14 +3,27 @@ import { ENV } from "./env";
 
 export function registerStorageProxy(app: Express) {
   app.get("/manus-storage/*", async (req, res) => {
-    const key = (req.params as Record<string, string>)[0];
-    if (!key) {
-      res.status(400).send("Missing storage key");
+    const rawKey = (req.params as Record<string, string>)[0];
+    let key: string;
+    try {
+      key = decodeURIComponent(rawKey ?? "");
+    } catch {
+      res.status(400).send("Invalid storage key");
+      return;
+    }
+    const isValidKey = Boolean(key)
+      && !key.startsWith("/")
+      && !key.includes("\\")
+      && !key.split("/").includes("..")
+      && /^[a-zA-Z0-9/_\-.]+$/.test(key)
+      && ENV.storagePublicPrefixes.some(prefix => key.startsWith(prefix));
+    if (!isValidKey) {
+      res.status(404).send("Storage object not found");
       return;
     }
 
-    if (!ENV.forgeApiUrl || !ENV.forgeApiKey) {
-      res.status(500).send("Storage proxy not configured");
+    if (!ENV.forgeApiUrl || !ENV.forgeApiKey || ENV.storagePublicPrefixes.length === 0) {
+      res.status(404).send("Storage proxy not configured");
       return;
     }
 

@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import type { Express, Request, Response } from "express";
-import { ONE_YEAR_MS, COOKIE_NAME } from "@shared/const";
+import { COOKIE_NAME, SESSION_MAX_AGE_MS } from "@shared/const";
 import * as db from "./db";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { sdk } from "./_core/sdk";
@@ -54,8 +54,8 @@ export function registerHostCasaAuthRoutes(app: Express) {
         lastSignedIn: new Date(),
       });
 
-      const sessionToken = await sdk.createSessionToken(openId, { name, expiresInMs: ONE_YEAR_MS });
-      res.cookie(COOKIE_NAME, sessionToken, { ...getSessionCookieOptions(req), maxAge: ONE_YEAR_MS });
+      const sessionToken = await sdk.createSessionToken(openId, { name, expiresInMs: SESSION_MAX_AGE_MS });
+      res.cookie(COOKIE_NAME, sessionToken, { ...getSessionCookieOptions(req), maxAge: SESSION_MAX_AGE_MS });
       res.json({ ok: true });
     } catch (error) {
       console.error("[HostCasa Auth] Session bridge failed", error);

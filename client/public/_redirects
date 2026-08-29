@@ -1,0 +1,3 @@
+# Cloudflare Pages SPA fallback.
+# Every non-asset path is served by the client-side router in index.html.
+/*    /index.html    200

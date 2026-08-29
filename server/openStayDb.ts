@@ -2,6 +2,7 @@ import { and, desc, eq } from "drizzle-orm";
 import { getDb } from "./db";
 import { activityEvents, credentials, handoffs, operatorNotificationSettings, operatorNotifications, stays } from "../drizzle/schema";
 import { notifyOwner } from "./_core/notification";
+import { decryptSecret } from "./credentialService";
 
 export async function createStayWithCredential(input: {
   stay: typeof stays.$inferInsert;
@@ -9,8 +10,10 @@ export async function createStayWithCredential(input: {
 }) {
   const db = await getDb();
   if (!db) throw new Error("The database is unavailable.");
-  await db.insert(stays).values(input.stay);
-  await db.insert(credentials).values(input.credential);
+  await db.transaction(async tx => {
+    await tx.insert(stays).values(input.stay);
+    await tx.insert(credentials).values(input.credential);
+  });
   return input;
 }
 
@@ -20,8 +23,10 @@ export async function createHandoffWithCredential(input: {
 }) {
   const db = await getDb();
   if (!db) throw new Error("The database is unavailable.");
-  await db.insert(handoffs).values(input.handoff);
-  await db.insert(credentials).values(input.credential);
+  await db.transaction(async tx => {
+    await tx.insert(handoffs).values(input.handoff);
+    await tx.insert(credentials).values(input.credential);
+  });
   return input;
 }
 
@@ -36,7 +41,16 @@ export async function getStayById(id: string) {
   const db = await getDb();
   if (!db) return undefined;
   const result = await db.select().from(stays).where(eq(stays.id, id)).limit(1);
-  return result[0];
+  const stay = result[0];
+  if (!stay) return undefined;
+  return {
+    ...stay,
+    wifiPassword: decryptSecret({
+      ciphertext: stay.wifiPasswordCiphertext,
+      iv: stay.wifiPasswordIv,
+      tag: stay.wifiPasswordTag,
+    }) ?? stay.wifiPassword,
+  };
 }
 
 export async function getHandoffInvoiceHistory(handoffId: string) {
@@ -166,7 +180,7 @@ export async function listOperatorRecords(operatorId: number) {
     getOperatorNotificationSettings(operatorId),
   ]);
   return {
-    stays: operatorStays,
+    stays: operatorStays.map(({ wifiPassword, wifiPasswordCiphertext, wifiPasswordIv, wifiPasswordTag, ...stay }) => stay),
     handoffs: operatorHandoffs,
     credentials: operatorCredentials.map(({ tokenHash, tokenCiphertext, tokenIv, tokenTag, ...credential }) => credential),
     events,

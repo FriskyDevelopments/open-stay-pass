@@ -34,7 +34,11 @@ export const stays = mysqlTable("stays", {
   guestName: varchar("guestName", { length: 160 }).notNull(),
   guestLocale: mysqlEnum("guestLocale", ["es", "en"]).default("es").notNull(),
   wifiName: varchar("wifiName", { length: 160 }),
+  /** Legacy plaintext field retained temporarily for backward-compatible reads. */
   wifiPassword: varchar("wifiPassword", { length: 160 }),
+  wifiPasswordCiphertext: text("wifiPasswordCiphertext"),
+  wifiPasswordIv: varchar("wifiPasswordIv", { length: 32 }),
+  wifiPasswordTag: varchar("wifiPasswordTag", { length: 32 }),
   houseRules: text("houseRules"),
   localRecommendations: text("localRecommendations"),
   arrivalAt: timestamp("arrivalAt").notNull(),
