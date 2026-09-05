@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Open Stay Pass community documentation, brand manual, and a free browser-only QR Studio. MIT licensed.">
+  <meta name="theme-color" content="#0A1018">
+  <title>Open Stay Pass — Community & QR Studio</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/mark-signed-stroke-compact.svg">
+  <link rel="stylesheet" href="/brand.css">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#studio">Skip to QR Studio</a>
+  <header class="site-header wrap">
+    <a class="wordmark" href="/" aria-label="Open Stay Pass home"><img src="/assets/mark-signed-stroke.svg" width="90" height="48" alt=""><span>Open Stay Pass</span></a>
+    <nav aria-label="Main navigation">
+      <a href="#studio">QR Studio</a>
+      <a href="/design-system/" data-en="Brand manual" data-es="Manual de marca">Brand manual</a>
+      <a href="https://github.com/FriskyDevelopments/open-stay-pass">GitHub <span aria-hidden="true">↗</span></a>
+    </nav>
+    <div class="languages" aria-label="Language"><button type="button" data-language="en" aria-pressed="true">EN</button><button type="button" data-language="es" aria-pressed="false">ES</button></div>
+  </header>
+  <main>
+    <section class="hero wrap">
+      <div class="hero-copy">
+        <p class="eyebrow" data-en="Open source · MIT · self-hostable" data-es="Código abierto · MIT · autoalojable">Open source · MIT · self-hostable</p>
+        <h1><span data-en="The link" data-es="El enlace">The link</span><br><span class="beacon" data-en="that travels." data-es="que viaja.">that travels.</span></h1>
+        <p class="intro" data-en="Open tools for the space between arrival and proof. Explore the source, use the brand system, make a QR." data-es="Herramientas abiertas entre la llegada y la evidencia. Explora el código, usa el sistema de marca, crea un QR.">Open tools for the space between arrival and proof. Explore the source, use the brand system, make a QR.</p>
+        <div class="hero-actions"><a class="button primary" href="#studio" data-en="Open QR Studio ↓" data-es="Abrir QR Studio ↓">Open QR Studio ↓</a><a class="text-link" href="https://github.com/FriskyDevelopments/open-stay-pass" data-en="Explore the source ↗" data-es="Explorar el código ↗">Explore the source ↗</a></div>
+      </div>
+      <aside class="hero-record" aria-label="Project principles">
+        <div class="record-top"><span>OSP / 001</span><span data-en="Community edition" data-es="Edición comunitaria">Community edition</span></div>
+        <img class="signature" src="/assets/mark-signed-stroke.svg" width="240" height="128" alt="The Signed Stroke, Open Stay Pass mark">
+        <p class="record-title" data-en="One carrier. Open possibilities." data-es="Un soporte. Posibilidades abiertas.">One carrier. Open possibilities.</p>
+        <div class="record-row"><img src="/assets/picto-scan.svg" width="28" height="28" alt=""><span data-en="QR · a link you can scan" data-es="QR · un enlace escaneable">QR · a link you can scan</span></div>
+        <div class="record-row"><img src="/assets/picto-route.svg" width="28" height="28" alt=""><span data-en="NDEF · the same URL on a tag" data-es="NDEF · la misma URL en una etiqueta">NDEF · the same URL on a tag</span></div>
+        <div class="record-row"><img src="/assets/picto-selfhost.svg" width="28" height="28" alt=""><span data-en="MIT · inspect, copy, contribute" data-es="MIT · revisa, copia, contribuye">MIT · inspect, copy, contribute</span></div>
+        <p class="record-foot" data-en="Community tools. No account required." data-es="Herramientas comunitarias. Sin cuenta.">Community tools. No account required.</p>
+      </aside>
+    </section>
+    <section class="studio-section" id="studio" aria-labelledby="studio-title">
+      <div class="wrap">
+        <div class="section-heading"><div><p class="eyebrow">01 / QR Studio</p><h2 id="studio-title" data-en="A public URL. A real QR." data-es="Una URL pública. Un QR real.">A public URL. A real QR.</h2></div><p data-en="Generated in your browser. Your URL stays on this device." data-es="Generado en tu navegador. Tu URL permanece en este dispositivo.">Generated in your browser. Your URL stays on this device.</p></div>
+        <div class="studio-grid">
+          <form id="qr-form" novalidate>
+            <label for="destination" data-en="Public destination URL" data-es="URL pública de destino">Public destination URL</label>
+            <p class="field-help" id="url-help" data-en="Use a public link. Keep private guest links and credentials out of this demo." data-es="Usa un enlace público. Mantén los enlaces privados y las credenciales fuera de este demo.">Use a public link. Keep private guest links and credentials out of this demo.</p>
+            <input id="destination" name="destination" type="url" value="https://github.com/FriskyDevelopments/open-stay-pass" maxlength="2048" spellcheck="false" autocomplete="off" autocapitalize="off" aria-describedby="url-help qr-status" required>
+            <div class="presets"><span data-en="Try a project link" data-es="Prueba un enlace del proyecto">Try a project link</span><button type="button" data-url="https://github.com/FriskyDevelopments/open-stay-pass" data-en="Repository" data-es="Repositorio">Repository</button><button type="button" data-url="https://github.com/FriskyDevelopments/open-stay-pass/tree/main/docs">Docs</button></div>
+            <button class="button primary" type="submit" data-en="Generate QR ↗" data-es="Generar QR ↗">Generate QR ↗</button>
+            <p id="qr-status" role="status" aria-live="polite"></p>
+            <div class="scope-note"><p data-en="A URL carrier, ready to copy." data-es="Un soporte para tu URL, listo para copiar.">A URL carrier, ready to copy.</p><p data-en="This studio does not sign credentials, grant access, or issue Wallet passes. Signed links and revocation require the server-side credential implementation." data-es="Este estudio no firma credenciales, concede acceso ni emite pases de Wallet. Los enlaces firmados y la revocación requieren la implementación del servidor.">This studio does not sign credentials, grant access, or issue Wallet passes. Signed links and revocation require the server-side credential implementation.</p></div>
+          </form>
+          <div class="qr-result"><div class="qr-sheet"><canvas id="qr-canvas" width="512" height="512" role="img" aria-label="Generated QR code for the public destination URL" hidden></canvas></div><div class="qr-meta"><span>512 × 512</span><span>EC / M</span><span>SVG + PNG</span></div><div class="downloads"><a class="button" id="download-svg" download="open-stay-pass-qr.svg" aria-disabled="true" tabindex="-1" data-en="Download SVG ↓" data-es="Descargar SVG ↓">Download SVG ↓</a><a class="button" id="download-png" download="open-stay-pass-qr.png" aria-disabled="true" tabindex="-1" data-en="Download PNG ↓" data-es="Descargar PNG ↓">Download PNG ↓</a></div></div>
+        </div>
+      </div>
+    </section>
+    <section class="resources wrap" id="docs" aria-labelledby="resources-title">
+      <div class="section-heading"><div><p class="eyebrow" data-en="02 / Built in the open" data-es="02 / Construido en abierto">02 / Built in the open</p><h2 id="resources-title" data-en="The system, documented." data-es="El sistema, documentado.">The system, documented.</h2></div></div>
+      <div class="resource-grid">
+        <a class="resource" href="/design-system/"><span class="resource-number">01 ↗</span><h3 data-en="Brand manual" data-es="Manual de marca">Brand manual</h3><p data-en="The Claude Design source. Beacon Sky, The Signed Stroke, tokens, pictograms, and components." data-es="La fuente de Claude Design. Beacon Sky, The Signed Stroke, tokens, pictogramas y componentes.">The Claude Design source. Beacon Sky, The Signed Stroke, tokens, pictograms, and components.</p></a>
+        <a class="resource" href="https://github.com/FriskyDevelopments/open-stay-pass/tree/main/docs"><span class="resource-number">02 ↗</span><h3 data-en="Technical docs" data-es="Documentación técnica">Technical docs</h3><p data-en="Credential boundaries, lifecycle, adapter contracts, and implementation evidence." data-es="Límites de credenciales, ciclo de vida, contratos de adaptadores y evidencia de implementación.">Credential boundaries, lifecycle, adapter contracts, and implementation evidence.</p></a>
+        <a class="resource" href="https://github.com/FriskyDevelopments/open-stay-pass/blob/main/CONTRIBUTING.md"><span class="resource-number">03 ↗</span><h3 data-en="Contribute" data-es="Contribuir">Contribute</h3><p data-en="Read the code, report a reproducible issue, or propose a tested improvement." data-es="Lee el código, reporta un problema reproducible o propone una mejora probada.">Read the code, report a reproducible issue, or propose a tested improvement.</p></a>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer wrap">
+    <div><p>Open Stay Pass <span class="muted">/ Community</span></p><p class="muted" data-en="Open-source docs and tools by Frisky Developments." data-es="Documentación y herramientas abiertas de Frisky Developments.">Open-source docs and tools by Frisky Developments.</p></div>
+    <div class="footer-links"><a href="/license.html" data-en="MIT license" data-es="Licencia MIT">MIT license</a><a href="/conduct.html" data-en="Code of Conduct" data-es="Código de conducta">Code of Conduct</a><a href="https://github.com/FriskyDevelopments/open-stay-pass/security/policy" data-en="Security" data-es="Seguridad">Security</a><a href="https://www.netlify.com/">This site is powered by Netlify</a></div>
+    <span class="studio-signature" role="img" aria-label="FriskyDev studio signature"></span>
+  </footer>
+  <noscript><p class="wrap">QR Studio requires JavaScript. The brand manual, documentation, license, and Code of Conduct remain available through their links.</p></noscript>
+</body>
+</html>

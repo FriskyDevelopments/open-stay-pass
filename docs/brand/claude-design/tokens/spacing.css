@@ -1,0 +1,8 @@
+:root {
+  --osp-space-1: 4px; --osp-space-2: 8px; --osp-space-3: 12px; --osp-space-4: 16px;
+  --osp-space-5: 24px; --osp-space-6: 32px; --osp-space-7: 48px; --osp-space-8: 64px;
+  --osp-radius: 0; /* sharp edges, always */
+  --osp-safe-margin: 80px; /* social canvases */
+  --osp-grid-unit: 32px;   /* hairline texture grid */
+  --osp-touch-min: 44px;
+}

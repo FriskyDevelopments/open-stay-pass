@@ -1,5 +1,7 @@
 # Open Stay Pass
 
+[Brand manual](docs/brand/README.md) · [Claude Design system](docs/brand/claude-design/README.md) · [Community / QR Studio setup](docs/netlify-community-review.md)
+
 > **An English-first, multilingual QR hospitality credential system for small operators.**
 
 [Open the public repository](https://github.com/FriskyDevelopments/open-stay-pass) · [Open the live MVP](https://staypass-pmz7aqns.manus.space) · [Review the English-dub press kit](https://staypass-pmz7aqns.manus.space/press-kit)
@@ -31,6 +33,19 @@ Small operators should not need a PMS migration, lock-provider contract, native 
 pnpm install --frozen-lockfile
 pnpm validate
 ```
+
+## Community docs and QR Studio
+
+The standalone community surface contains a browser-only QR Studio, the preserved Claude Design system, MIT license, Code of Conduct, and a Netlify attribution link. It encodes public URLs; it does not issue signed credentials or call product APIs.
+
+```bash
+pnpm install --frozen-lockfile
+pnpm test:community
+pnpm build:community
+python3 -m http.server 4178 --directory dist/oss-review
+```
+
+Open `http://localhost:4178`. Build output is isolated in `dist/oss-review`. The intended Netlify review project is `stay-pass-qr-studio`; `staypass.dev` attachment remains a later, separately approved cutover after the OSS plan decision. See [the review-site runbook](docs/netlify-community-review.md).
 
 This command runs the full regression suite, type-check, and production build without committing or copying deployment credentials. The public [live MVP](https://staypass-pmz7aqns.manus.space) is the quickest way to explore the complete QR-first operator flow.
 
