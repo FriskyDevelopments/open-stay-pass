@@ -1,0 +1,28 @@
+:root {
+  /* Canonical — one palette, five functions (Folios discipline) */
+  --osp-ink: #0A1018;
+  --osp-paper: #F2F0E9;
+  --osp-beacon: #4DA6FF;
+  --osp-trace: #93A0AD;
+  --osp-hairline: #1E2A3A;
+  --osp-mark-dim: #46617F;
+  --osp-ink-deep: #102526; /* mark on Paper; shared Folios Ink */
+
+  /* Alternate beacons — one per surface, never mixed */
+  --osp-beacon-magenta: #FF4FD8;
+  --osp-beacon-violet: #B26BFF;
+  --osp-beacon-amber: #FFB300;
+  --osp-beacon-coral: #FF5C38;
+  --osp-beacon-mint: #2BFFC8;
+
+  /* Semantic aliases */
+  --osp-surface: var(--osp-ink);
+  --osp-surface-raised: #0E1620;
+  --osp-text: #FFFFFF;
+  --osp-text-muted: var(--osp-trace);
+  --osp-border: var(--osp-hairline);
+  --osp-accent: var(--osp-beacon);
+  --osp-state-valid: var(--osp-beacon-mint);
+  --osp-state-expiring: var(--osp-beacon-amber);
+  --osp-state-revoked: var(--osp-beacon-coral);
+}

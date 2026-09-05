@@ -1,0 +1,10 @@
+# Select "community" as this Netlify site's package directory; leave its base
+# directory at the repository root. This config is intentionally not at root:
+# existing product sites connected to this repo must not inherit it.
+[build]
+  command = "pnpm build:community"
+  publish = "dist/oss-review"
+
+[build.environment]
+  NODE_VERSION = "22"
+  PNPM_VERSION = "10.4.1"

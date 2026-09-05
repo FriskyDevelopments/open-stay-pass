@@ -1,0 +1,25 @@
+/* Open Stay Pass brand tokens — v2 (canonical: Beacon Sky)
+   Folios token discipline: one palette, five functions. Accents only on Ink. */
+:root {
+  --osp-ink: #0A1018;
+  --osp-paper: #F2F0E9;
+  --osp-beacon: #4DA6FF;      /* canonical accent */
+  --osp-trace: #93A0AD;
+  --osp-hairline: #1E2A3A;
+  --osp-mark-dim: #46617F;
+
+  /* Alternate accent applications (one per surface, never mixed) */
+  --osp-beacon-magenta: #FF4FD8;  /* launch / social punch */
+  --osp-beacon-violet: #B26BFF;   /* night, hospitality-leaning */
+  --osp-beacon-amber: #FFB300;    /* warnings, expiry */
+  --osp-beacon-coral: #FF5C38;    /* revoked / cancelled */
+  --osp-beacon-mint: #2BFFC8;     /* issued / valid */
+
+  --osp-font-sans: 'Hanken Grotesk', sans-serif;
+  --osp-font-serif: 'Cormorant Garamond', serif; /* one italic accent word max */
+  --osp-tracking-headline: -0.02em;
+  --osp-glow-qr: 0 0 10px rgba(77, 166, 255, 0.28); /* QR only */
+  --osp-radius: 0;
+  --osp-safe-margin: 80px;
+  --osp-grid-unit: 32px;
+}

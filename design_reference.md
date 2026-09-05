@@ -1,4 +1,10 @@
-# HostCasa and Folios Visual Reference
+# Open Stay Pass visual reference
+
+## Open Stay Pass identity — current source
+
+Use the [Claude Design manual and preserved export](docs/brand/README.md) for Open Stay Pass surfaces. The canonical direction is **Beacon Sky**: Ink `#0A1018`, Paper `#F2F0E9`, Beacon `#4DA6FF`, Trace `#93A0AD`, and Hairline `#1E2A3A`. Use the original Signed Stroke SVG, Hanken Grotesk, sentence-case headlines, and sharp corners. Beacon appears on Ink only; do not import Folios Signal or FriskyDev lime into OSP compositions.
+
+The sibling references below apply to their respective product rails. They do not override the Open Stay Pass brand manual.
 
 ## HostCasa.app
 

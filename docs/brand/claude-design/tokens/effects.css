@@ -1,0 +1,8 @@
+:root {
+  --osp-glow-qr: 0 0 10px rgba(77, 166, 255, 0.28); /* QR only — nothing else glows */
+  --osp-tornasol: linear-gradient(90deg, #FF4FD8, #E9DDFF, #B26BFF, #E4F1FF, #4DA6FF, #E2FFF6, #2BFFC8);
+  --osp-tornasol-loop: linear-gradient(90deg, #FF4FD8, #E9DDFF, #B26BFF, #E4F1FF, #4DA6FF, #E2FFF6, #2BFFC8, #E9DDFF, #FF4FD8);
+  --osp-holo-field: linear-gradient(115deg, transparent 30%, rgba(255,255,255,0.30) 44%, rgba(255,255,255,0.08) 50%, transparent 64%), radial-gradient(90% 70% at 15% 12%, rgba(255,79,216,0.60), transparent 55%), radial-gradient(80% 60% at 85% 18%, rgba(77,166,255,0.60), transparent 58%), radial-gradient(90% 70% at 70% 95%, rgba(43,255,200,0.50), transparent 55%), radial-gradient(70% 60% at 8% 85%, rgba(178,107,255,0.55), transparent 58%), radial-gradient(60% 50% at 50% 45%, rgba(233,221,255,0.22), transparent 60%), repeating-linear-gradient(115deg, rgba(255,255,255,0.08) 0px, rgba(255,255,255,0) 3px, rgba(255,255,255,0) 46px, rgba(255,255,255,0.08) 64px);
+  --osp-grid-texture: linear-gradient(var(--osp-hairline) 1px, transparent 1px), linear-gradient(90deg, var(--osp-hairline) 1px, transparent 1px);
+}
+@keyframes osp-shimmer { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }

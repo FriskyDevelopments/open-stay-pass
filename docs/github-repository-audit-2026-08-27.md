@@ -1,5 +1,7 @@
 # GitHub Repository Audit — Open Stay Pass
 
+> Historical snapshot. See [Repository Status](repository-status.md) for the later public repository, CI, Claude Design import, and community review-site work. The gaps below describe the audit date, not current deployment state.
+
 **Repository:** [`FriskyDevelopments/open-stay-pass`](https://github.com/FriskyDevelopments/open-stay-pass)  
 **Audit date:** 2026-08-27  
 **Scope:** Read-only public metadata, community profile, security configuration, workflow inventory, tracked-file patterns, and parity with the validated local MVP release.

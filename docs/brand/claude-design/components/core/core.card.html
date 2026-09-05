@@ -1,0 +1,93 @@
+<!-- @dsCard group="Components" viewport="700x420" subtitle="Button, Tag, Input, PassCard" name="Core" -->
+<link rel="stylesheet" href="../../styles.css">
+<style>body{margin:0;background:var(--osp-ink);color:var(--osp-text);font-family:var(--osp-font-sans);padding:20px}</style>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+
+function Button({ variant = 'primary', size = 'md', disabled, children, onClick, style }) {
+  const pad = size === 'sm' ? '8px 14px' : size === 'lg' ? '14px 28px' : '11px 20px';
+  const fs = size === 'sm' ? 14 : size === 'lg' ? 17 : 15;
+  const base = {
+    fontFamily: 'var(--osp-font-sans)', fontWeight: 700, fontSize: fs, letterSpacing: '0.01em',
+    padding: pad, borderRadius: 'var(--osp-radius)', cursor: disabled ? 'not-allowed' : 'pointer',
+    opacity: disabled ? 0.45 : 1, minHeight: size === 'sm' ? 36 : 'var(--osp-touch-min)',
+    display: 'inline-flex', alignItems: 'center', gap: 8, transition: 'filter 120ms, background 120ms',
+  };
+  const variants = {
+    primary: { background: 'var(--osp-beacon)', color: 'var(--osp-ink)', border: '1px solid var(--osp-beacon)' },
+    secondary: { background: 'transparent', color: 'var(--osp-beacon)', border: '1px solid var(--osp-beacon)' },
+    ghost: { background: 'transparent', color: 'var(--osp-text)', border: '1px solid var(--osp-hairline)' },
+    danger: { background: 'transparent', color: 'var(--osp-state-revoked)', border: '1px solid var(--osp-state-revoked)' },
+  };
+  const [hover, setHover] = React.useState(false);
+  const hoverFx = hover && !disabled ? { filter: 'brightness(1.15)' } : {};
+  return React.createElement('button', {
+    onClick: disabled ? undefined : onClick, disabled,
+    onMouseEnter: () => setHover(true), onMouseLeave: () => setHover(false),
+    style: { ...base, ...variants[variant], ...hoverFx, ...style },
+  }, children);
+}
+
+
+function Tag({ state = 'neutral', children }) {
+  const colors = {
+    valid: 'var(--osp-state-valid)', expiring: 'var(--osp-state-expiring)',
+    revoked: 'var(--osp-state-revoked)', accent: 'var(--osp-beacon)', neutral: 'var(--osp-trace)',
+  };
+  const c = colors[state] || colors.neutral;
+  return React.createElement('span', { style: {
+    fontFamily: 'var(--osp-font-sans)', fontWeight: 500, fontSize: 13, letterSpacing: '0.04em',
+    color: c, border: '1px solid ' + c, padding: '3px 10px', display: 'inline-flex', alignItems: 'center', gap: 6,
+  } }, children);
+}
+
+
+function Input({ label, value, onChange, placeholder, meta, type = 'text', style }) {
+  return React.createElement('label', { style: { display: 'flex', flexDirection: 'column', gap: 6, fontFamily: 'var(--osp-font-sans)', ...style } },
+    label && React.createElement('span', { style: { font: 'var(--osp-text-label)', letterSpacing: 'var(--osp-tracking-label)', color: 'var(--osp-text)' } }, label),
+    React.createElement('input', { type, value, placeholder, onChange,
+      style: { background: 'var(--osp-surface-raised)', border: '1px solid var(--osp-hairline)', color: 'var(--osp-text)',
+        padding: '11px 14px', fontSize: 15, fontFamily: 'var(--osp-font-sans)', borderRadius: 'var(--osp-radius)', outline: 'none', minHeight: 20 } }),
+    meta && React.createElement('span', { style: { font: 'var(--osp-text-meta)', color: 'var(--osp-trace)' } }, meta));
+}
+
+
+function PassCard({ passId = 'PASS 09-472', state = 'valid', expires = 'expires 18:00', holo = true, children, style }) {
+  const stateColors = { valid: 'var(--osp-state-valid)', expiring: 'var(--osp-state-expiring)', revoked: 'var(--osp-state-revoked)' };
+  return React.createElement('div', { style: { background: 'var(--osp-ink)', border: '1px solid var(--osp-hairline)', width: 260, fontFamily: 'var(--osp-font-sans)', ...style } },
+    holo && React.createElement('div', { style: { height: 6, background: 'var(--osp-tornasol)' } }),
+    React.createElement('div', { style: { padding: 20, display: 'flex', flexDirection: 'column', gap: 12 } },
+      React.createElement('svg', { viewBox: '0 0 64 64', fill: 'none', style: { width: 44, height: 44 } },
+        React.createElement('path', { d: 'M8 40 C 16 14, 30 16, 26 32 C 24 40, 34 36, 42 32', stroke: 'var(--osp-beacon)', strokeWidth: 4 }),
+        React.createElement('rect', { x: 46, y: 27, width: 6, height: 6, fill: 'var(--osp-beacon)' }),
+        React.createElement('rect', { x: 54, y: 22, width: 5, height: 5, fill: 'var(--osp-beacon)' })),
+      React.createElement('div', { style: { fontWeight: 700, fontSize: 16, color: 'var(--osp-text)' } }, passId),
+      React.createElement('div', { style: { fontSize: 12, color: stateColors[state] || 'var(--osp-trace)', letterSpacing: '0.04em' } }, state + ' · ' + expires),
+      children));
+}
+
+
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <div style={{display:'flex',flexDirection:'column',gap:20}}>
+    <div style={{display:'flex',gap:12,alignItems:'center',flexWrap:'wrap'}}>
+      <Button variant="primary">Create credential</Button>
+      <Button variant="secondary">Copy link</Button>
+      <Button variant="ghost">Details</Button>
+      <Button variant="danger">Revoke</Button>
+      <Button variant="primary" disabled>Disabled</Button>
+    </div>
+    <div style={{display:'flex',gap:10}}>
+      <Tag state="valid">issued</Tag><Tag state="expiring">expires soon</Tag><Tag state="revoked">revoked</Tag><Tag state="accent">signed</Tag><Tag state="neutral">draft</Tag>
+    </div>
+    <div style={{display:'flex',gap:20,alignItems:'flex-start'}}>
+      <Input label="Guest name" placeholder="Ana Torres" meta="shown on the arrival card" style={{width:240}} />
+      <PassCard passId="PASS 09-472" state="valid" expires="expires 18:00" />
+    </div>
+  </div>
+);
+</script>

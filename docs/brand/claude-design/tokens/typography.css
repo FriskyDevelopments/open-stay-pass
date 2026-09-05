@@ -1,0 +1,13 @@
+:root {
+  --osp-font-sans: 'Hanken Grotesk', sans-serif;
+  --osp-font-serif: 'Cormorant Garamond', serif; /* one italic accent word max */
+  --osp-text-display: 700 64px/1.05 var(--osp-font-sans);
+  --osp-text-headline: 700 40px/1.12 var(--osp-font-sans);
+  --osp-text-title: 700 22px/1.25 var(--osp-font-sans);
+  --osp-text-body: 400 16px/1.6 var(--osp-font-sans);
+  --osp-text-label: 500 14px/1.4 var(--osp-font-sans);
+  --osp-text-meta: 400 13px/1.5 var(--osp-font-sans);
+  --osp-tracking-headline: -0.02em;
+  --osp-tracking-label: 0.02em;
+}
+body { font-family: var(--osp-font-sans); }
