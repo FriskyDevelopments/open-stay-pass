@@ -8,7 +8,7 @@ function localeFromRequest(request: Request) {
 }
 
 function publicOrigin(request: Request) {
-  const allowedOrigins = (process.env.CORS_ORIGINS ?? "https://stay-pass.vercel.app")
+  const allowedOrigins = (process.env.CORS_ORIGINS ?? "https://staypass.dev,https://staypass-pmz7aqns.manus.space")
     .split(",")
     .map((origin) => origin.trim().replace(/\/$/, ""))
     .filter(Boolean);
