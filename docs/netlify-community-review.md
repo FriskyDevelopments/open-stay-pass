@@ -13,6 +13,7 @@ From the repository root, with Node 22 and the pinned pnpm version:
 ```bash
 pnpm install --frozen-lockfile
 pnpm test:community
+pnpm check:community
 pnpm build:community
 python3 -m http.server 4178 --directory dist/oss-review
 ```

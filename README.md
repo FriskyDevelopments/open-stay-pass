@@ -34,6 +34,8 @@ pnpm install --frozen-lockfile
 pnpm validate
 ```
 
+`pnpm validate` runs the full regression suite, type-check, and production build without committing or copying deployment credentials. The public [live MVP](https://staypass-pmz7aqns.manus.space) exposes the complete QR-first operator flow.
+
 ## Community docs and QR Studio
 
 The standalone community surface contains a browser-only QR Studio, the preserved Claude Design system, MIT license, Code of Conduct, and a Netlify attribution link. It encodes public URLs; it does not issue signed credentials or call product APIs.
@@ -41,13 +43,12 @@ The standalone community surface contains a browser-only QR Studio, the preserve
 ```bash
 pnpm install --frozen-lockfile
 pnpm test:community
+pnpm check:community
 pnpm build:community
 python3 -m http.server 4178 --directory dist/oss-review
 ```
 
 Open `http://localhost:4178`. Build output is isolated in `dist/oss-review`. The intended Netlify review project is `stay-pass-qr-studio`; `staypass.dev` attachment remains a later, separately approved cutover after the OSS plan decision. See [the review-site runbook](docs/netlify-community-review.md).
-
-This command runs the full regression suite, type-check, and production build without committing or copying deployment credentials. The public [live MVP](https://staypass-pmz7aqns.manus.space) is the quickest way to explore the complete QR-first operator flow.
 
 ## Run the full stack locally
 
@@ -59,7 +60,7 @@ pnpm dev
 
 Use the Operator console to create a credential, then scan its QR from a second device or copy the NDEF URL to an NFC tag writer.
 
-The repository includes a locked GitHub Actions validation workflow for pushes and pull requests to `main`. Once the public release is synchronized, its status appears under the repository’s **Actions** tab; the badge is deliberately added only after its first public run exists.
+The repository includes a locked GitHub Actions validation workflow for pushes and pull requests to `main`. Product and community validation are visible under the repository’s **Actions** tab.
 
 When a public `VITE_GITHUB_REPOSITORY_URL` is configured, successful test and build commands print a non-blocking invitation to star the repository. It never changes exit codes or blocks local development.
 
