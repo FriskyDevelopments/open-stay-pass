@@ -7,7 +7,7 @@ export const ENV = {
   isProduction: process.env.NODE_ENV === "production",
   forgeApiUrl: process.env.BUILT_IN_FORGE_API_URL ?? "",
   forgeApiKey: process.env.BUILT_IN_FORGE_API_KEY ?? "",
-  publicAppUrl: process.env.PUBLIC_APP_URL ?? "https://stay-pass.vercel.app",
+  publicAppUrl: process.env.PUBLIC_APP_URL ?? "https://staypass.dev",
   storagePublicPrefixes: (process.env.STORAGE_PUBLIC_PREFIXES ?? "public/,generated/")
     .split(",")
     .map(prefix => prefix.trim())
@@ -18,7 +18,9 @@ export const ENV = {
 export function getPublicAppOrigin() {
   const candidates = [
     ENV.publicAppUrl,
-    process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "",
+    process.env.URL ?? "",
+    process.env.DEPLOY_PRIME_URL ?? "",
+    process.env.CF_PAGES_URL ?? "",
     process.env.NODE_ENV === "development" ? `http://localhost:${process.env.PORT ?? "3000"}` : "",
   ].filter(Boolean);
 
