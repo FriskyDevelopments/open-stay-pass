@@ -17,7 +17,7 @@ const tokens = await Promise.all(["fonts", "colors", "typography", "spacing", "e
 await writeFile(path.join(output, "brand.css"), tokens.join("\n"));
 await build({ entryPoints: [path.join(source, "app.ts")], outfile: path.join(output, "app.js"), bundle: true, platform: "browser", format: "esm", target: "es2022", minify: true, legalComments: "external" });
 
-const escape = (text) => text.replace(/[&<>"']/g, (char) => ({ "&": "&", "<": "<", ">": ">", '"': """, "'": "&#39;" })[char]);
+const escape = (text) => text.replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
 for (const [name, title, file] of [["license", "MIT license", "LICENSE"], ["conduct", "Code of Conduct", "CODE_OF_CONDUCT.md"]]) {
   const content = await readFile(path.join(root, file), "utf8");
   await writeFile(path.join(output, `${name}.html`), `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${title} — Open Stay Pass</title><link rel="stylesheet" href="/brand.css"><link rel="stylesheet" href="/styles.css"></head><body><main class="document wrap"><a href="/">← Open Stay Pass community</a><h1>${title}</h1><pre>${escape(content)}</pre><p><a href="https://www.netlify.com/">This site is powered by Netlify</a></p></main></body></html>`);
