@@ -61,21 +61,20 @@ function drawSignedStroke(ctx: CanvasRenderingContext2D, x: number, y: number, s
 }
 
 function wrapText(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number, lineHeight: number) {
+  const chunks = text.split(/([/?&=])/);
+  const lines: string[] = [];
   let line = "";
-  let row = 0;
-  for (const ch of text) {
-    const next = line + ch;
-    if (ctx.measureText(next).width > maxWidth && line) {
-      ctx.fillText(line, x, y + row * lineHeight);
-      line = ch;
-      row += 1;
-      if (row >= 3) return y + row * lineHeight;
+  for (const chunk of chunks) {
+    const next = line + chunk;
+    if (line && ctx.measureText(next).width > maxWidth) {
+      lines.push(line);
+      line = chunk;
     } else {
       line = next;
     }
   }
-  if (line) ctx.fillText(line, x, y + row * lineHeight);
-  return y + (row + 1) * lineHeight;
+  if (line) lines.push(line);
+  lines.slice(0, 3).forEach((row, i) => ctx.fillText(row, x, y + i * lineHeight));
 }
 
 function paintPassSheet(qr: HTMLCanvasElement, host: string) {
