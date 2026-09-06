@@ -120,7 +120,7 @@ function paintPassSheet(qr: HTMLCanvasElement, host: string) {
   ctx.fillText("APPLE WALLET · GOOGLE WALLET", width / 2, 928);
   ctx.fillStyle = "#93A0AD";
   ctx.font = "400 12px 'Hanken Grotesk', sans-serif";
-  ctx.fillText("Community studio · configuration required to issue", width / 2, 964);
+  ctx.fillText("Community preview · issuance happens on your server", width / 2, 964);
   ctx.textAlign = "left";
   ctx.letterSpacing = "0px";
 }
