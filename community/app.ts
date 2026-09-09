@@ -41,23 +41,18 @@ function passHostLabel(value: string): string {
   return `${url.host}${url.pathname}${url.search}`.replace(/\/$/, "") || url.host;
 }
 
-function drawSignedStroke(ctx: CanvasRenderingContext2D, x: number, y: number, scale: number) {
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.scale(scale, scale);
-  ctx.strokeStyle = "#4DA6FF";
-  ctx.lineWidth = 4;
-  ctx.lineCap = "round";
-  ctx.lineJoin = "round";
-  ctx.beginPath();
-  ctx.moveTo(8, 40);
-  ctx.bezierCurveTo(16, 14, 30, 16, 26, 32);
-  ctx.bezierCurveTo(24, 40, 34, 36, 42, 32);
-  ctx.stroke();
-  ctx.fillStyle = "#4DA6FF";
-  ctx.fillRect(46, 27, 6, 6);
-  ctx.fillRect(54, 22, 5, 5);
-  ctx.restore();
+const MARK_SRC = "/assets/mark-signed-stroke.svg";
+let markImage: HTMLImageElement | null = null;
+
+function loadMark() {
+  if (markImage?.complete) return Promise.resolve(markImage);
+  const img = new Image();
+  img.crossOrigin = "anonymous";
+  img.src = MARK_SRC;
+  return img.decode().then(() => {
+    markImage = img;
+    return img;
+  });
 }
 
 function wrapText(ctx: CanvasRenderingContext2D, text: string, x: number, y: number, maxWidth: number, lineHeight: number) {
@@ -77,52 +72,42 @@ function wrapText(ctx: CanvasRenderingContext2D, text: string, x: number, y: num
   lines.slice(0, 3).forEach((row, i) => ctx.fillText(row, x, y + i * lineHeight));
 }
 
-function paintPassSheet(qr: HTMLCanvasElement, host: string) {
+const sheetCopy = {
+  en: { preview: "PREVIEW ONLY", foot: "QR encodes the typed URL. Not a signed pass." },
+  es: { preview: "SOLO VISTA PREVIA", foot: "El QR lleva la URL escrita. No es un pase firmado." },
+};
+
+async function paintPassSheet(qr: HTMLCanvasElement, host: string) {
   const width = 720;
   const height = 1120;
   passSheet.width = width;
   passSheet.height = height;
   const ctx = passSheet.getContext("2d")!;
+  const mark = await loadMark();
   ctx.fillStyle = "#0A1018";
   ctx.fillRect(0, 0, width, height);
-  const holo = ctx.createLinearGradient(0, 0, width, 0);
-  holo.addColorStop(0, "#FF4FD8");
-  holo.addColorStop(1 / 6, "#E9DDFF");
-  holo.addColorStop(2 / 6, "#B26BFF");
-  holo.addColorStop(3 / 6, "#E4F1FF");
-  holo.addColorStop(4 / 6, "#4DA6FF");
-  holo.addColorStop(5 / 6, "#E2FFF6");
-  holo.addColorStop(1, "#2BFFC8");
-  ctx.fillStyle = holo;
-  ctx.fillRect(0, 0, width, 8);
-  drawSignedStroke(ctx, 56, 48, 1.35);
-  ctx.fillStyle = "#F2F0E9";
-  ctx.font = "700 28px 'Hanken Grotesk', sans-serif";
-  ctx.fillText("OPEN STAY PASS", 56, 176);
-  ctx.fillStyle = "#93A0AD";
-  ctx.font = "400 16px 'Hanken Grotesk', sans-serif";
-  wrapText(ctx, host, 56, 210, 608, 24);
-  const plate = 480;
-  const plateX = (width - plate) / 2;
-  const plateY = 300;
-  ctx.fillStyle = "#F2F0E9";
-  ctx.fillRect(plateX, plateY, plate, plate);
-  ctx.drawImage(qr, plateX, plateY, plate, plate);
-  ctx.fillStyle = "#1E2A3A";
-  ctx.fillRect(56, 820, 608, 1);
-  ctx.fillStyle = "#93A0AD";
-  ctx.font = "500 13px 'Hanken Grotesk', sans-serif";
-  ctx.letterSpacing = "0.08em";
-  ctx.textAlign = "center";
-  ctx.fillText("PREVIEW · NOT A SIGNED PASS", width / 2, 860);
-  ctx.fillText("QR · NFC · WALLET CARRY THE SAME URL", width / 2, 888);
   ctx.fillStyle = "#4DA6FF";
-  ctx.fillText("APPLE WALLET · GOOGLE WALLET", width / 2, 928);
+  ctx.fillRect(0, 0, width, 8);
+  ctx.drawImage(mark, 40, 48, 180, 96);
   ctx.fillStyle = "#93A0AD";
-  ctx.font = "400 12px 'Hanken Grotesk', sans-serif";
-  ctx.fillText("Community preview · issuance happens on your server", width / 2, 964);
-  ctx.textAlign = "left";
-  ctx.letterSpacing = "0px";
+  ctx.font = "500 18px 'Hanken Grotesk', sans-serif";
+  ctx.fillText("OPEN STAY PASS", 40, 180);
+  ctx.fillStyle = "#4DA6FF";
+  ctx.font = "600 16px 'Hanken Grotesk', sans-serif";
+  ctx.fillText(sheetCopy[locale].preview, 40, 208);
+  ctx.fillStyle = "#F2F0E9";
+  ctx.font = "500 42px 'Hanken Grotesk', sans-serif";
+  ctx.fillText("Open Stay Pass", 40, 268);
+  ctx.fillStyle = "#93A0AD";
+  ctx.font = "400 18px 'IBM Plex Mono', ui-monospace, monospace";
+  wrapText(ctx, host, 40, 308, 640, 24);
+  ctx.fillStyle = "#F2F0E9";
+  ctx.fillRect(140, 400, 440, 440);
+  ctx.drawImage(qr, 160, 420, 400, 400);
+  ctx.fillStyle = "#93A0AD";
+  ctx.font = "500 16px 'Hanken Grotesk', sans-serif";
+  ctx.fillText(sheetCopy[locale].preview, 40, 900);
+  ctx.fillText(sheetCopy[locale].foot, 40, 928);
 }
 
 function attachPassDownload(request: number) {
@@ -174,7 +159,7 @@ async function paintPassCards(request: number, value: string, source: HTMLCanvas
   passHosts.forEach((element) => {
     element.textContent = host;
   });
-  paintPassSheet(source, host);
+  await paintPassSheet(source, host);
   attachPassDownload(request);
 }
 
@@ -234,7 +219,7 @@ document.querySelectorAll<HTMLButtonElement>("[data-language]").forEach((button)
       element.textContent = element.dataset[locale]!;
     });
     document.querySelectorAll<HTMLButtonElement>("[data-language]").forEach((element) => element.setAttribute("aria-pressed", String(element === button)));
-    if (status.textContent) announce();
+    void generate();
   });
 });
 void generate();
