@@ -9,7 +9,8 @@ export type TrackEvent =
   | 'demo_complete'
   | 'pricing_view'
   | 'contact_submit'
-  | 'start_selfhost';
+  | 'start_selfhost'
+  | 'waitlist_submit';
 
 const endpoint = import.meta.env.VITE_ANALYTICS_ENDPOINT as string | undefined;
 const websiteId = import.meta.env.VITE_ANALYTICS_WEBSITE_ID as string | undefined;
