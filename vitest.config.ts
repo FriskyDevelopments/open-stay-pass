@@ -27,7 +27,7 @@ export default defineConfig({
     environment: "node",
     environmentMatchGlobs: [["client/**", "jsdom"]],
     env: { NODE_ENV: "test" },
-    include: ["server/**/*.test.ts", "server/**/*.spec.ts", "client/**/*.test.ts", "client/**/*.spec.ts"],
+    include: ["edge/**/*.test.ts", "server/**/*.test.ts", "server/**/*.spec.ts", "client/**/*.test.ts", "client/**/*.spec.ts"],
     setupFiles: ["./test/vitest.setup.ts"],
   },
 });

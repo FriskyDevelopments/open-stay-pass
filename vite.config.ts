@@ -174,7 +174,41 @@ function vitePluginManusDebugCollector(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
+/**
+ * Optional analytics tag. It is only injected when both variables are set, so
+ * a build without analytics never ships a literal `%VITE_ANALYTICS_ENDPOINT%`
+ * script URL that 404s on every page view.
+ */
+function vitePluginOptionalAnalytics(): Plugin {
+  let endpoint = "";
+  let websiteId = "";
+  return {
+    name: "open-stay-pass-optional-analytics",
+    configResolved(config) {
+      endpoint = (config.env.VITE_ANALYTICS_ENDPOINT ?? "").trim().replace(/\/$/, "");
+      websiteId = (config.env.VITE_ANALYTICS_WEBSITE_ID ?? "").trim();
+    },
+    transformIndexHtml() {
+      if (!endpoint || !websiteId) return [];
+      return [
+        {
+          tag: "script",
+          attrs: { defer: true, src: `${endpoint}/umami`, "data-website-id": websiteId },
+          injectTo: "body",
+        },
+      ];
+    },
+  };
+}
+
+const plugins = [
+  react(),
+  tailwindcss(),
+  jsxLocPlugin(),
+  vitePluginManusRuntime(),
+  vitePluginManusDebugCollector(),
+  vitePluginOptionalAnalytics(),
+];
 
 export default defineConfig({
   plugins,
