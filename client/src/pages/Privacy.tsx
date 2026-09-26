@@ -31,7 +31,8 @@ export default function Privacy() {
             <h2 className="text-2xl font-bold text-[#4DA6FF] mb-4">What the site collects</h2>
             <ul className="list-disc pl-6 space-y-2">
               <li>Lead form fields: name, email, organization, property count, interest category, message, and consent timestamp. These are submitted when you fill out the contact form.</li>
-              <li>Privacy-friendly analytics: if configured (VITE_ANALYTICS_ENDPOINT set), the site may collect page views and funnel events (demo_start, demo_complete, pricing_view, contact_submit, start_selfhost). No personally identifying information is included in analytics events. Analytics are self-hosted (Umami) when enabled.</li>
+              <li>Early-access waitlist: your email address, the page you signed up from, the referring page, and any UTM campaign tags. A salted one-way hash of your IP address is kept only for abuse and rate-limit protection.</li>
+              <li>Privacy-friendly analytics: if configured (VITE_ANALYTICS_ENDPOINT set), the site may collect page views and funnel events (demo_start, demo_complete, pricing_view, contact_submit, start_selfhost, waitlist_submit). No personally identifying information is included in analytics events. Analytics are self-hosted (Umami) when enabled.</li>
               <li>No guest data: no guest arrival, proof handoff, or credential data is processed or stored by this marketing site. Guest data belongs to the operator's deployment.</li>
             </ul>
           </section>
@@ -39,7 +40,7 @@ export default function Privacy() {
           <section>
             <h2 className="text-2xl font-bold text-[#4DA6FF] mb-4">What we do with it</h2>
             <ul className="list-disc pl-6 space-y-2">
-              <li>Contact form submissions are forwarded to our team via a webhook (when configured). We use them only to respond to your inquiry.</li>
+              <li>Contact form submissions and waitlist signups are stored in our own database on Cloudflare (D1). We use contact submissions only to respond to your inquiry, and waitlist emails only to tell you when early access opens. Every email we send includes a one-click unsubscribe link.</li>
               <li>We do not sell, share, or trade your contact information.</li>
             </ul>
           </section>
