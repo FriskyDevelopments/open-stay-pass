@@ -7,6 +7,7 @@ import { copy, type Locale } from '@/lib/locale';
 import { getSupportLinks } from '@/lib/community';
 import { SiteNav } from '@/components/SiteNav';
 import { SiteFooter } from '@/components/SiteFooter';
+import { WaitlistBlock } from '@/components/WaitlistBlock';
 
 const ink = "#0A1018";
 const paper = "#F2F0E9";
@@ -300,6 +301,10 @@ export default function Pricing() {
               </Link>
             </motion.div>
           ))}
+        </div>
+
+        <div style={{ margin: '0 -24px 80px' }}>
+          <WaitlistBlock locale={locale} source="pricing" />
         </div>
 
         <section style={{ marginBottom: '80px', borderTop: `1px solid ${hairline}`, paddingTop: '80px' }}>

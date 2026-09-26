@@ -5,6 +5,7 @@ import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { motion, useScroll, useSpring, useTransform, useInView, useReducedMotion } from "framer-motion";
 import { applyRouteMeta } from "@/lib/routeMeta";
+import { WaitlistBlock } from "@/components/WaitlistBlock";
 
 function SignedStrokeMark({ className }: { className?: string }) {
   return (
@@ -186,6 +187,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* EARLY ACCESS WAITLIST */}
+        <WaitlistBlock locale={locale} source="landing" />
       </main>
 
       <SiteFooter locale={locale} />
