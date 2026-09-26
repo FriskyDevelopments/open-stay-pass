@@ -10,7 +10,7 @@ Prepared after the `feat/staypass-gtm` build pass, 2026-09-26.
 | **Pricing** | ✅ Shipped | `feat(pricing)` — `client/src/pages/Pricing.tsx` — Value ladder from open-source-monetization.md. Core = Free (MIT). All services = "Contact us". No invented dollar prices. FAQ covers wallet credentials, NFC boundaries, self-hosting, and lock-in. |
 | **Demo** | ✅ Shipped | `feat(demo)` — `client/src/pages/Demo.tsx` — 6-step interactive walkthrough (operator creates stay → QR + NDEF appear → arrival preview → Folios handoff lifecycle → revoke → revoked). Simulated data; labeled clearly. Reuses QrCredentialPreview and TicketStatusPreview. Links to live MVP. |
 | **Onboarding** | ✅ Shipped | `feat(pages)` — `client/src/pages/Start.tsx` — 3-step guided self-host path with code blocks, plus "Work with us" path to /contact. track('start_selfhost') instrumented. |
-| **Contact / lead form** | ✅ Shipped | `feat(contact)` — `client/src/pages/Contact.tsx` + `functions/api/lead.ts` (Cloudflare Pages Function). Server-side validation: length limits, email regex, honeypot, allowed interests. LEAD_WEBHOOK_URL-gated forwarding. Honest 503 fallback when not configured. No PII logged. Unit tests for validator. |
+| **Contact / lead form** | ✅ Shipped | `feat(contact)` — `client/src/pages/Contact.tsx` + `functions/api/lead.ts` (Cloudflare Pages Function). Server-side validation: length limits, email regex, honeypot, allowed interests. Forwards to the shared frisky-lists Worker (list=staypass-waitlist, source=contact), with an optional LEAD_WEBHOOK_URL mirror. No PII logged. Unit tests for validator and forwarding. |
 | **Legal: /privacy** | ✅ Shipped | `feat(pages)` — `client/src/pages/Privacy.tsx` — Plain-language, draft-marked, product-accurate. Covers lead form fields, cookieless analytics (when configured), no guest data on marketing site. |
 | **Legal: /terms** | ✅ Shipped | `client/src/pages/Terms.tsx` — Draft-marked, plain-language MIT software terms. |
 | **Legal: /security** | ✅ Shipped | `client/src/pages/SecurityPage.tsx` — Renders SECURITY.md boundary: no lock secrets in QR/NFC/Wallet, server-side credential verification, responsible disclosure. |
@@ -44,16 +44,20 @@ All new public-marketing routes (demo, legal) are lazy-loaded. Existing routes u
 
 - POST only (405 for anything else)
 - Validates: name (1–100), email (regex), organization (optional, max 200), propertyCount (enum), interest (enum), message (optional, max 2000), consent (must be true), honeypot (must be empty)
-- Forwards to LEAD_WEBHOOK_URL when set; returns 503 when not set
+- Forwards to the frisky-lists Worker `POST /subscribe` (list `staypass-waitlist`, source `contact`, form fields in `meta`), passing the visitor IP in `X-Frisky-Client-IP` for per-IP rate limiting. Passes 429 through, 502 on upstream failure.
+- Honeypot hits get a quiet 200; nothing is forwarded
+- Optionally mirrors each lead to LEAD_WEBHOOK_URL (best effort, never blocks)
 - Never logs PII (name, email, organization)
-- Unit tests: `functions/api/lead.test.ts` (8 cases, all pass)
+- Unit tests: `functions/api/lead.test.ts`
 
 ## Operator env vars to configure
 
 | Variable | Required | Purpose |
 |---|---|---|
-| `LEAD_WEBHOOK_URL` | For contact form | Where validated lead JSON is forwarded. When unset, `/api/lead` returns 503 and the UI shows an honest fallback. |
-| `VITE_CONTACT_EMAIL` | For contact fallback | Shown as mailto link only when LEAD_WEBHOOK_URL is not configured. |
+| `LISTS_ENDPOINT` | Optional | frisky-lists Worker base URL for `/api/lead`. Default: `https://frisky-lists.hrgrrtks2p.workers.dev`. |
+| `VITE_WAITLIST_ENDPOINT` | Optional | Same Worker, used by the "Get early access" block on / and /pricing. Same default. |
+| `LEAD_WEBHOOK_URL` | Optional | Also mirror each validated lead to this webhook (e.g. a chat alert). |
+| `VITE_CONTACT_EMAIL` | Optional | mailto fallback, shown only if `/api/lead` ever reports `not_configured`. |
 | `VITE_ANALYTICS_ENDPOINT` | For analytics | Base URL of Umami instance (must start `https://`). Script is not loaded when absent. |
 | `VITE_ANALYTICS_WEBSITE_ID` | For analytics | Umami website ID. Script is not loaded when absent. |
 | `VITE_SITE_URL` | For SEO | Canonical base URL used in meta tags, og:url, hreflang, sitemap. Default: `https://staypass.dev`. |
@@ -74,7 +78,7 @@ All new public-marketing routes (demo, legal) are lazy-loaded. Existing routes u
 
 5. **Google Wallet issuer** — Google Wallet requires a valid issuer ID and service-account key. Same approach as above.
 
-6. **LEAD_WEBHOOK_URL** — The contact form is inert on preview until this is set. Connect it to your CRM or a webhook before GTM launch.
+6. **Waitlist + contact storage**: both land in the shared frisky-lists D1 database (list `staypass-waitlist`). Export the CSV with the admin token. Double opt-in emails stay off until Frisky approves the copy and verifies the sending domain in Resend.
 
 7. **sitemap.xml canonical URLs** — The sitemap uses `https://staypass.dev`. If you deploy to a different domain, update `VITE_SITE_URL` and regenerate or update the sitemap.
 

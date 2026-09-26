@@ -92,7 +92,7 @@ pnpm install --frozen-lockfile`}</code>
                     <li>VITE_ANALYTICS_ENDPOINT + VITE_ANALYTICS_WEBSITE_ID: optional analytics</li>
                     <li>VITE_SITE_URL: your deployment URL</li>
                     <li>VITE_CONTACT_EMAIL: contact fallback email</li>
-                    <li>LEAD_WEBHOOK_URL: for the contact form (Pages Function)</li>
+                    <li>LISTS_ENDPOINT / VITE_WAITLIST_ENDPOINT: optional override for the waitlist + contact backend (frisky-lists Worker)</li>
                   </ul>
                 </li>
                 <li>Deploy to Cloudflare Pages: <code className="bg-[#0E1620] px-1 py-0.5 rounded text-[#4DA6FF] font-mono text-sm">pnpm build:pages</code> produces <code className="bg-[#0E1620] px-1 py-0.5 rounded text-[#4DA6FF] font-mono text-sm">dist/public</code></li>
