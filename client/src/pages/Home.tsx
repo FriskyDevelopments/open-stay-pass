@@ -24,6 +24,17 @@ function HeroArtifact() {
   
   const shouldAnimate = isInView && !prefersReducedMotion;
   
+  const [qrDataUrl, setQrDataUrl] = useState<string | null>(null);
+  useEffect(() => {
+    import("qrcode").then((QRCode) => {
+      QRCode.default.toDataURL("https://staypass.dev/arrival/demo-token-sim", {
+        width: 200,
+        margin: 1,
+        color: { dark: "#0A1018", light: "#F2F0E9" }
+      }).then(setQrDataUrl).catch(() => {});
+    });
+  }, []);
+
   return (
     <div ref={containerRef} className="relative w-full max-w-[400px] md:max-w-none md:w-[480px] flex-shrink-0">
       <div className="w-full relative aspect-[4/5] bg-[var(--osp-paper)] text-[var(--osp-ink)] p-6 md:p-8 flex flex-col justify-between shadow-2xl z-10">
@@ -33,10 +44,8 @@ function HeroArtifact() {
         </div>
         
         <div className="flex-1 flex flex-col items-center justify-center relative">
-          {/* QR Code Mock */}
           <div className="relative w-40 h-40 md:w-56 md:h-56 bg-[var(--osp-ink)] p-4">
-            <div className="w-full h-full border border-[var(--osp-paper)] opacity-20" />
-            <div className="absolute inset-4 bg-[var(--osp-paper)]" style={{ maskImage: 'repeating-linear-gradient(45deg, #000 0, #000 4px, transparent 0, transparent 50%)', maskSize: '8px 8px' }} />
+            {qrDataUrl && <img src={qrDataUrl} alt="Live QR" className="w-full h-full object-contain" />}
             
             {/* Scan Line */}
             {shouldAnimate && (
