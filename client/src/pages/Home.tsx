@@ -4,7 +4,7 @@ import { copy, type Locale } from "@/lib/locale";
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
 import { motion } from "framer-motion";
-import applyRouteMeta from "@/lib/routeMeta";
+import { applyRouteMeta } from "@/lib/routeMeta";
 
 export default function Home() {
   const [locale, setLocale] = useState<Locale>("en");

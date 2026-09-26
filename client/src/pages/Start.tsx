@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import SiteNav from "@/components/SiteNav";
-import SiteFooter from "@/components/SiteFooter";
+import { SiteNav } from "@/components/SiteNav";
+import { SiteFooter } from "@/components/SiteFooter";
 import { Locale } from "@/lib/locale";
 import { applyRouteMeta } from "@/lib/routeMeta";
 import { track } from "@/lib/analytics";

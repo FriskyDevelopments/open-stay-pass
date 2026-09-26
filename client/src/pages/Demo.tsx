@@ -6,8 +6,8 @@ import { applyRouteMeta } from "@/lib/routeMeta";
 import { type Locale } from "@/lib/locale";
 import QrCredentialPreview from "@/components/QrCredentialPreview";
 import { TicketStatusPreview } from "@/components/TicketStatusPreview";
-import SiteNav from "@/components/SiteNav";
-import SiteFooter from "@/components/SiteFooter";
+import { SiteNav } from "@/components/SiteNav";
+import { SiteFooter } from "@/components/SiteFooter";
 
 export default function Demo() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -70,7 +70,7 @@ export default function Demo() {
 
   return (
     <div style={{ backgroundColor: "#0A1018", color: "#F2F0E9", minHeight: "100vh", display: "flex", flexDirection: "column" }}>
-      <SiteNav locale={locale} onLocaleChange={setLocale} />
+      <SiteNav locale={locale} setLocale={setLocale} />
       
       <main style={{ flex: 1, padding: "2rem", maxWidth: "800px", margin: "0 auto", width: "100%", fontFamily: "Hanken Grotesk, sans-serif" }}>
         <div style={{
@@ -179,7 +179,7 @@ export default function Demo() {
         </div>
       </main>
 
-      <SiteFooter />
+      <SiteFooter locale={locale} />
     </div>
   );
 }
