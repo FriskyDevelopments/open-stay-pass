@@ -1,4 +1,10 @@
+<p align="center">
+  <img src="docs/brand/claude-design/assets/wolf-mark.svg" alt="Open Stay Pass wolf mark" width="96">
+</p>
+
 # Open Stay Pass
+
+[![Validate Open Stay Pass](https://github.com/FriskyDevelopments/open-stay-pass/actions/workflows/ci.yml/badge.svg)](https://github.com/FriskyDevelopments/open-stay-pass/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](LICENSE) ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white) ![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB) ![Cloudflare Pages](https://img.shields.io/badge/Cloudflare-Pages-F38020?logo=cloudflare&logoColor=white)
 
 [Brand manual](docs/brand/README.md) · [Claude Design system](docs/brand/claude-design/README.md) · [Community / QR Studio setup](docs/netlify-community-review.md)
 
@@ -50,6 +56,30 @@ python3 -m http.server 4178 --directory dist/oss-review
 
 Open `http://localhost:4178`. Build output is isolated in `dist/oss-review`. The intended Netlify review project is `stay-pass-qr-studio`; `staypass.dev` attachment remains a later, separately approved cutover after the OSS plan decision. See [the review-site runbook](docs/netlify-community-review.md).
 
+## Architecture
+
+```mermaid
+flowchart LR
+  op([Operator]) --> console[Operator console<br/>client/ · React + Vite]
+  console -->|tRPC| server[server/ · Express + tRPC<br/>credential service]
+  server -->|HMAC-signed, revocable URL| cred[QR · NDEF NFC · Wallet barcode]
+  guest([Guest phone]) -->|scans / taps| resolve[Signed URL]
+  resolve --> server
+  server -->|verify signature, scope,<br/>token hash, revocation, expiry| db[(Database · Drizzle<br/>drizzle/ migrations)]
+  server --> arrival[HostCasa arrival guide]
+  server --> proof[Folios proof + CFDI states]
+  server -.when configured.-> wallet[Apple Wallet / Google Wallet adapters]
+  arrival -.-> hc[(HostCasa Supabase)]
+  server --> storage[(Object storage · S3 presign)]
+  console -.static build.-> pages[Cloudflare Pages · stay-pass]
+```
+
+| Package | What it is |
+|---|---|
+| `client/`, `server/`, `shared/`, `drizzle/` | The Open Stay Pass web app (React client, Express/tRPC server, shared types, DB migrations) |
+| `open-stay-pass/` | `@friskydevelopments/open-stay-pass`, a standalone credential package with a demo server and Docker setup |
+| `community/` | Community docs + QR Studio site (`pnpm build:community`) |
+
 ## Run the full stack locally
 
 The full application intentionally requires an owner-provisioned local environment because it validates signing, identity, storage, and deployment settings at startup. Configure those values through your own private secret manager or deployment platform—never by committing a `.env` file or embedding values in docs—then run:
@@ -63,6 +93,29 @@ Use the Operator console to create a credential, then scan its QR from a second 
 The repository includes a locked GitHub Actions validation workflow for pushes and pull requests to `main`. Product and community validation are visible under the repository’s **Actions** tab.
 
 When a public `VITE_GITHUB_REPOSITORY_URL` is configured, successful test and build commands print a non-blocking invitation to star the repository. It never changes exit codes or blocks local development.
+
+### Useful scripts
+
+```bash
+pnpm validate          # test + typecheck + build
+pnpm test              # Vitest suite
+pnpm check             # tsc --noEmit
+pnpm db:push           # generate + apply Drizzle migrations
+pnpm build:pages       # static frontend build (dist/public)
+pnpm deploy:pages      # build + wrangler pages deploy to the stay-pass project
+pnpm test:community    # community site tests
+```
+
+### Environment variables
+
+Names only, from `.env.example` and the server code. Values are never committed.
+
+- **Core:** `NODE_ENV`, `PORT`, `JWT_SECRET`, `CREDENTIAL_HMAC_SECRET`, `DATABASE_URL`, `CORS_ORIGINS`, `PUBLIC_APP_URL`, `SESSION_MAX_AGE_MS`
+- **Identity:** `OAUTH_SERVER_URL`, `OWNER_OPEN_ID`, `VITE_APP_ID`, `VITE_OAUTH_PORTAL_URL`
+- **HostCasa / Folios:** `VITE_HOSTCASA_SUPABASE_URL`, `VITE_HOSTCASA_SUPABASE_ANON_KEY`, `FOLIOS_PUBLIC_ORIGIN`, `VITE_OPEN_STAY_API_ORIGIN`
+- **Wallet (optional):** `APPLE_PASS_TYPE_ID`, `APPLE_TEAM_ID`, `APPLE_CERTIFICATE_P12_BASE64`, `APPLE_CERTIFICATE_PASSWORD`, `GOOGLE_WALLET_ISSUER_ID`, `GOOGLE_WALLET_SERVICE_ACCOUNT_JSON`, `WALLET_AUTH_TOKEN`, `WALLET_UPDATE_BASE_URL`
+- **Storage / concierge:** `BUILT_IN_FORGE_API_URL`, `BUILT_IN_FORGE_API_KEY`, `STORAGE_PUBLIC_PREFIXES`, `CONCIERGE_PROVIDER`, `CONCIERGE_LLM_MODEL`
+- **Public links (optional):** `VITE_GITHUB_REPOSITORY_URL`, `VITE_KOFI_URL`, `VITE_WISE_URL`, `VITE_NOWPAYMENTS_URL`
 
 ## Security boundary
 
