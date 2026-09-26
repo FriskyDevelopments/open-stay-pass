@@ -1,3 +1,24 @@
+/* Open Stay Pass: Beacon Sky design tokens — canonical palette */
+:root {
+  --osp-ink: #0A1018;
+  --osp-paper: #F2F0E9;
+  --osp-beacon: #4DA6FF;
+  --osp-trace: #93A0AD;
+  --osp-hairline: #1E2A3A;
+  --osp-mark-dim: #46617F;
+  --osp-surface-raised: #0E1620;
+  /* Alternate accents — one per surface only */
+  --osp-coral: #FF5C38;
+  --osp-mint: #2BFFC8;
+  --osp-amber: #FFB300;
+  /* Motion cadence (Brandbook) */
+  --osp-dur-fast: 180ms;
+  --osp-dur-base: 320ms;
+  --osp-dur-mid: 480ms;
+  --osp-dur-slow: 650ms;
+  --osp-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 @import "tailwindcss";
 @import "tw-animate-css";
 

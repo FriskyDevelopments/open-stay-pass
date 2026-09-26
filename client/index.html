@@ -1,24 +1,44 @@
 <!doctype html>
 <html lang="en">
-
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>Open Stay Pass — HostCasa + Folios</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <meta name="theme-color" content="#0A1018" />
+    <title>Open Stay Pass — Signed hospitality credential</title>
+    <meta name="description" content="One signed, revocable link. QR, NDEF NFC, HostCasa arrival guide, and Folios proof handoff. Self-hostable, MIT licensed." />
+    <link rel="canonical" href="https://staypass.dev" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Open Stay Pass — Signed hospitality credential" />
+    <meta property="og:description" content="One signed, revocable link. QR, NDEF NFC, HostCasa arrival guide, and Folios proof handoff." />
+    <meta property="og:url" content="https://staypass.dev" />
+    <meta property="og:image" content="https://staypass.dev/og/default.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Open Stay Pass — Signed hospitality credential" />
+    <meta name="twitter:description" content="One signed, revocable link. QR, NDEF NFC, HostCasa arrival guide, and Folios proof handoff." />
+    <meta name="twitter:image" content="https://staypass.dev/og/default.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Open Stay Pass",
+      "description": "A self-hostable, MIT-licensed signed hospitality credential system. One revocable URL powers a QR code, NDEF NFC tag, HostCasa guest arrival guide, and Folios proof handoff.",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Any",
+      "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"},
+      "url": "https://staypass.dev",
+      "codeRepository": "https://github.com/FriskyDevelopments/open-stay-pass",
+      "license": "https://opensource.org/licenses/MIT",
+      "author": {"@type": "Organization", "name": "Frisky Developments LLC"}
+    }
+    </script>
   </head>
-
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
-    <script
-      defer
-      src="%VITE_ANALYTICS_ENDPOINT%/umami"
-      data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"></script>
   </body>
-
 </html>

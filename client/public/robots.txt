@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /operator
+Disallow: /arrival/
+Disallow: /handoff/
+
+Sitemap: https://staypass.dev/sitemap.xml
