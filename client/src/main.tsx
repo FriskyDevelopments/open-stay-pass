@@ -8,6 +8,9 @@ import App from "./App";
 import { startLogin } from "./const";
 import "./index.css";
 import { apiUrl } from "./lib/apiOrigin";
+import { initAnalytics } from "./lib/analytics";
+
+initAnalytics();
 
 const queryClient = new QueryClient();
 
