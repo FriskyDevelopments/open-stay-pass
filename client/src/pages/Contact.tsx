@@ -26,7 +26,7 @@ export default function Contact() {
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "not_configured" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "not_configured" | "rate_limited" | "error">("idle");
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -73,6 +73,8 @@ export default function Contact() {
         track("contact_submit");
       } else if (res.status === 503 && data.reason === "not_configured") {
         setStatus("not_configured");
+      } else if (res.status === 429) {
+        setStatus("rate_limited");
       } else {
         setStatus("error");
       }
@@ -117,9 +119,11 @@ export default function Contact() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-8">
-            {status === "error" && (
-              <div className="p-4 bg-[#FF5C38]/10 border border-[#FF5C38] text-[#FF5C38]">
-                An error occurred. Please try again.
+            {(status === "error" || status === "rate_limited") && (
+              <div role="alert" className="p-4 bg-[#FF5C38]/10 border border-[#FF5C38] text-[#FF5C38]">
+                {status === "rate_limited"
+                  ? "Too many submissions from your connection. Please wait a few minutes and try again."
+                  : "An error occurred. Please try again."}
               </div>
             )}
             
