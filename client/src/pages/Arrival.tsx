@@ -1,7 +1,7 @@
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { copy, formatDate, type Locale } from "@/lib/locale";
 import { trpc } from "@/lib/trpc";
-import { Loader2, MapPin, MessageCircle, ShieldCheck, Wifi } from "lucide-react";
+import { CalendarPlus, Loader2, MapPin, MessageCircle, ShieldCheck, Wifi } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useRoute } from "wouter";
 import "./operator-enhancements.css";
@@ -25,12 +25,20 @@ export default function Arrival() {
   if (preview.isLoading || arrival.isLoading) return <div className="status-screen hostcasa-surface"><Loader2 className="spin" /> <span>{copy(locale, "Abriendo tu llegada…", "Opening your arrival…")}</span></div>;
   if (arrival.error || !arrival.data) return <div className="status-screen hostcasa-surface"><ShieldCheck size={28} /><h1>{copy(locale, "Este enlace ya no está disponible", "This link is no longer available")}</h1><p>{copy(locale, "Pide un enlace nuevo al anfitrión.", "Ask your host for a new link.")}</p></div>;
 
-  const { stay, credential } = arrival.data;
+  const { stay, credential, calendarIcs } = arrival.data;
   const ask = (nextQuestion = question) => {
     if (nextQuestion.trim()) {
       setQuestion(nextQuestion);
       concierge.mutate({ token: activeToken, locale, question: nextQuestion });
     }
+  };
+  const downloadCalendar = () => {
+    const objectUrl = URL.createObjectURL(new Blob([calendarIcs], { type: "text/calendar;charset=utf-8" }));
+    const anchor = document.createElement("a");
+    anchor.href = objectUrl;
+    anchor.download = `${stay.propertyName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") || "stay"}.ics`;
+    anchor.click();
+    URL.revokeObjectURL(objectUrl);
   };
   return (
     <main className="arrival-page hostcasa-surface">
@@ -40,6 +48,7 @@ export default function Arrival() {
         <h1>{copy(locale, "Bienvenido a", "Welcome to")} <em>{stay.propertyName}</em></h1>
         <p>{copy(locale, "Hola", "Hello")} {stay.guestName}. {copy(locale, "Tu guía de estancia está lista.", "Your stay guide is ready.")}</p>
         <div className="arrival-dates"><span>{formatDate(stay.arrivalAt, locale)}</span><i /> <span>{formatDate(stay.departureAt, locale)}</span></div>
+        {calendarIcs ? <button type="button" className="stay-calendar-download" onClick={downloadCalendar}><CalendarPlus size={15} /> {copy(locale, "Agregar al calendario", "Add to calendar")}</button> : null}
       </section>
       <section className="arrival-grid">
         <article className="guest-card wifi-card"><div className="card-icon"><Wifi size={20} /></div><p className="eyebrow">WI-FI</p><h2>{stay.wifiName || copy(locale, "Consulta al anfitrión", "Ask your host")}</h2>{stay.wifiPassword ? <code>{stay.wifiPassword}</code> : <p>{copy(locale, "La contraseña se compartirá al llegar.", "The password will be shared on arrival.")}</p>}</article>
