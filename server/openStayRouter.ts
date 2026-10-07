@@ -27,6 +27,7 @@ import { resolveConciergeRuntime } from "./conciergeConfig";
 import { instantAmenityAnswer } from "./amenityAnswers";
 import { createPreviewStay, getPreviewStay } from "./previewStay";
 import { resolvePublicCredential } from "./publicCredential";
+import { buildStayCalendarIcs } from "./stayCalendar";
 import { createGoogleFoliosSaveUrl, walletReadiness } from "./wallet/walletIssuer";
 
 const localeSchema = z.enum(["es", "en"]);
@@ -127,7 +128,16 @@ export const openStayRouter = router({
       if (!credential.stayId) throw new TRPCError({ code: "NOT_FOUND", message: "The related stay no longer exists." });
       const stay = getPreviewStay(input.token)?.stay ?? await getStayById(credential.stayId);
       if (!stay) throw new TRPCError({ code: "NOT_FOUND", message: "The related stay no longer exists." });
-      if (getPreviewStay(input.token)) return { credential: { id: credential.id, status: credential.status, expiresAt: credential.expiresAt }, stay };
+      const calendarIcs = buildStayCalendarIcs({
+        credentialId: credential.id,
+        propertyName: stay.propertyName,
+        guestName: stay.guestName,
+        arrivalAt: stay.arrivalAt,
+        departureAt: stay.departureAt,
+        arrivalUrl: path(getPublicAppOrigin(), "arrival", input.token),
+        locale: input.locale,
+      });
+      if (getPreviewStay(input.token)) return { credential: { id: credential.id, status: credential.status, expiresAt: credential.expiresAt }, stay, calendarIcs };
       const activity = await recordCredentialActivity({ operatorId: credential.operatorId, credentialId: credential.id, type: "arrival_scan", locale: input.locale });
       await notifyForEvent({
         operatorId: credential.operatorId,
@@ -139,7 +149,7 @@ export const openStayRouter = router({
         detailEn: `${stay.guestName} opened the arrival link for ${stay.propertyName}.`,
         shouldNotify: activity.shouldNotify,
       });
-      return { credential: { id: credential.id, status: credential.status, expiresAt: credential.expiresAt }, stay };
+      return { credential: { id: credential.id, status: credential.status, expiresAt: credential.expiresAt }, stay, calendarIcs };
     }),
     handoff: publicProcedure.input(z.object({ token: z.string(), locale: localeSchema })).query(async ({ input }) => {
       const credential = await resolvePublicCredential(input.token, "handoff");
