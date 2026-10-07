@@ -1,5 +1,11 @@
-import QRCode from "qrcode";
-import { publicUrl, qrOptions } from "./qr";
+import { publicUrl } from "./qr";
+import {
+  QR_STYLES,
+  isQrStyle,
+  paintStyledQr,
+  styledQrSvg,
+  type QrStyleId,
+} from "./qr-style";
 
 const form = document.querySelector<HTMLFormElement>("#qr-form")!;
 const input = document.querySelector<HTMLInputElement>("#destination")!;
@@ -12,11 +18,11 @@ const appleQr = document.querySelector<HTMLCanvasElement>("#apple-pass-qr")!;
 const googleQr = document.querySelector<HTMLCanvasElement>("#google-pass-qr")!;
 const passSheet = document.querySelector<HTMLCanvasElement>("#pass-sheet")!;
 const passHosts = document.querySelectorAll<HTMLElement>("[data-pass-host]");
-const passQrOptions = { ...qrOptions, width: 180, margin: 2 };
 let objectUrl = "";
 let passObjectUrl = "";
 let generation = 0;
 let locale: "en" | "es" = "en";
+let style: QrStyleId = "beacon";
 let state: "ready" | "invalid" | "working" = "working";
 const messages = {
   en: { ready: "QR ready. URL only · Wallet preview is not a signed pass.", invalid: "Enter a complete http:// or https:// URL without a username or password.", working: "Generating QR locally…" },
@@ -149,10 +155,8 @@ function clearDownloads() {
 
 async function paintPassCards(request: number, value: string, source: HTMLCanvasElement) {
   const host = passHostLabel(value);
-  await Promise.all([
-    QRCode.toCanvas(appleQr, value, passQrOptions),
-    QRCode.toCanvas(googleQr, value, passQrOptions),
-  ]);
+  await paintStyledQr(appleQr, value, style, 180);
+  await paintStyledQr(googleQr, value, style, 180);
   if (request !== generation) return;
   appleQr.hidden = false;
   googleQr.hidden = false;
@@ -171,22 +175,18 @@ async function generate() {
   try {
     const value = publicUrl(input.value);
     await document.fonts.ready.catch(() => undefined);
-    const svg = await QRCode.toString(value, { ...qrOptions, type: "svg" });
-    // Render into a detached canvas so an older render cannot replace newer output.
-    const nextCanvas = document.createElement("canvas");
-    await QRCode.toCanvas(nextCanvas, value, qrOptions);
+    await paintStyledQr(canvas, value, style, 512);
+    const svg = styledQrSvg(value, style);
     if (request !== generation) return;
-    canvas.width = nextCanvas.width;
-    canvas.height = nextCanvas.height;
-    canvas.getContext("2d")!.drawImage(nextCanvas, 0, 0);
     objectUrl = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }));
     svgLink.href = objectUrl;
-    pngLink.href = nextCanvas.toDataURL("image/png");
+    pngLink.href = canvas.toDataURL("image/png");
     for (const link of [svgLink, pngLink]) enableLink(link);
     canvas.hidden = false;
+    canvas.parentElement?.classList.toggle("night", QR_STYLES[style].well === "ink");
     input.removeAttribute("aria-invalid");
     try {
-      await paintPassCards(request, value, nextCanvas);
+      await paintPassCards(request, value, canvas);
     } catch {
       clearWallet();
     }
@@ -219,6 +219,17 @@ document.querySelectorAll<HTMLButtonElement>("[data-language]").forEach((button)
       element.textContent = element.dataset[locale]!;
     });
     document.querySelectorAll<HTMLButtonElement>("[data-language]").forEach((element) => element.setAttribute("aria-pressed", String(element === button)));
+    void generate();
+  });
+});
+document.querySelectorAll<HTMLButtonElement>("[data-style]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const next = button.dataset.style;
+    if (!next || !isQrStyle(next)) return;
+    style = next;
+    document.querySelectorAll<HTMLButtonElement>("[data-style]").forEach((element) => {
+      element.setAttribute("aria-pressed", String(element === button));
+    });
     void generate();
   });
 });
