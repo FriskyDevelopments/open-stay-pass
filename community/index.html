@@ -51,6 +51,16 @@
             <p class="field-help" id="url-help" data-en="Use a public link. Keep private guest links and credentials out of this demo." data-es="Usa un enlace público. Mantén los enlaces privados y las credenciales fuera de este demo.">Use a public link. Keep private guest links and credentials out of this demo.</p>
             <input id="destination" name="destination" type="url" value="https://github.com/FriskyDevelopments/open-stay-pass" maxlength="2048" spellcheck="false" autocomplete="off" autocapitalize="off" aria-describedby="url-help qr-status" required>
             <div class="presets"><span data-en="Try a project link" data-es="Prueba un enlace del proyecto">Try a project link</span><button type="button" data-url="https://github.com/FriskyDevelopments/open-stay-pass" data-en="Repository" data-es="Repositorio">Repository</button><button type="button" data-url="https://github.com/FriskyDevelopments/open-stay-pass/tree/main/docs">Docs</button><button type="button" data-url="https://github.com/FriskyDevelopments/open-stay-pass/blob/main/docs/brand/claude-design/BRANDING.md" data-en="Brand" data-es="Marca">Brand</button></div>
+            <fieldset class="style-picker">
+              <legend data-en="QR style" data-es="Estilo QR">QR style</legend>
+              <div class="style-row" role="radiogroup">
+                <button type="button" data-style="plate" aria-pressed="false" data-en="Plate" data-es="Placa">Plate</button>
+                <button type="button" data-style="beacon" aria-pressed="true" data-en="Beacon" data-es="Beacon">Beacon</button>
+                <button type="button" data-style="pulse" aria-pressed="false" data-en="Pulse" data-es="Pulso">Pulse</button>
+                <button type="button" data-style="night" aria-pressed="false" data-en="Night" data-es="Noche">Night</button>
+                <button type="button" data-style="frame" aria-pressed="false" data-en="Frame" data-es="Marco">Frame</button>
+              </div>
+            </fieldset>
             <button class="button primary" type="submit" data-en="Generate QR ↗" data-es="Generar QR ↗">Generate QR ↗</button>
             <p id="qr-status" role="status" aria-live="polite"></p>
             <div class="scope-note"><p data-en="A URL carrier, ready to copy." data-es="Un soporte para tu URL, listo para copiar.">A URL carrier, ready to copy.</p><p data-en="This studio does not sign credentials, grant access, or issue Wallet passes. Apple and Google Wallet stay configuration-required adapters on the credential server. QR, NFC, and Wallet only carry the same public URL." data-es="Este estudio no firma credenciales, concede acceso ni emite pases de Wallet. Apple Wallet y Google Wallet siguen como adaptadores que requieren configuración en el servidor. QR, NFC y Wallet solo llevan la misma URL pública.">This studio does not sign credentials, grant access, or issue Wallet passes. Apple and Google Wallet stay configuration-required adapters on the credential server. QR, NFC, and Wallet only carry the same public URL.</p></div>
