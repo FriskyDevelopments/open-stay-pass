@@ -71,7 +71,7 @@ flowchart LR
   server -.when configured.-> wallet[Apple Wallet / Google Wallet adapters]
   arrival -.-> hc[(HostCasa Supabase)]
   server --> storage[(Object storage · S3 presign)]
-  console -.static build.-> pages[Cloudflare Pages · stay-pass]
+  console -.static build.-> pages[Cloudflare Pages · open-stay-pass<br/>/api/* proxied same-origin]
 ```
 
 | Package | What it is |
@@ -102,7 +102,7 @@ pnpm test              # Vitest suite
 pnpm check             # tsc --noEmit
 pnpm db:push           # generate + apply Drizzle migrations
 pnpm build:pages       # static frontend build (dist/public)
-pnpm deploy:pages      # build + wrangler pages deploy to the stay-pass project
+pnpm deploy:pages      # build + wrangler pages deploy to the open-stay-pass project
 pnpm test:community    # community site tests
 ```
 
@@ -112,7 +112,7 @@ Names only, from `.env.example` and the server code. Values are never committed.
 
 - **Core:** `NODE_ENV`, `PORT`, `JWT_SECRET`, `CREDENTIAL_HMAC_SECRET`, `DATABASE_URL`, `CORS_ORIGINS`, `PUBLIC_APP_URL`, `SESSION_MAX_AGE_MS`
 - **Identity:** `OAUTH_SERVER_URL`, `OWNER_OPEN_ID`, `VITE_APP_ID`, `VITE_OAUTH_PORTAL_URL`
-- **HostCasa / Folios:** `VITE_HOSTCASA_SUPABASE_URL`, `VITE_HOSTCASA_SUPABASE_ANON_KEY`, `FOLIOS_PUBLIC_ORIGIN`, `VITE_OPEN_STAY_API_ORIGIN`
+- **HostCasa / Folios:** `VITE_HOSTCASA_SUPABASE_URL`, `VITE_HOSTCASA_SUPABASE_ANON_KEY`, `FOLIOS_PUBLIC_ORIGIN`, `VITE_OPEN_STAY_API_ORIGIN` (leave empty on Pages), `STAYPASS_API_UPSTREAM` (Pages Function proxy target)
 - **Wallet (optional):** `APPLE_PASS_TYPE_ID`, `APPLE_TEAM_ID`, `APPLE_CERTIFICATE_P12_BASE64`, `APPLE_CERTIFICATE_PASSWORD`, `GOOGLE_WALLET_ISSUER_ID`, `GOOGLE_WALLET_SERVICE_ACCOUNT_JSON`, `WALLET_AUTH_TOKEN`, `WALLET_UPDATE_BASE_URL`
 - **Storage / concierge:** `BUILT_IN_FORGE_API_URL`, `BUILT_IN_FORGE_API_KEY`, `STORAGE_PUBLIC_PREFIXES`, `CONCIERGE_PROVIDER`, `CONCIERGE_LLM_MODEL`
 - **Public links (optional):** `VITE_GITHUB_REPOSITORY_URL`, `VITE_KOFI_URL`, `VITE_WISE_URL`, `VITE_NOWPAYMENTS_URL`

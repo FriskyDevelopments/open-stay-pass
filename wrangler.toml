@@ -1,5 +1,12 @@
 # Cloudflare Pages configuration for the Open Stay Pass frontend.
-# Build with `pnpm build:pages`, then deploy `dist/public`.
-name = "stay-pass"
+# Build with `pnpm build:pages`, then deploy `dist/public` (see `pnpm deploy:pages`).
+# The project that serves staypass.dev is `open-stay-pass`.
+name = "open-stay-pass"
 compatibility_date = "2026-08-28"
 pages_build_output_dir = "dist/public"
+
+# `functions/api/[[path]].ts` and `functions/manus-storage/[[path]].ts` proxy
+# /api/* and backend media (/manus-storage/*) to the backend so the
+# browser only talks to the page origin (no CORS, first-party cookies).
+[vars]
+STAYPASS_API_UPSTREAM = "https://staypass-pmz7aqns.manus.space"
