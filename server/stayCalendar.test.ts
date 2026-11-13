@@ -3,6 +3,10 @@ import type { TrpcContext } from "./_core/context";
 import { hashCredentialToken, issueCredentialToken } from "./credentialService";
 import { buildStayCalendarIcs, type StayCalendarEvent } from "./stayCalendar";
 
+// Root Vitest only collects server and client tests. Importing the core suite
+// here runs it under `pnpm test` without widening that include list.
+import "../packages/core/src/ics.test";
+
 const mocks = vi.hoisted(() => ({
   getCredentialById: vi.fn(),
   getStayById: vi.fn(),
