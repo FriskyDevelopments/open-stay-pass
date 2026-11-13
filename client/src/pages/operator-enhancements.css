@@ -40,6 +40,9 @@
 .amenity-prompts { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 7px; }
 .amenity-prompts button { border: 1px solid rgba(126, 224, 235, .25); border-radius: 999px; background: rgba(18, 54, 61, .62); color: #c9eeeb; padding: 7px 10px; font-size: 11px; }
 
+.stay-calendar-download { display: inline-flex; align-items: center; gap: 7px; margin-top: 14px; border: 1px solid rgba(126, 224, 235, .25); border-radius: 999px; background: rgba(18, 54, 61, .62); color: #c9eeeb; padding: 7px 12px; font-size: 11px; cursor: pointer; }
+.stay-calendar-download:hover { border-color: rgba(126, 224, 235, .55); }
+
 .ticket-status-preview { margin-top: 1.5rem; padding: 1.35rem; border: 1px solid rgba(110, 214, 202, .18); background: rgba(8, 25, 31, .72); }
 .ticket-preview-tabs { display: flex; flex-wrap: wrap; gap: .55rem; margin: 1rem 0 1.15rem; }
 .ticket-preview-tabs button { border: 1px solid rgba(180, 214, 208, .22); color: #a7bbb8; background: transparent; padding: .6rem .75rem; font: inherit; font-size: .78rem; cursor: pointer; }
