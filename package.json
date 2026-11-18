@@ -120,7 +120,7 @@
     "esbuild": "^0.28.2",
     "jsdom": "^30.0.1",
     "pnpm": "^10.34.5",
-    "postcss": "^8.4.47",
+    "postcss": "^8.5.33",
     "prettier": "^3.6.2",
     "simple-git-hooks": "^2.13.1",
     "tailwindcss": "^4.3.3",
